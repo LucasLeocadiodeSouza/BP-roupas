@@ -1,0 +1,8 @@
+<div id="cop1" class="container-card">
+    <div class="dlegenda">
+        <span>{{ titulo }}</span>
+    </div>
+    <div class="grid-quadro">
+        <app-mini-card *ngFor="let miniCard of miniCards" [titulo]="miniCard.titulo" [srcImages]="miniCard.src" [price]="miniCard.price" [extclass]="miniCard.extclass" [currency]="miniCard.currency"></app-mini-card>
+    </div>
+</div>

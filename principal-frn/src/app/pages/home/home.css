@@ -1,0 +1,9 @@
+.container-principal {padding-inline: 15px; padding-bottom: 10px; position: relative; display: flex; justify-content: center;}
+
+main  {width: 83%;}
+.w-17 {width: 17%;}
+
+.mt270 { margin-top: 270px;}
+
+.z100 {z-index: 100;}
+.z200 {z-index: 200;}

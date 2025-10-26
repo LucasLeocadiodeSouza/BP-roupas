@@ -1,0 +1,9 @@
+.container-principal {width: calc(100% - 10px); height: calc(100% - 10px); background-color: aqua; padding: 5px;}
+
+.divisor {border-radius: 10px; border: 1px solid gray; width: 95%; display: flex; align-items: center; flex-direction: column;}
+
+.gap10 {gap: 10px;}
+
+.m-10 {margin-block: 10px;}
+
+.separador {border-block: 1px solid gray; width: 50%;}

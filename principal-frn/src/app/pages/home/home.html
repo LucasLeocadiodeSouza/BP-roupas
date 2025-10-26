@@ -1,0 +1,18 @@
+<div class="disprow">
+  <main>  
+    <app-header></app-header>
+    
+    <div class="container-principal">
+      <app-banner [banners]="banners"></app-banner>
+      <div class="z200 mt270">
+        <app-product-list></app-product-list>
+      </div>
+    </div>
+
+    <app-product-card-row *ngFor="let card of cards" [titulo]="card.titulo" [miniCards]="card.miniCard"></app-product-card-row>
+    
+  </main>
+  <div class="w-17 z200">
+    <app-shopping-list></app-shopping-list>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="container-principal">
+    <div class="dlegenda">
+        <span>{{ titulo }}</span>
+    </div>
+    
+    <div class="prev-button mov-button" (click)="prevButtonClick()" #prevbutton>
+        <img src="assets/icons/arrow-left.png" alt="Carregando">
+    </div>
+
+    <div class="container-cardrow">
+        <div id="containerMinicard" class="container-minicard" #containerProduct>
+            <app-mini-card *ngFor="let miniCard of miniCards; let i = index"
+                                 [titulo]="miniCard.titulo" 
+                                 [srcImages]="miniCard.src" 
+                                 [price]="miniCard.price" 
+                                 [currency]="miniCard.currency" 
+                                 [extclass]="miniCard.extclass"
+                                 [ngClass]="{'carr-on': i === 0, 'carr-off': i !== 0}"></app-mini-card>
+        </div>
+    </div>
+    
+    <div class="next-button mov-button" (click)="nextButtonClick()" #nextbutton>
+        <img src="assets/icons/arrow-right.png" alt="Carregando">                        
+    </div>
+</div>

@@ -1,0 +1,29 @@
+:root {
+    --primary-background: #e5e5e5;
+    --secondary-background: #f1f1f1;
+}
+
+body {margin: 0; background: var(--primary-background, #f1f1f1);}
+
+
+.h110px {height: 110px;}
+.product-class  {width: 170px;}
+.category-class {width: 200px; border-top-right-radius: 30px; border-top-left-radius: 30px;}
+
+.disprow {display: flex; flex-direction: row;}
+.dispcol {display: flex; flex-direction: column;}
+
+.prelative {position: relative;}
+
+.jc-center {justify-content: center;}
+.ai-c      {align-items: center;}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 12px;
+  background-color: #aaa;
+}

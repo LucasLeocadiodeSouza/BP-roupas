@@ -1,0 +1,28 @@
+.container-principal {display: flex; flex-direction: column; height: 600px; width: 1190px; position: absolute; z-index: 10;}
+.container-banners {height: 600px; width: 1190px; overflow: hidden; display: flex;}
+
+.mov-button {border: 1px solid #44444440; 
+             backdrop-filter: blur(6px); 
+             border-radius: 7px; 
+             padding: 3px; 
+             position: absolute; 
+             top: 50%; 
+             transform: translateY(-50%); 
+             transition: 0.2s; 
+             z-index: 10; 
+             width: 25px; 
+             height: 40px; 
+             cursor: pointer; 
+             background-color: #e5e5e587; 
+             display: flex; 
+             justify-content:center; 
+             align-items: center;}
+
+.mov-button img {width: 14px; height: 23px;}
+
+.mov-button:hover {width: 27px; height: 42px; .mov-button img {width: 16px; height: 25px;}}
+
+.prev-button {left: 10px;}
+.next-button {right: 10px;}
+
+.transparent-filter { height: 300px; width: 1190px; position: absolute; bottom: 0; background: linear-gradient(to bottom, transparent, var(--primary-background, #e5e5e5));}

@@ -1,0 +1,5 @@
+.container-card {width: 330px; height: 300px; background-color: var(--secondary-background, #dedede); margin: 10px 30px; overflow: hidden;}
+.dlegenda {height: 15%; font: 24px Arial, sans-serif; font-weight: bold; padding-inline: 20px; padding-top: 15px;}
+
+.grid-quadro {display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; padding: 10px; height: calc(85% - 20px); box-sizing: border-box;}
+.grid-quadro img {height: 110px;}
