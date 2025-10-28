@@ -1,24 +1,34 @@
 <div class="container-principal">
-    <main  class="dispcol jc-center ai-c gap10">
-        <div class="divisor">
+    <main  class="dispcol jc-center ai-c gap10 h100">
+        <div class="divisor container-up">
             <div class="disprow jc-center ai-c">
-                <h3>Carrinho</h3>
+                <h3 class="ff-Inter">Carrinho</h3>
             </div>
 
             <div class="separador"></div>
 
             <div class="disprow jc-center ai-c">
-                <h4>R$</h4>
-                <h4>35,99</h4>
+                <h4 class="dcurrency">R$</h4>
+                <h4 class="dprice">25,99</h4>
             </div>
 
             <div class="separador"></div>
 
-            <div class="m-10">Ir ao Carrinho</div>
-            <div class="m-10">Finalizar</div>
-
+            <div class="m-10 h45px">
+                <div class="shoppButton emphasisButton">Ir ao Carrinho</div>
+            </div>
+            <div class="m-10 h45px">
+                <div class="shoppButton">Finalizar</div>
+            </div>
         </div>
-        <div class="divisor">
+        <div class="divisor container-down" #produtsLists>
+            <div class="divproduct" *ngFor="let miniCard of miniCards" #product>
+                <div class="delete-prod" (click)="deleteProductInCart(product)">
+                    <img src="assets/images/close-icon.png" height="10px">
+                </div>
+
+                <app-mini-card [titulo]="miniCard.titulo" [srcImages]="miniCard.src" [price]="miniCard.price" [extclass]="miniCard.extclass" [currency]="miniCard.currency"></app-mini-card>
+            </div>
 
         </div>
     </main>

@@ -1,6 +1,8 @@
 :root {
     --primary-background: #e5e5e5;
     --secondary-background: #f1f1f1;
+    --tertiary-background: #eeeeee;
+    --color-border: #bdbdbd;
 }
 
 body {margin: 0; background: var(--primary-background, #f1f1f1);}
