@@ -19,7 +19,7 @@
 .shoppButton {border-radius: 30px; border: 1px solid var(--color-border, #bdbdbd); padding: 13px 30px; cursor: pointer; transition: 0.3s;}
 .shoppButton:hover {padding: 15px 32px;}
 
-.emphasisButton {background-color: #ffce72; border: 0}
+.emphasisButton {background-color: var(--color-primary, #D68477); border: 0; color: #FFF;}
 
 .divproduct {position: relative;}
 

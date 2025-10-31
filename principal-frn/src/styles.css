@@ -2,10 +2,14 @@
     --primary-background: #e5e5e5;
     --secondary-background: #f1f1f1;
     --tertiary-background: #eeeeee;
+    --color-primary: #D68477;
+    --color-secondary: #99C7C5;
     --color-border: #bdbdbd;
+    --color-header: #1f1931;
+    --color-header-inv: #f1f1f1;
 }
 
-body {margin: 0; background: var(--primary-background, #f1f1f1);}
+body {margin: 0; background: var(--primary-background, #f1f1f1); min-width: 1500px;}
 
 
 .h110px {height: 110px;}
