@@ -1,4 +1,4 @@
-.container-principal {width: calc(100% - 12px); height: calc(100% - 10px); background-color: var(--tertiary-background, #eeeeee); padding: 5px; border-left: 2px solid var(--color-border, #bdbdbd)}
+.container-principal {width: 255px; height: calc(100% - 10px); background-color: var(--tertiary-background, #eeeeee); padding: 5px; border-left: 2px solid var(--color-border, #bdbdbd); position: fixed;}
 
 .h100 {height: 100%;}
 
@@ -16,10 +16,10 @@
 
 .separador {border-block: 1px solid var(--color-border, #bdbdbd); width: 50%;}
 
-.shoppButton {border-radius: 30px; border: 1px solid var(--color-border, #bdbdbd); padding: 13px 30px; cursor: pointer; transition: 0.3s;}
-.shoppButton:hover {padding: 15px 32px;}
+.shoppButton {border-radius: 30px; border: 1px solid var(--color-primary, #352d01); padding: 13px 30px; cursor: pointer; transition: box-shadow 0.3s;}
+.shoppButton:hover {box-shadow: 0px 0px 3px var(--color-primary, #352d01); border-color: #352d01;}
 
-.emphasisButton {background-color: var(--color-primary, #D68477); border: 0; color: #FFF;}
+.emphasisButton {background-color: var(--color-primary, #352d01); border: 0; color: #FFF;}
 
 .divproduct {position: relative;}
 

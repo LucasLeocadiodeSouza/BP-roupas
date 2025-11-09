@@ -1,70 +1,89 @@
-<header style="height: 90px;">
-    <div class="upHeaderNav">
-        <div id="navupheader1" class="disprow jc-center ai-c">
-            <p>Logo</p>
+<header>   
+    <div class="HeaderNav">
+        <div id="navheader1" class="disprow jc-center ai-c">
+            <div class="logo">
+                <img src="assets/images/logo-icon.png" width="60" height="60">
+            </div>
         </div>
-        <div id="navupheader2" class="disprow jc-center ai-c">
-            <a href="#" class="link-efect">
-                <div class="button-header">
-                    <p class="text-effect">Acessar Conta</p>
+        
+        <div id="navheader2" class="disprow jc-center ai-c">
+            <div class="container-button">
+                <div class="button-descrition">
+                    <a href="#" class="link-efect">
+                        <p>Acessar Conta</p>
+                    </a>
                 </div>
-            </a>
+            </div>
         </div>
-        <div id="navupheader3" class="dispcol jc-center ai-c">
-            <a href="#" class="link-efect">
-                <div class="button-header">
-                    <p class="text-effect">Descontos</p>
+
+        <div id="navheader3" class="disprow jc-center ai-c">
+            <div class="container-button">
+                <div class="button-descrition">
+                    <a href="#" class="link-efect">
+                        <img src="assets/images/sale-icon.png" width="17" height="16">
+                        <p>Descontos</p>
+                    </a>
                 </div>
-            </a>
+            </div>
         </div>
-        <div id="navupheader4" class="disprow search-class jc-center ai-c">
+
+        <div id="navheader4" class="disprow jc-center ai-c">
+            <div id="navcateg" class="container-button button-descrition" (mouseenter)="showOverlay()">
+                <div>
+                    <a href="#" class="link-efect">
+                        <p>Categorias</p>&nbsp;
+                        <img src="assets/images/arrow-down.png" width="7" height="7">
+                    </a>
+                </div>
+
+                 <div class="header-categories" [class.show]="isCategoriesVisible" (mouseleave)="hideOverlay()">
+                    <app-header-categories [categories]="categories"></app-header-categories>
+                </div>
+            </div>
+            <div class="overlay" [class.show]="isCategoriesVisible" (click)="hideOverlay()"></div>
+        </div>
+
+        <div id="navheader5" class="disprow jc-center ai-c">
+            <div class="container-button">
+                <div class="button-descrition">
+                    <a href="#" class="link-efect">
+                        <img src="assets/images/shopping-icon.png" width="15" height="15">
+                        <p>A partir de 7,99</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="navheader6" class="disprow jc-center ai-c">
+            <div class="container-button">
+                <div class="button-descrition">
+                    <a href="#" class="link-efect">
+                        <img src="assets/images/icon-like.png" width="15" height="15">
+                        <p>Mais vendidos</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="navheader7" class="disprow jc-center ai-c">
+            <div class="container-button">
+                <div class="button-descrition">
+                    <a href="#" class="link-efect">
+                        <p>Atendimento</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="navheader8" class="disprow search-class jc-center ai-c">
             <form class="form">
-                <input class="input" placeholder="Type your text" required="" type="text">
+                <input class="input" placeholder="Digite um produto" required="" type="text">
                 <a href="#" class="link-efect">
                     <div class="button-search">
                         <img src="assets/images/search-icon.png" width="17" height="16">
                     </div>
                 </a>
             </form>
-        </div>
-    </div>
-    <div class="downHeaderNav">
-        <div class="w-70 disprow">
-            <div id="navdownheader1" class="disprow jc-center ai-c">
-                <a href="#" class="link-efect">
-                    <div class="button-header">
-                        <p class="text-effect">Recomendados</p>
-                    </div>
-                </a>
-            </div>
-            <div id="navdownheader2" class="disprow jc-center ai-c">
-                <a href="#" class="link-efect">
-                    <div class="button-header">
-                        <p class="text-effect">Novidades</p>
-                    </div>
-                </a>
-            </div>
-            <div id="navdownheader3" class="disprow jc-center ai-c">
-                <a href="#" class="link-efect">
-                    <div class="button-header">
-                        <p class="text-effect">A partir de 7,99</p>
-                    </div>
-                </a>
-            </div>
-            <div id="navdownheader5" class="disprow jc-center ai-c">
-                <a href="#" class="link-efect">
-                    <div class="button-header">
-                        <p class="text-effect">Mais vendidos</p>
-                    </div>
-                </a>
-            </div>
-            <div id="navdownheader4" class="dispcol jc-center ai-c">
-                <a href="#" class="link-efect">
-                    <div class="button-header">
-                        <p class="text-effect">Atendimento</p>
-                    </div>
-                </a>
-            </div>
         </div>
     </div>
 </header>

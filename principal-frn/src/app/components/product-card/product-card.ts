@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./product-card.css']
 })
 export class ProductCard {
-   @Input() titulo?: string;
+   @Input() title?: string;
    @Input() srcImages?: string;
    @Input() miniCards?: any;
 }

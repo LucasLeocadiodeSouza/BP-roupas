@@ -16,88 +16,133 @@ import { ProductCardRow } from "../../components/product-card-row/product-card-r
 })
 export class Home {
   banners = [
-    {src: "assets/banners/Novo site de vendas.png"},
-    {src: "assets/banners/rapido e facil.png"},
-    {src: "assets/banners/banner3.png"},
+    { src: "assets/banners/Novo site de vendas.png",
+      height: "600px",
+      width: "1190px"
+    },
+    { src: "assets/banners/rapido e facil.png",
+      height: "600px",
+      width: "1190px"
+    },
+    { src: "assets/banners/banner3.png",
+      height: "600px",
+      width: "1190px"
+    }
   ]
 
   cards = [
-    { titulo: "Categorias!",
+    { title: "Categorias!",
       src: "assets/images/produto-teste.png",
       miniCard: [
         {src: "assets/images/categories/categ-acessorios.png",
-         extclass: "category-class"
+         extclass: "category-class",
+         href: "/products-list?category=1"
         },
         {src: "assets/images/categories/categ-camisas.png",
-         extclass: "category-class"
+         extclass: "category-class",
+         href: "/products-list?category=2"
         },
         {src: "assets/images/categories/categ-camisetas.png",
-         extclass: "category-class"
+         extclass: "category-class",
+         href: "/products-list?category=3"
         },
         {src: "assets/images/categories/categ-tenis.png",
-         extclass: "category-class"
+         extclass: "category-class",
+         href: "/products-list?category=4"
+        },
+        {src: "assets/images/categories/categ-calcas.png",
+         extclass: "category-class",
+         href: "/products-list?category=5"
         },
         {src: "assets/images/categories/categ-moletons.png",
-         extclass: "category-class"
+         extclass: "category-class",
+         href: "/products-list?category=6"
         }
       ]
      },
-    { titulo: "Em ofertas!",
+    { title: "Em ofertas!",
       src: "assets/images/produto-teste.png",
       miniCard: [
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "3.700,25",
          currency: "R$",
-         extclass: "product-class"
+         extclass: "product-class",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "70,25",
          currency: "R$",
-         extclass: "product-class"
+         extclass: "product-class",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "0,99",
          currency: "R$",
-         extclass: "product-class"
+         extclass: "product-class",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1,25",
          currency: "R$",
          extclass: "product-class"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1.500,25",
          currency: "R$",
-         extclass: "product-class"
+         extclass: "product-class",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1.500,25",
          currency: "R$",
-         extclass: "product-class"
+         extclass: "product-class",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1.500,25",
          currency: "R$",
-         extclass: "product-class"
+         extclass: "product-class",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1.500,25",
          currency: "R$",
-         extclass: "product-class"
+         extclass: "product-class",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1.500,25",
          currency: "R$",
-         extclass: "product-class"
+         extclass: "product-class",
+         href: "/product?category=1&subcategory=3"
+        }
+      ]
+     },
+     { title: "Ultimos lancamentos!",
+       src: "assets/images/produto-teste.png",
+       miniCard: [
+        {src: "assets/images/produto-teste.png",
+         title: "Fone de Ouvido Headset",
+         price: "3.700,25",
+         currency: "R$",
+         extclass: "product-class",
+         href: "/product?category=1&subcategory=3"
+        },
+        {src: "assets/images/produto-teste.png",
+         title: "Fone de Ouvido Headset",
+         price: "70,25",
+         currency: "R$",
+         extclass: "product-class",
+         href: "/product?category=1&subcategory=3"
         }
       ]
      }

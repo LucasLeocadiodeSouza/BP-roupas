@@ -1,16 +1,33 @@
-<div id="container-destaque-prod1-int2" class="item-quadro" [class]="extclass">
-    <a class="a-link-normal">
+<div id="container-destaque-prod1-int2" class="item-quadro" [class]="extclass" [ngClass]="{'over-card': fullinfo}">
+    <a [href]="href" class="a-link-normal">
         <div class="image-card">
             <img [src]="srcImages" alt="Carregando" width="95px" height="100%">
         </div>
         <div class="desc-prod-card">
             <div class="w100 h100">
                 <div class="w100 h45">
-                    <span id="id3-produto2-desc" name="id3-produto2-desc" class="s-desc-prod">{{ titulo }}</span>
+                    <span id="id3-produto2-desc" name="id3-produto2-desc" class="s-desc-prod">{{ title }}</span>
                 </div>
                 <div class="div-price">
                     <span>{{ currency }}</span>&nbsp;&nbsp;
                     <span id="id3-produto2-desc" name="id3-produto2-vlr" class="s-price">{{ price }}</span>
+                </div>
+                <div class="div-score" *ngIf="fullinfo">
+                    <div class="stars-rating">
+                        <img src="assets/images/half-rating-star-icon.jpg" width="17" height="17">
+                        <img src="assets/images/half-rating-star-icon.jpg" width="17" height="17" class="invert-star">
+                        <img src="assets/images/half-rating-star-icon.jpg" width="17" height="17">
+                        <img src="assets/images/half-rating-star-icon.jpg" width="17" height="17" class="invert-star">
+                        <img src="assets/images/half-rating-star-icon.jpg" width="17" height="17">
+                        <img src="assets/images/half-rating-star-icon.jpg" width="17" height="17" class="invert-star">
+                        <img src="assets/images/half-rating-star-icon.jpg" width="17" height="17">
+                        <img src="assets/images/half-rating-star-icon.jpg" width="17" height="17" class="invert-star">
+                        <img src="assets/images/half-rating-star-icon.jpg" width="17" height="17">
+                        <img src="assets/images/half-rating-star-icon.jpg" width="17" height="17" class="invert-star">
+                    </div>
+                    <div class="desc-score">
+                        <span>{{ score }}</span>
+                    </div>
                 </div>
             </div>
         </div>

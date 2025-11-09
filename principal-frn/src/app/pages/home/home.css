@@ -3,7 +3,11 @@
 main  {width: 83%;}
 .w-17 {width: 17%;}
 
-.mt270 { margin-top: 270px;}
+/* style used in banners */
+.banner {display: flex; flex-direction: column; height: 600px; width: 1190px; position: absolute; z-index: 10;}
+.transparent-filter { height: 300px; width: 1190px; position: absolute; bottom: 0; background: linear-gradient(to bottom, transparent, var(--primary-background, #e5e5e5));}
+
+.mt330 { margin-top: 330px;}
 
 .z100 {z-index: 100;}
 .z200 {z-index: 200;}

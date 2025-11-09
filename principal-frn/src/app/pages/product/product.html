@@ -1,0 +1,179 @@
+<main>
+    <div class="container-prod">
+        <div>
+            <div class="path">
+                <ol>
+                    <li>
+                        <a href="#" class="overcolor">Página Inicial</a>
+                        <span>></span>
+                    </li>
+                    <li>
+                        <a href="/products-list" class="overcolor">{{ category }}</a>
+                        <span>></span>
+                    </li>
+                    <li>
+                        <a href="/products-list" class="overcolor">{{ subcategory }}</a>
+                        <span>></span>
+                    </li>
+                    <li>
+                        <a href="/product" class="overcolor">{{ product }}</a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="container-desc">
+            <div class="images">
+                <div class="list-image">
+                    <img *ngFor="let banner of banners; let i = index" [src]="banner.src">
+                </div>
+                <div class="p10">
+                    <div class="main-image">
+                        <app-banner [banners]="banners"></app-banner>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product">
+                <div class="title">
+                    <label>{{title}}</label>
+                </div>
+                
+                <div class="score">
+                    <div class="desc-sales">
+                        <label>{{ sales }} Vendidos</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="stars-rating">
+                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12">
+                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12" class="invert-star">
+                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12">
+                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12" class="invert-star">
+                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12">
+                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12" class="invert-star">
+                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12">
+                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12" class="invert-star">
+                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12">
+                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12" class="invert-star">
+                        </div>
+                        <div class="desc-score">
+                            <span>{{ score }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="description">
+                    <label>{{description}}</label>
+                </div>
+
+                <div class="quantity">
+                    <label>Quantidade: </label>
+
+                    <input type="number" id="inpquant" name="inpquant" class="genip" value="1">
+                </div>
+
+                <div class="row">
+                    <label>Preço: </label>
+
+                    <div class="container-price">
+                        <div class="currency"> {{ currency }}</div>
+                        <div class="price">{{ price }}</div>
+                    </div>
+                </div>
+
+                <div class="disprow jc-center">
+                    <div class="divisior"></div>
+                </div>
+
+                <div class="especifications">
+                    <div class="title">
+                        <label>Especificações (*):</label>
+                    </div>
+
+                    <div id="tamroupa" class="especification">
+                        <label>Tamanho:</label>
+
+                        <div class="control-buttons">
+                            <div class="control-button" (click)="selectEspecification($event)">
+                                <span>P</span>
+                            </div>
+                            <div class="control-button" (click)="selectEspecification($event)">
+                                <span>M</span>
+                            </div>
+                            <div class="control-button" (click)="selectEspecification($event)">
+                                <span>G</span>
+                            </div>
+                            <div class="control-button" (click)="selectEspecification($event)">
+                                <span>GG</span>
+                            </div>
+                            <div class="control-button" (click)="selectEspecification($event)">
+                                <span>XGG</span>
+                            </div>
+                        </div>
+
+                        <div class="alert">
+                            <span>(*) É preciso informar o tamanho para concluir a compra</span>
+                        </div>
+                    </div>
+
+                    <div id="corroupa" class="especification">
+                        <label>Cor:</label>
+
+                        <div class="control-buttons">
+                            <div class="control-button" (click)="selectEspecification($event)">
+                                <span>Preto</span>
+                            </div>
+                            <div class="control-button" (click)="selectEspecification($event)">
+                                <span>Branco</span>
+                            </div>
+                            <div class="control-button" (click)="selectEspecification($event)">
+                                <span>Vermelho</span>
+                            </div>
+                            <div class="control-button" (click)="selectEspecification($event)">
+                                <span>Cinza</span>
+                            </div>
+                            <div class="control-button" (click)="selectEspecification($event)">
+                                <span>Verde</span>
+                            </div>
+                        </div>
+
+                        <div class="alert">
+                            <span>(*) É preciso informar o tamanho para concluir a compra</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-buttons">
+                    <div class="control-button buy-now">
+                        <span>Comprar agora</span>
+                    </div>
+
+                    <div class="control-button">
+                        <span>Adicionar ao Carrinho</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="disprow jc-center">
+            <div class="divisior"></div>
+        </div>
+
+        <div class="container-itens">
+            <div class="description">
+                <span>Semelhantes:</span>
+            </div>
+
+            <div class="container-itenslist">
+                <app-mini-card *ngFor="let item of itens; let i = index"
+                                    [title]="item.title" 
+                                    [srcImages]="item.src" 
+                                    [price]="item.price" 
+                                    [currency]="item.currency"
+                                    [extclass]="item.extclass"
+                                    [href]="item.href"
+                                    [fullinfo]="item.fullinfo"></app-mini-card>
+            </div>
+        </div>
+    </div>
+</main>

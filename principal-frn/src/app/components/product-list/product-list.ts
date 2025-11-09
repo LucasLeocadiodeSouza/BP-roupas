@@ -11,90 +11,102 @@ import { CommonModule } from '@angular/common';
 export class ProductList {
 
   cards = [
-    { titulo: "Novas descobertas",
+    { title: "Novas descobertas",
       src: "assets/images/produto-teste.png",
       miniCard: [
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "25,99",
          currency: "R$",
-         extclass: "h110px"
+         extclass: "product-list-minicard-height",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "257,90",
          currency: "R$",
-         extclass: "h110px"
+         extclass: "product-list-minicard-height",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "785,25",
          currency: "R$",
-         extclass: "h110px"
+         extclass: "product-list-minicard-height",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1.500,25",
          currency: "R$",
-         extclass: "h110px"
+         extclass: "product-list-minicard-height",
+         href: "/product?category=1&subcategory=3"
         }
       ]
      },
-    { titulo: "Melhores ofertas avaliadas",
+    { title: "Melhores ofertas avaliadas",
       src: "assets/images/produto-teste.png",
       miniCard: [
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1.500,25",
          currency: "R$",
-         extclass: "h110px"
+         extclass: "product-list-minicard-height",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1.500,25",
          currency: "R$",
-         extclass: "h110px"
+         extclass: "product-list-minicard-height",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1.500,25",
          currency: "R$",
-         extclass: "h110px"
+         extclass: "product-list-minicard-height",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1.500,25",
          currency: "R$",
-         extclass: "h110px"
+         extclass: "product-list-minicard-height",
+         href: "/product?category=1&subcategory=3"
         }
       ]
      },
-    { titulo: "Recomendacões da casa",
+    { title: "Recomendacões da casa",
       src: "assets/images/produto-teste.png",
       miniCard: [
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1.500,25",
          currency: "R$",
-         extclass: "h110px"
+         extclass: "product-list-minicard-height",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1.500,25",
          currency: "R$",
-         extclass: "h110px"
+         extclass: "product-list-minicard-height",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1.500,25",
          currency: "R$",
-         extclass: "h110px"
+         extclass: "product-list-minicard-height",
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
-         titulo: "Fone de Ouvido Headset",
+         title: "Fone de Ouvido Headset",
          price: "1.500,25",
          currency: "R$",
-         extclass: "h110px"
+         extclass: "product-list-minicard-height",
+         href: "/product?category=1&subcategory=3"
         }
       ]
      }

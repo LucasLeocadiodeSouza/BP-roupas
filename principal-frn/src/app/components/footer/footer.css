@@ -1,7 +1,8 @@
-.icon-circle {width: 30px; height: 30px; border-radius: 13px; margin-inline: 10px; background-color: #F0ECE5; display: flex; justify-content: center; align-items: center;}
+.icon-circle {width: 30px; height: 30px; border-radius: 13px; margin-inline: 10px; background-color: var(--color-primary); display: flex; justify-content: center; align-items: center;}
+.icon-circle img {filter: invert(100%);}
 
-.end-page { height: 280px; margin-top: 60px;}
-.nav-endpage {border-bottom: 1px solid #3a4553; height: 70%;  background-image: url('../../../assets/images/footer-up.png'); background-size: cover; background-position: center;}
+.end-page { height: 280px; margin-top: 60px; width: 83%;}
+.nav-endpage {border-bottom: 1px solid #888888; height: 70%;  background-image: url('../../../assets/images/header 2.png'); background-size: cover; background-position: center;}
 
 .nav-ref {display: flex; justify-content: flex-start; width: 65%;}
 .nav-ref a {text-decoration: none;}
@@ -10,10 +11,11 @@
 .pe-down {display: flex; flex-direction: column; height: 30%; margin-left: 40px;}
 
 .explore-about {display: flex; flex-direction: column; margin: 20px; margin-top: 7px; padding: 20px; padding-top: 0px; border: 1px solid black; border-radius: 15px; backdrop-filter: blur(20px);}
-.title-about {font-family: 'Playfair Display', serif; color: #313131; font-size: 18px; margin-bottom:1px; margin-top:5px;}
-.label-about {font-family: 'Playfair Display', serif; color: #313131; font-size: 13px; margin-bottom:1px; margin-top:5px;}
+.title-about {font-family: 'Playfair Display', serif; color: var(--color-label-inv, #eaeaea); font-size: 18px; margin-bottom:1px; margin-top:5px;}
+.label-about {font-family: 'Playfair Display', serif; color: var(--color-label-inv, #eaeaea); font-size: 13px; margin-bottom:1px; margin-top:5px;}
 
-.link-email {width: calc(35% - 80px); display: flex; flex-direction: column; justify-content: center; padding: 20px; margin: 20px; margin-top: 7px; border: 1px solid black; border-radius: 15px; backdrop-filter: blur(20px);}
+.link-email {width: calc(35% - 80px); display: flex; flex-direction: column; justify-content: center; padding: 20px; margin-top: 7px; border: 1px solid black; border-radius: 15px; backdrop-filter: blur(20px);}
+.link-email img {filter: invert(100%);}
 .title-link-email {display: flex; flex-direction: column; justify-content: center;}
 
 .exp-redes {display: flex; flex-direction: row;}
@@ -36,10 +38,10 @@
     font-family: inherit;
     width: 100%;
     border: 0;
-    border-bottom: 2px solid #9b9b9b;
+    border-bottom: 2px solid #888;
     outline: 0;
     font-size: 1.3rem;
-    color: #313131;
+    color: var(--color-label-inv, #eaeaea);
     padding: 7px 0;
     background: transparent;
     transition: border-color 0.2s;
@@ -61,7 +63,7 @@
     display: block;
     transition: 0.2s;
     font-size: 1rem;
-    color: #313131;
+    color: var(--color-label-inv, #eaeaea);
     }
 
     .form__field:focus {
@@ -88,9 +90,9 @@
 
 .nav-redes {display: flex; flex-direction: row; align-items: center; }
 
-.social-media {font-size: 18px; display: flex; flex-direction: row; align-items: center; font-family: 'Playfair Display', serif; color: #313131;  padding: 10px; margin: 10px 5px; margin-top: 0; border: 1px solid black; border-radius: 15px; backdrop-filter: blur(20px);}
+.social-media {font-size: 18px; display: flex; flex-direction: row; align-items: center; font-family: 'Playfair Display', serif; color: var(--color-label-inv, #eaeaea);  padding: 10px; margin: 10px 5px; margin-top: 0; border: 1px solid #888; border-radius: 15px; backdrop-filter: blur(20px);}
 .social-media img {width: 80%; height: 80%;}
 
-.nav-rodape {display: grid; grid-template-columns: 1fr 1fr; height: 30%; background-image: url('../../../assets/images/footer-down.png'); background-size: cover; background-position: center;}
+.nav-rodape {display: grid; grid-template-columns: 1fr 1fr; height: 30%; background-image: url('../../../assets/images/header 2.png'); background-size: cover; background-position: center;}
 
-.rodape {display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 10px; margin: 10px 5px; border: 1px solid black; border-radius: 15px; backdrop-filter: blur(20px);}
+.rodape {display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 10px; margin: 10px 5px; border: 1px solid #888; border-radius: 15px; backdrop-filter: blur(20px);}

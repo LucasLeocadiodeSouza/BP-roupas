@@ -1,0 +1,4 @@
+main { display: flex; flex-direction: row; padding: 10px 15px; height: calc(100% - 20px);}
+
+.container-categ {width: 190px;}
+.container-list {padding: 5px 15px; width: calc(100% - 190px); height: 100%;}

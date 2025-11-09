@@ -1,8 +1,10 @@
-<div id="cop1" class="container-card">
-    <div class="dlegenda">
-        <span>{{ titulo }}</span>
-    </div>
-    <div class="grid-quadro">
-        <app-mini-card *ngFor="let miniCard of miniCards" [titulo]="miniCard.titulo" [srcImages]="miniCard.src" [price]="miniCard.price" [extclass]="miniCard.extclass" [currency]="miniCard.currency"></app-mini-card>
+<div class="container-card">
+    <div class="container">
+        <div class="dlegenda">
+            <span>{{ title }}</span>
+        </div>
+        <div class="grid-quadro">
+            <app-mini-card *ngFor="let miniCard of miniCards" [title]="miniCard.title" [srcImages]="miniCard.src" [price]="miniCard.price" [extclass]="miniCard.extclass" [href]="miniCard.href" [currency]="miniCard.currency"></app-mini-card>
+        </div>
     </div>
 </div>

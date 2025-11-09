@@ -12,7 +12,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './product-card-row.css'
 })
 export class ProductCardRow implements AfterViewInit   {
-  @Input() titulo: any;
+  @Input() title: any;
+  @Input() extclass: any;
   @Input() miniCards: any;
 
   private prevCarr = inject(ElementsForm);

@@ -1,0 +1,37 @@
+<div class="container-categories">
+    <div class="list-categ">
+        <ol>
+            <li *ngFor="let category of categories">
+                <a [href]="category.href" class="link-categ">
+                    <div class="button-category" (mouseenter)="pushListSubCategories(category.subcateg); updateFeaturedSubcategory(category.name)">
+                        <div class="name-categ">
+                            <label>{{ category.name }}</label>
+                        </div>
+                        <div>
+                            <img src="assets/images/arrow-down.png" class="arrow-link">
+                        </div>
+                    </div>
+                 </a>
+            </li>
+        </ol>
+    </div>
+
+    <div class="list-subcateg">
+        <div class="path-subcateg">
+            <label>Tudo {{ featuredSubcategory }}</label>
+        </div>
+
+        <div class="container-subcategories">
+            <div *ngFor="let subcategory of listSubCategories" class="subcategory">
+                <a [href]="subcategory.href" class="link-categ">
+                    <div class="disprow jc-center ai-c">
+                        <img [src]="subcategory.src" class="image-subcateg">
+                    </div>
+                    <div class="name-subcateg">
+                        <label>{{ subcategory.name }}</label>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

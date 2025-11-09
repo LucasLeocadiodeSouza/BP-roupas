@@ -17,28 +17,32 @@ export class ShoppingList {
 
   miniCards = [
       {src: "assets/images/produto-teste.png",
-        titulo: "Fone de Ouvido Headset",
+        title: "Fone de Ouvido Headset",
         price: "25,99",
         currency: "R$",
-        extclass: "h110px"
+        extclass: "h110px",
+        href: "http://localhost:4200/product"
       },
       {src: "assets/images/produto-teste.png",
-        titulo: "Fone de Ouvido Headset",
+        title: "Fone de Ouvido Headset",
         price: "257,90",
         currency: "R$",
-        extclass: "h110px"
+        extclass: "h110px",
+        href: "http://localhost:4200/product"
       },
       {src: "assets/images/produto-teste.png",
-        titulo: "Fone de Ouvido Headset",
+        title: "Fone de Ouvido Headset",
         price: "785,25",
         currency: "R$",
-        extclass: "h110px"
+        extclass: "h110px",
+        href: "http://localhost:4200/product"
       },
       {src: "assets/images/produto-teste.png",
-        titulo: "Fone de Ouvido Headset",
+        title: "Fone de Ouvido Headset",
         price: "1.500,25",
         currency: "R$",
-        extclass: "h110px"
+        extclass: "h110px",
+        href: "http://localhost:4200/product"
       }
     ];
 

@@ -2,19 +2,31 @@
     --primary-background: #e5e5e5;
     --secondary-background: #f1f1f1;
     --tertiary-background: #eeeeee;
-    --color-primary: #D68477;
+    --color-primary: #292617;
     --color-secondary: #99C7C5;
     --color-border: #bdbdbd;
     --color-header: #1f1931;
     --color-header-inv: #f1f1f1;
+    --color-label: #313131;
+    --color-label-inv: #eaeaea; 
+    --color-label-card: #000; 
 }
 
-body {margin: 0; background: var(--primary-background, #f1f1f1); min-width: 1500px;}
+body {margin: 0; background: var(--primary-background, #e5e5e5); min-width: 1500px;}
 
 
 .h110px {height: 110px;}
+.product-list-minicard-height {height: 100px;}
+.product-list-minicard-height span {color: var(--color-label-card, #000) !important;}
+
+.itens-class    {width: 150px; border: 1px solid var(--color-border, #bdbdbd); padding: 15px; border-radius: 14px;}
 .product-class  {width: 170px;}
 .category-class {width: 200px; border-top-right-radius: 30px; border-top-left-radius: 30px;}
+.subcategory-class {width: 100px; display: flex; align-items: center;}
+
+.container-subcategory {height: 166px !important; margin: 10px !important;}
+
+.m10 {margin: 10px !important;}
 
 .disprow {display: flex; flex-direction: row;}
 .dispcol {display: flex; flex-direction: column;}
@@ -23,6 +35,20 @@ body {margin: 0; background: var(--primary-background, #f1f1f1); min-width: 1500
 
 .jc-center {justify-content: center;}
 .ai-c      {align-items: center;}
+
+.genip {font-family:     "Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
+        font-weight:      180;
+        font-size:        calc(var(--font-size-label,15px) - 1px);
+        color:            #000;
+        background-color: transparent;
+        border-radius:    0.3vw;
+        box-shadow:       0 0 0 .05vw rgba(160, 177, 184, 0.075);
+        padding:          2.5px;
+        transition:       .2s;
+      }
+  
+.genip:disabled {border-color: rgba(118, 118, 118, 0.3); color: var(--color-input-disab, #6b6b6b); background-color: #a1a1a170;}
+
 
 ::-webkit-scrollbar {
   width: 12px;
