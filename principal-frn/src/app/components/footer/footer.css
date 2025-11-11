@@ -1,7 +1,7 @@
 .icon-circle {width: 30px; height: 30px; border-radius: 13px; margin-inline: 10px; background-color: var(--color-primary); display: flex; justify-content: center; align-items: center;}
 .icon-circle img {filter: invert(100%);}
 
-.end-page { height: 280px; margin-top: 60px; width: 83%;}
+.end-page { height: 280px; margin-top: 60px; width: 100%;}
 .nav-endpage {border-bottom: 1px solid #888888; height: 70%;  background-image: url('../../../assets/images/header 2.png'); background-size: cover; background-position: center;}
 
 .nav-ref {display: flex; justify-content: flex-start; width: 65%;}

@@ -1,0 +1,12 @@
+main {padding: 60px;}
+a {text-decoration: none;}
+
+.divisior {border: 1px solid var(--color-border, #bdbdbd);  width: 90%; margin-block: 15px;}
+
+.path {margin-left: 10px; display: flex; gap: 5px;}
+.path ol {flex-wrap: wrap; margin: 0; padding: 0; list-style: none; display: flex; gap: 5px;}
+.path li {list-style-type: none;}
+.path a {color: var(--color-label, #313131); font-family: "Inter"; white-space: nowrap; font-size: 12px; margin-right: 5px;}
+
+.path .overcolor:hover {color: #000000; text-decoration: underline}
+
