@@ -16,6 +16,72 @@
     </div>
 
     <div class="main-container">
-        
+        <div class="title">
+            <h1>Carrinho de Compras</h1>
+        </div>
+
+        <div class="disprow jc-center">
+            <div class="divisior"></div>
+        </div>
+
+        <div class="container-itens">
+            <div class="itens">
+                <app-order-item *ngFor="let orderproduct of orderproducts; let i = index"
+                                 [view]="orderproduct.img" [unid]="orderproduct.unid" [title]="orderproduct.title" [currency]="orderproduct.currency" [price]="orderproduct.price"></app-order-item>
+            </div>
+
+            <div class="checkout">
+                <div class="title">
+                    <h3>Resumo do pedido:</h3>
+                </div>
+
+                <div class="divisior mb5"></div>
+
+                <div class="order">
+                    <span>Total do(s) item(ns):</span>
+
+                    <div class="price">
+                        <span>R$</span>
+                        <span>7894,90</span>
+                    </div>
+                </div>
+
+                <div class="divisior mb5"></div>
+
+                <div class="order">
+                    <span>Envio:</span>
+
+                    <div class="price">
+                        <span>R$</span>
+                        <span>7894,90</span>
+                    </div>
+                </div>
+
+                <div class="divisior mb5"></div>
+
+                <div class="order">
+                    <span>Total do pedido:</span>
+
+                    <div class="price">
+                        <span>R$</span>
+                        <span>7894,90</span>
+                    </div>
+                </div>
+
+                <div class="order alertspan">
+                    <span>Ao solicitar seu pedido, você concorda com nossos Termos de Uso e Política de Privacidade.</span>
+                </div>
+
+                <div class="divisior mb5"></div>
+
+                <div class="mb15">
+                    <a href="">
+                        <div class="control-button">
+                            <span>Finalizar Compra</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </main>

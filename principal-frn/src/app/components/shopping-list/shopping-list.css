@@ -2,6 +2,8 @@
 
 .h100 {height: 100%;}
 
+a  {text-decoration: none;}
+
 .container-up {height: 255px;}
 .container-down { height: 100%; overflow-y: auto; padding: 15px 20px; width: calc(95% - 40px) !important; display: flex; gap: 25px;}
 
@@ -16,7 +18,7 @@
 
 .separador {border-block: 1px solid var(--color-border, #bdbdbd); width: 50%;}
 
-.shoppButton {border-radius: 30px; border: 1px solid var(--color-primary, #352d01); padding: 13px 30px; cursor: pointer; transition: box-shadow 0.3s;}
+.shoppButton {border-radius: 30px; border: 1px solid var(--color-primary, #352d01); padding: 13px 30px; cursor: pointer; transition: box-shadow 0.3s; color: var(--color-label, #313131);}
 .shoppButton:hover {box-shadow: 0px 0px 3px var(--color-primary, #352d01); border-color: #352d01;}
 
 .emphasisButton {background-color: var(--color-primary, #352d01); border: 0; color: #FFF;}
