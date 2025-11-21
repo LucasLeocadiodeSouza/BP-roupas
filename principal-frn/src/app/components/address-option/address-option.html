@@ -1,0 +1,20 @@
+<div class="radio-input" *ngFor="let address of addresses">
+  <label class="label">
+    <input type="radio" id="value-1" [checked]="address.active" name="value-radio">
+
+    <div class="information">
+      <div class="text-username">
+        <span class="text text-name">{{ address.name }}</span>
+      </div>
+      <div class="text-address1">
+        <span class="text">{{ address.address1 }}</span>
+      </div>
+      <div class="text-address2">
+        <span class="text">{{ address.address2 }}</span>
+      </div>
+      <div class="text-number">
+        <span class="text">{{ address.number }}</span>
+      </div>
+    </div>
+  </label>
+</div>

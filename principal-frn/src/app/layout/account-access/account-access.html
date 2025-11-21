@@ -1,0 +1,14 @@
+<app-header></app-header>
+
+<main>
+
+  <div class="container-categ">
+    <app-categories-list [divisions]="barContainer"></app-categories-list>
+  </div>
+
+  <div class="container-list">
+    <router-outlet></router-outlet>
+  </div>
+</main>
+
+<app-footer></app-footer>

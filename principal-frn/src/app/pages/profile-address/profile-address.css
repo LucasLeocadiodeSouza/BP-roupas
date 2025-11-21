@@ -1,0 +1,15 @@
+.container-princ {display: block; padding: 15px 10px;}
+
+a  {text-decoration: none;}
+
+.title h3 {margin-block: 10px 15px; font-family: "Inter"; font-weight: 400;}
+.subtitle {font-family: "Inter"; font-size: 13px;}
+
+.divisior {border: 1px solid var(--color-border, #bdbdbd); width: 90%; margin-block: 15px 30px;}
+
+.container-itens {padding: 30px 10px; gap: 23px; display: flex; flex-direction: column;}
+.container-itenslist {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; gap: 10px;}
+
+.control-buttons {margin-bottom: 30px;}
+.control-button  {border: 1px solid var(--color-border, #bdbdbd); color: var(--color-label, #313131); max-width: 79px; background: var(--color-primary, #292617); color: var(--color-label-inv, #eaeaea); border-radius: 20px; padding: 8px 12px; cursor: pointer; transition: 0.2s ease-out; font-size: 19px;}
+.control-button:hover {border: 1px solid var(--color-primary, #292617);}

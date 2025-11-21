@@ -1,0 +1,24 @@
+<div class="container-princ">
+  <div>
+    <div class="title">
+      <h3>Endereços</h3>
+    </div>
+    <div class="subtitle">
+      <span>Gerenciar seus endereços cadastrados</span>
+    </div>
+  </div>
+
+  <div class="divisior"></div>
+
+  <div class="control-buttons">
+    <a href="/account/new-address">
+      <div class="control-button">
+        <span>Adicionar</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="container-itenslist">
+    <app-address-option [addresses]="addresses"></app-address-option>
+  </div>
+</div>

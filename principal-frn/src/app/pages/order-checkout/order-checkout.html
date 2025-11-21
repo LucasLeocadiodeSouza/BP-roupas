@@ -27,7 +27,13 @@
         <div class="container-itens">
             <div class="itens">
                 <app-order-item *ngFor="let orderproduct of orderproducts; let i = index"
-                                 [view]="orderproduct.img" [unid]="orderproduct.unid" [title]="orderproduct.title" [currency]="orderproduct.currency" [price]="orderproduct.price"></app-order-item>
+                                 [href]="orderproduct.href"
+                                 [view]="orderproduct.img"
+                                 [unid]="orderproduct.unid"
+                                 [title]="orderproduct.title"
+                                 [currency]="orderproduct.currency"
+                                 [price]="orderproduct.price"
+                                 [update]="orderproduct.update"></app-order-item>
             </div>
 
             <div class="checkout">

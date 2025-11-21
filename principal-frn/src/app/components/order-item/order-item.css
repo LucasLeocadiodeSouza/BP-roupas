@@ -2,6 +2,13 @@
 
 main {display: flex; padding: 20px 10px; margin-block: 10px; border: 1px solid var(--color-border, #bdbdbd); border-radius: 10px; position: relative;}
 
+a  {text-decoration: none;}
+
+a:-webkit-any-link {
+    color: var(--color-label, #313131);
+    cursor: pointer;
+}
+
 .view-item  {margin-right: 15px; margin-top: 10px;}
 .about-item {margin-left: 3px; width: 100%;}
 
@@ -18,8 +25,6 @@ main {display: flex; padding: 20px 10px; margin-block: 10px; border: 1px solid v
 .ai-c       {align-items: center;}
 .jc-c       {justify-content: center;}
 .jc-between {justify-content: space-between;}
-
-.container-input img { width: 14px; height: 15px;}
 
 .select-opt {width: fit-content;
              min-width: 103px;
@@ -40,7 +45,7 @@ main {display: flex; padding: 20px 10px; margin-block: 10px; border: 1px solid v
               flex-direction: row;
               text-align: start;
               -webkit-appearance: none;
-              width: 45px;
+              width: 70px;
               height: 88%;
               font-size: 13px;
               color: #222;
@@ -63,4 +68,8 @@ input[type=number]::-webkit-inner-spin-button {
 
 input[type=number] {
     -moz-appearance: textfield; /*Remove setas Firefox*/
+}
+
+.isDisabled {
+    background: transparent;
 }

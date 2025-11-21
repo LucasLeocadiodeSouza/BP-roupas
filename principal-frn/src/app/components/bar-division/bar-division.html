@@ -1,0 +1,20 @@
+<div class="title-component">
+  <h3>{{ title }}</h3>
+</div>
+
+<ol>
+    <li *ngFor="let button of buttons">
+        <a [href]="button.href" class="link">
+            <div class="button-category" (mouseenter)="updateFeaturedSubcategory(button.name)">
+                <div class="name-categ">
+                    <label>{{ button.name }}</label>
+                </div>
+                <div>
+                    <img src="assets/images/arrow-down.png" class="arrow-link">
+                </div>
+            </div>
+        </a>
+    </li>
+</ol>
+
+<div class="divisior"></div>

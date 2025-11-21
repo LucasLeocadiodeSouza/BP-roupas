@@ -5,6 +5,15 @@ import { Product } from './pages/product/product';
 import { OrderCheckout } from './pages/order-checkout/order-checkout';
 import { Main } from './layout/main/main';
 import { Checkout } from './layout/checkout/checkout';
+import { AccountAccess } from './layout/account-access/account-access';
+import { Profile } from './pages/profile/profile';
+import { ProfileList } from './pages/profile-list/profile-list';
+import { ProfileHist } from './pages/profile-hist/profile-hist';
+import { ProfileAddress } from './pages/profile-address/profile-address';
+import { NewAddress } from './components/new-address/new-address';
+import { ProfileOrder } from './pages/profile-order/profile-order';
+import { ProfileOrdersShipped } from './pages/profile-orders-shipped/profile-orders-shipped';
+import { ProfileOrdersDelivered } from './pages/profile-orders-delivered/profile-orders-delivered';
 
 export const routes: Routes = [
     {
@@ -29,13 +38,52 @@ export const routes: Routes = [
         }
         ]
     },
-     {
-         path: 'checkout',
-         component: Checkout,
-         children: [
-            { path: '', 
-              component: OrderCheckout 
-            },
-         ]
-     }
+    {
+        path: 'checkout',
+        component: Checkout,
+        children: [
+           {
+            path: '',
+             component: OrderCheckout
+           }
+        ]
+    },
+    {
+        path: 'account',
+        component: AccountAccess,
+        children: [
+           {
+            path: '',
+            component: Profile
+           },
+           {
+            path: 'your-list',
+            component: ProfileList
+           },
+           {
+            path: 'history',
+            component: ProfileHist
+           },
+           {
+            path: 'address',
+            component: ProfileAddress
+           },
+           {
+            path: 'new-address',
+            component: NewAddress
+           },
+           {
+            path: 'orders',
+            component: ProfileOrder
+           },
+           {
+            path: 'orders-shipped',
+            component: ProfileOrdersShipped
+           },
+           {
+            path: 'orders-delivered',
+            component: ProfileOrdersDelivered
+           }
+        ]
+    }
 ];

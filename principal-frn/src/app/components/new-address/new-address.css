@@ -1,0 +1,43 @@
+.container-princ {display: block; padding: 15px 10px;}
+
+a  {text-decoration: none;}
+
+.title h3 {margin-block: 10px 15px; font-family: "Inter"; font-weight: 400;}
+.subtitle {font-family: "Inter"; font-size: 13px;}
+
+.divisior {border: 1px solid var(--color-border, #bdbdbd); width: 90%; margin-block: 15px 30px;}
+
+.container-settings {display: flex; flex-direction: column;}
+.input-sett {margin-bottom: 20px;}
+
+.input {
+    width: 500px;
+    height: 35px;
+    background-color: #05060f0a;
+    border-radius: .5rem;
+    padding: 0 10px;
+    border: 2px solid transparent;
+    font-size: 1rem;
+    transition: border-color .3s cubic-bezier(.25, .01, .25, 1) 0s, color .3s cubic-bezier(.25, .01, .25, 1) 0s, background .2s cubic-bezier(.25, .01, .25, 1) 0s;
+}
+
+.label {
+  display: block;
+  margin-bottom: .3rem;
+  font-size: .9rem;
+  font-family: "Inter";
+  font-weight: bold;
+  transition: color .3s cubic-bezier(.25,.01,.25,1) 0s;
+}
+
+.input:hover, .input:focus, .input-sett:hover .input {
+  outline: none;
+  border-color: #05060f;
+}
+
+.input-sett:hover .label, .input:focus {
+  color: #05060fc2;
+}
+
+.control-button  {border: 1px solid var(--color-border, #bdbdbd); color: var(--color-label, #313131); max-width: 54px; background: var(--color-primary, #292617); color: var(--color-label-inv, #eaeaea); border-radius: 20px; padding: 10px 15px; cursor: pointer; transition: 0.2s ease-out; font-size: 21px;}
+.control-button:hover {border: 1px solid var(--color-primary, #292617);}

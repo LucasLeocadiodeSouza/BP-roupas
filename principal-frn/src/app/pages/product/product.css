@@ -23,7 +23,7 @@ a  {text-decoration: none;}
 
 .p10 {padding: 10px;}
 .main-image {width: 477px; position: relative; overflow: hidden;}
-  
+
 .product {display: flex; flex-direction: column; width: calc(50% - 30px); gap: 10px;}
 .product label {color: var(--color-label, #313131); font-family: "Inter"; font-size: 15px;}
 

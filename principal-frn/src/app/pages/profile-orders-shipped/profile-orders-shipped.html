@@ -1,0 +1,23 @@
+<div class="container-princ">
+  <div>
+    <div class="title">
+      <h3>Seus Pedidos Enviados</h3>
+    </div>
+    <div class="subtitle">
+      <span>Todos os pedidos em rota para a entrega</span>
+    </div>
+  </div>
+
+  <div class="divisior"></div>
+
+  <div class="container-itenslist">
+    <app-order-item *ngFor="let orderproduct of orderproducts; let i = index"
+                      [href]="orderproduct.href"
+                      [view]="orderproduct.img"
+                      [unid]="orderproduct.unid"
+                      [title]="orderproduct.title"
+                      [currency]="orderproduct.currency"
+                      [price]="orderproduct.price"
+                      [update]="orderproduct.update"></app-order-item>
+  </div>
+</div>

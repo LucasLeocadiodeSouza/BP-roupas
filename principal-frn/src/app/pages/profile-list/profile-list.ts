@@ -1,203 +1,16 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CategoriesList } from "../../components/categories-list/categories-list";
-import { ProductMenu } from "../../components/product-menu/product-menu";
-import { title } from 'process';
+import { MiniCard } from "../../components/mini-card/mini-card";
 
 @Component({
-  selector: 'app-products-list',
-  imports: [CategoriesList, ProductMenu, CommonModule],
-  templateUrl: './products-list.html',
-  styleUrl: './products-list.css'
+  selector: 'app-profile-list',
+  imports: [MiniCard, CommonModule],
+  templateUrl: './profile-list.html',
+  styleUrl: './profile-list.css'
 })
-export class ProductsList {
-  titlemenu = "Camisas";
+export class ProfileList {
 
-  barContainer = [
-    {
-      title: "Categorias",
-      buttons: [
-                {id: 1, name: "Acessórios", href: "#"},
-                {id: 2, name: "Camisas",    href: "#"},
-                {id: 3, name: "Camisetas",  href: "#"},
-                {id: 4, name: "Tênis",      href: "#"},
-                {id: 5, name: "Calças",     href: "#"},
-                {id: 6, name: "Jaquetas",   href: "#"}
-              ]
-    }
-  ];
-
-  cards = [
-    { extclass: "container-subcategory",
-      miniCard: [
-        {src: "assets/images/categories/categ-acessorios.png",
-         extclass: "subcategory-class",
-         href: "/products-list?category=1&subcategory=1"
-        },
-        {src: "assets/images/categories/categ-camisas.png",
-         extclass: "subcategory-class",
-         href: "/products-list?category=1&subcategory=2"
-        },
-        {src: "assets/images/categories/categ-camisetas.png",
-         extclass: "subcategory-class",
-         href: "/products-list?category=1&subcategory=3"
-        },
-        {src: "assets/images/categories/categ-tenis.png",
-         extclass: "subcategory-class",
-         href: "/products-list?category=1&subcategory=4"
-        },
-        {src: "assets/images/categories/categ-calcas.png",
-         extclass: "subcategory-class",
-         href: "/products-list?category=1&subcategory=5"
-        },
-        {src: "assets/images/categories/categ-moletons.png",
-         extclass: "subcategory-class",
-         href: "/products-list?category=1&subcategory=6"
-        }
-      ]
-     },
-    { title: "Em ofertas!",
-      extclass: "m10",
-      src: "assets/images/produto-teste.png",
-      miniCard: [
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "3.700,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "70,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "0,99",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        }
-      ]
-     },
-     { title: "Em Detaque",
-       extclass: "m10",
-       src: "assets/images/produto-teste.png",
-       miniCard: [
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "3.700,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "70,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "0,99",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "product-class",
-         href: "/product?category=1&subcategory=3"
-        }
-      ]
-     }
-    ];
-
-
-  miniCard = [
+  itens = [
         {src: "assets/images/produto-teste.png",
          title: "Fone de Ouvido Headset",
          price: "3.700,25",
@@ -275,7 +88,8 @@ export class ProductsList {
          price: "3.700,25",
          currency: "R$",
          extclass: "itens-class",
-         fullinfo: true
+         fullinfo: true,
+         href: "/product?category=1&subcategory=3"
         },
         {src: "assets/images/produto-teste.png",
          title: "Fone de Ouvido Headset",
