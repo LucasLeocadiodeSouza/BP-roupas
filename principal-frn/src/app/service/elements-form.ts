@@ -27,7 +27,7 @@ export class ElementsForm {
 
       if(isActiveImage){
          newposition = (index - 1) < 0? nodeslenght - 1:index - 1;
-         
+
          let scrollPosition = newposition * widthContainer;
 
          if (currentScroll > maxScroll) scrollPosition = -scrollPosition;

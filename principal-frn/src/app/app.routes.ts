@@ -14,6 +14,8 @@ import { NewAddress } from './components/new-address/new-address';
 import { ProfileOrder } from './pages/profile-order/profile-order';
 import { ProfileOrdersShipped } from './pages/profile-orders-shipped/profile-orders-shipped';
 import { ProfileOrdersDelivered } from './pages/profile-orders-delivered/profile-orders-delivered';
+import { Insert } from './layout/insert/insert';
+import { InsertProduct } from './pages/insert-product/insert-product';
 
 export const routes: Routes = [
     {
@@ -45,6 +47,16 @@ export const routes: Routes = [
            {
             path: '',
              component: OrderCheckout
+           }
+        ]
+    },
+    {
+        path: 'insert',
+        component: Insert,
+        children: [
+           {
+            path: '',
+             component: InsertProduct
            }
         ]
     },

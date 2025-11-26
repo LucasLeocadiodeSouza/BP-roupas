@@ -1,0 +1,138 @@
+<main>
+    <div class="container-prod">
+        <div>
+            <div class="path">
+                <ol>
+                    <li>
+                        <a href="#" class="overcolor">Página Inicial</a>
+                        <span>></span>
+                    </li>
+                    <li>
+                        <a href="/insert" class="overcolor">Cadastro de produtos</a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="container-desc">
+            <div class="images">
+                <div class="submit-buttons">
+                    <a href="/">
+                        <div class="submit-button buy-now">
+                            <span>Add. imagem</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="disprow">
+                  <div class="list-image">
+                      <img *ngFor="let productbanner of productsbanner; let i = index" [src]="productbanner.src">
+                  </div>
+                  <div class="container-img">
+                      <div class="main-image">
+                          <app-banner [banners]="productsbanner"></app-banner>
+                      </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="product">
+                <div class="input-sett">
+                  <label class="label">Nome do Produto:</label>
+                  <input autocomplete="off" class="input" type="text" maxlength="40">
+                </div>
+
+                <div class="input-sett">
+                  <label class="label">Descrição:</label>
+                  <textarea autocomplete="off" class="textarea" maxlength="500"></textarea>
+                </div>
+
+                <div class="input-sett">
+                  <label class="label">Quantidade:</label>
+                  <input autocomplete="off" class="input" type="number">
+                </div>
+
+                <div class="input-sett">
+                  <label class="label">Preço:</label>
+                  <input autocomplete="off" class="input" type="number">
+                </div>
+
+                <div class="disprow jc-center">
+                    <div class="divisior"></div>
+                </div>
+
+                <div class="categories">
+                    <div class="title">
+                        <label>Categoria (*):</label>
+                    </div>
+
+                    <div class="category">
+                      <select #selcategory class="select" (change)="selectCategories($event)">
+                        <option value="0">Selecione uma categoria</option>
+                        <option *ngFor="let option of optionsCategories" [value]="option.id">{{ option.name }}</option>
+                      </select>
+                    </div>
+                </div>
+
+                <div class="subcategories" [ngClass]="{'dnone': selectCategory == '0'}">
+                  <div class="title">
+                        <label>Subcategoria (*):</label>
+                    </div>
+
+                    <div class="subcategory">
+                      <select #selsubcategory class="select" (change)="selectSubCategories($event)">
+                        <option value="0">Selecione uma subcategoria</option>
+                        <option *ngFor="let option of optionsSubCategories" [value]="option.id">{{ option.name }}</option>
+                      </select>
+                    </div>
+                </div>
+
+                <div class="disprow jc-center">
+                    <div class="divisior"></div>
+                </div>
+
+                <div class="especifications">
+                    <div class="title">
+                        <label>Especificações (*):</label>
+                    </div>
+
+                    <div class="especification" [ngClass]="{'dnone': !hasEspecificationSize}">
+                        <label>Tamanho:</label>
+
+                        <div id="especificationsize" class="control-buttons">
+                            <div class="control-button" (click)="selectEspecification($event)" *ngFor="let size of especificationSize">
+                                <span>{{size}}</span>
+                            </div>
+                        </div>
+
+                        <div class="alert">
+                            <span>(*) É preciso informar o tamanho para concluir o Cadastro</span>
+                        </div>
+                    </div>
+
+                    <div class="especification">
+                        <label>Cor:</label>
+
+                        <div id="colors" class="control-buttons">
+                            <div #selcolor class="control-button" (click)="selectEspecification($event)" *ngFor="let color of especificationColor">
+                                <span>{{color}}</span>
+                            </div>
+                        </div>
+
+                        <div class="alert">
+                            <span>(*) É preciso informar o tamanho para concluir a compra</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-buttons">
+                    <a href="/">
+                        <div class="submit-button buy-now">
+                            <span>Cadastrar</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

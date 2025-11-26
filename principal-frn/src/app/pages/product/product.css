@@ -55,8 +55,10 @@ a  {text-decoration: none;}
 .price, .currency {font-family: monospace, Arial, sans-serif; font-size: 23px;}
 .currency {font-size: 14px;}
 
-.control-buttons {display: flex; align-items: center; gap: 10px; flex-direction: row-reverse; margin-inline: 20px;}
-.control-button  {border: 1px solid var(--color-border, #bdbdbd); color: var(--color-label, #313131); border-radius: 20px; padding: 10px 15px; cursor: pointer; transition: 0.2s ease-out; font-size: 21px;}
+.finish-buttons  {display: flex; align-items: center; gap: 10px; flex-direction: row-reverse;}
+.control-buttons {display: grid; align-items: start; gap: 10px; margin-inline: 20px; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;}
+.control-button  {border: 1px solid var(--color-border, #bdbdbd); color: var(--color-label, #313131); border-radius: 20px; padding: 10px 15px; cursor: pointer; transition: 0.2s ease-out; font-size: 21px; display: flex; justify-content: center;}
+
 .control-button:hover {border: 1px solid var(--color-primary, #292617);}
 .buy-now {background: var(--color-primary, #292617); color: var(--color-label-inv, #eaeaea);}
 
