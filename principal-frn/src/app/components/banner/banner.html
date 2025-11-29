@@ -4,10 +4,10 @@
     </div>
 
     <div class="container-banners" #containerBanners>
-        <img *ngFor="let banner of banners; let i = index" [src]="banner.src" [style.height]="banner.height" [style.width]="banner.width" [ngClass]="{'carr-on': i === 0, 'carr-off': i !== 0}">
+        <img *ngFor="let banner of banners; let i = index" [src]="banner.src" [style.height]="banner.height" [style.width]="banner.width" [ngClass]="{'carr-on show-effecty': i === 0, 'carr-off hidden-effecty': i !== 0}">
     </div>
 
     <div class="next-button mov-button" style="top: 40%;" (click)="nextButtonClick()">
-        <img src="assets/icons/arrow-right.png" alt="Carregando">                        
+        <img src="assets/icons/arrow-right.png" alt="Carregando">
     </div>
 </div>

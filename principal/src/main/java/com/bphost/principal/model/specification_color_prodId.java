@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class specification_colorId implements Serializable {
+public class specification_color_prodId implements Serializable {
     @Column(name = "product_id")
     private Integer product_id;
 
@@ -25,8 +25,8 @@ public class specification_colorId implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof specification_colorId)) return false;
-        specification_colorId that = (specification_colorId) o;
+        if (!(o instanceof specification_color_prodId)) return false;
+        specification_color_prodId that = (specification_color_prodId) o;
         return Objects.equals(product_id, that.product_id) &&
                Objects.equals(seq, that.seq);
     }

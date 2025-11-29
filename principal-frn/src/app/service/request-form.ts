@@ -19,16 +19,6 @@ export class RequestForm {
   //   return this.http.post(`${this.apiUrl}/produtos`, produto);
   // }
 
-  // // PUT - Atualizar dados
-  // atualizarProduto(id: number, produto: any): Observable<any> {
-  //   return this.http.put(`${this.apiUrl}/produtos/${id}`, produto);
-  // }
-
-  // // DELETE - Deletar dados
-  // deletarProduto(id: number): Observable<any> {
-  //   return this.http.delete(`${this.apiUrl}/produtos/${id}`);
-  // }
-
   executeRequestGET(path: string, params?: any): Observable<any> {
       let url = `${this.apiUrl}/${path}`;
 

@@ -16,27 +16,35 @@
 
         <div class="container-desc">
             <div class="images">
+                <input type="file" #fileinput id="fileinput" (change)="onFileSelected($event)" accept="image/*" multiple style="display: none;">
                 <div class="submit-buttons">
-                    <a href="/">
-                        <div class="submit-button buy-now">
-                            <span>Add. imagem</span>
-                        </div>
-                    </a>
+                    <div class="submit-button buy-now" (click)="adapterRegisterTempImageProduct()">
+                        <span>Add. imagem</span>
+                    </div>
+
+                    <div class="alert-submit">
+                        <span>* As imagens são expostas na proporção 495x600px</span>
+                    </div>
                 </div>
 
                 <div class="disprow">
                   <div class="list-image">
-                      <img *ngFor="let productbanner of productsbanner; let i = index" [src]="productbanner.src">
+                      <img *ngFor="let productbanner of imageProducts; let i = index" [src]="productbanner.src">
                   </div>
                   <div class="container-img">
                       <div class="main-image">
-                          <app-banner [banners]="productsbanner"></app-banner>
+                          <app-banner [banners]="imageProducts" [hiddenEffect]="true"></app-banner>
                       </div>
                   </div>
                 </div>
             </div>
 
             <div class="product">
+                <div class="input-sett" [style.display]="isChanging? 'block':'none' ">
+                  <label class="label">Código do produto:</label>
+                  <input autocomplete="off" class="input" type="text" id="hproductid" name="hproductid" disabled>
+                </div>
+
                 <div class="input-sett">
                   <label class="label">Nome do Produto:</label>
                   <input autocomplete="off" class="input" type="text" maxlength="40">
@@ -49,7 +57,7 @@
 
                 <div class="input-sett">
                   <label class="label">Quantidade:</label>
-                  <input autocomplete="off" class="input" type="number">
+                  <input autocomplete="off" class="input" type="number" title="Quantidade disponível em estoque do produto citado.">
                 </div>
 
                 <div class="input-sett">
@@ -67,7 +75,7 @@
                     </div>
 
                     <div class="category">
-                      <select #selcategory class="select" (change)="selectCategories($event)">
+                      <select class="select" [(ngModel)]="selectCategory" (ngModelChange)="selectCategories($event)">
                         <option value="0">Selecione uma categoria</option>
                         <option *ngFor="let option of optionsCategories" [value]="option.id">{{ option.name }}</option>
                       </select>

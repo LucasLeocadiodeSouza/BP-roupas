@@ -19,10 +19,10 @@ a  {text-decoration: none;}
 
 .images {display: flex; flex-direction: row; width: calc(50% - 10px);}
 .list-image {width: 85px ; display: flex; flex-direction: column; gap: 15px; max-height: 550px; overflow-x: hidden; overflow-y: auto; border-radius: 15px; border: 1px solid var(--color-border, #bdbdbd); padding: 10px 5px;}
-.list-image img {height: 78px; width: 78px; cursor: pointer;}
+.list-image img {height: 78px; cursor: pointer;}
 
 .p10 {padding: 10px;}
-.main-image {width: 477px; position: relative; overflow: hidden;}
+.main-image {width: 495px; height: 600px; position: relative; overflow: hidden;}
 
 .product {display: flex; flex-direction: column; width: calc(50% - 30px); gap: 10px;}
 .product label {color: var(--color-label, #313131); font-family: "Inter"; font-size: 15px;}

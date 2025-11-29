@@ -14,6 +14,7 @@
 
 body {margin: 0; background: var(--primary-background, #e5e5e5); min-width: 1500px;}
 
+.dnone {display: none;}
 
 .h110px {height: 110px;}
 .product-list-minicard-height {height: 100px;}
@@ -35,6 +36,9 @@ body {margin: 0; background: var(--primary-background, #e5e5e5); min-width: 1500
 
 .jc-center {justify-content: center;}
 .ai-c      {align-items: center;}
+
+.show-effecty   {opacity: 1; visibility: visible;}
+.hidden-effecty {opacity: 0; visibility: hidden; }
 
 .genip {font-family:     "Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
         font-weight:      180;

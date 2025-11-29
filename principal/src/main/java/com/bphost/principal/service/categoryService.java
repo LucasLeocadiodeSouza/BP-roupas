@@ -1,6 +1,7 @@
 package com.bphost.principal.service;
 
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bphost.principal.model.category;
+import com.bphost.principal.model.product;
+import com.bphost.principal.model.subcat_product;
+import com.bphost.principal.model.subcat_productId;
 import com.bphost.principal.model.subcategory;
 import com.bphost.principal.repository.categoryRepo;
+import com.bphost.principal.repository.productRepo;
+import com.bphost.principal.repository.subcat_productRepo;
 import com.bphost.principal.repository.subcategoryRepo;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class categoryService {
@@ -19,6 +27,12 @@ public class categoryService {
 
     @Autowired
     private subcategoryRepo subcategRepo;
+
+    @Autowired
+    private subcat_productRepo subcatprodRepo;
+
+    @Autowired
+    private productRepo prodRepo;
 
     public String[] getClothesSize(){
         String[] list = {"PP","P","M","G","GG","XGG"};
@@ -67,4 +81,29 @@ public class categoryService {
         return subcategories;
     }
 
+
+    @Transactional
+    public void registerSubCategProd(Integer product_id, Integer categ_id, Integer subcateg_seq){
+        product product = prodRepo.findProductById(product_id);
+        if(product == null) throw new RuntimeException("Não encontrado o produto com o Código '" + product_id + "'!");
+
+        category categ = categRepo.findCategById(categ_id);
+        if(categ == null) throw new RuntimeException("Não encontrado a Categoria informada com o Código'" + categ_id + "'!");
+
+        subcategory subcateg = subcategRepo.findSubCategById(categ_id, subcateg_seq);
+        if(subcateg == null) throw new RuntimeException("Não encontrado a Subcategoria informada com o Código'" + subcateg + "'!");
+
+        subcat_product subcategprod = subcatprodRepo.findSubcategProdById(product_id, categ_id, subcateg_seq);
+        if(subcategprod == null) subcategprod = new subcat_product();
+        else return;
+
+        subcat_productId subcategprodId = new subcat_productId();
+        subcategprodId.setProduct_id(product_id);
+        subcategprodId.setCategory_id(categ_id);
+        subcategprodId.setSubcategory_seq(subcateg_seq);
+
+        subcategprod.setId(subcategprodId);
+
+        subcatprodRepo.save(subcategprod);
+    }
 }

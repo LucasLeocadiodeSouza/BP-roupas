@@ -6,7 +6,7 @@ import { Injectable, ViewContainerRef } from '@angular/core';
 export class ElementsForm {
   constructor() {}
 
-  prevCarr(row: ViewContainerRef, containerID: any): void{
+  prevCarr(row: ViewContainerRef, containerID: any, hiddenEffect: boolean = false): void{
     const rowDOM = row.element.nativeElement;
 
     const widthContainer = rowDOM.offsetWidth;
@@ -30,11 +30,11 @@ export class ElementsForm {
 
          let scrollPosition = newposition * widthContainer;
 
-         if (currentScroll > maxScroll) scrollPosition = -scrollPosition;
+         if (currentScroll > maxScroll) scrollPosition = -scrollPosition; //lllll - nao da para usar por conta de cair no scrollTo com o valor negativo ele voltara para a posicao 0!
 
          rowDOM.scrollTo({
              left: scrollPosition,
-             behavior: "smooth"
+             behavior: hiddenEffect? "auto":"smooth"
          });
       }
 
@@ -46,11 +46,15 @@ export class ElementsForm {
       if (node.nodeType === Node.COMMENT_NODE) return;
 
       if(index === newposition){
-         node.classList.remove("carr-off", "carr-on");
+         node.classList.remove("carr-off", "carr-on", "show-effecty", "hidden-effecty", "dnone");
          node.classList.add("carr-on");
+
+         if(hiddenEffect) node.classList.add("show-effecty");
       }else{
-         node.classList.remove("carr-off", "carr-on");
+         node.classList.remove("carr-off", "carr-on", "show-effecty", "hidden-effecty", "dnone");
          node.classList.add("carr-off");
+
+         if(hiddenEffect) node.classList.add("hidden-effecty", "dnone");
       }
 
       index++;
@@ -58,7 +62,7 @@ export class ElementsForm {
   }
 
 
-  nextCarr(row: ViewContainerRef, containerID: any): void{
+  nextCarr(row: ViewContainerRef, containerID: any, hiddenEffect: boolean = false): void{
     const rowDOM = row.element.nativeElement;
 
     const widthContainer = rowDOM.offsetWidth;
@@ -83,7 +87,7 @@ export class ElementsForm {
          const scrollPosition = newposition * widthContainer;
          rowDOM.scrollTo({
              left: scrollPosition,
-             behavior: "smooth"
+             behavior: hiddenEffect? "auto":"smooth"
          });
       }
 
@@ -95,11 +99,15 @@ export class ElementsForm {
       if (node.nodeType === Node.COMMENT_NODE) return;
 
       if(index === newposition){
-         node.classList.remove("carr-off", "carr-on");
+         node.classList.remove("carr-off", "carr-on", "show-effecty", "hidden-effecty", "dnone");
          node.classList.add("carr-on");
+
+         if(hiddenEffect) node.classList.add("show-effecty");
       }else{
-         node.classList.remove("carr-off", "carr-on");
+         node.classList.remove("carr-off", "carr-on", "show-effecty", "hidden-effecty", "dnone");
          node.classList.add("carr-off");
+
+         if(hiddenEffect) node.classList.add("hidden-effecty", "dnone");
       }
 
       index++;

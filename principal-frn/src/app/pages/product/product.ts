@@ -20,7 +20,7 @@ export class Product {
 
   selectEspecification(event: any) {
     const element = event.target.closest('.control-button');
-    
+
     const selects = element.parentNode.querySelectorAll('.selected');
     selects.forEach((sel: any) => {
       sel.classList.remove("selected");
@@ -31,22 +31,28 @@ export class Product {
 
   banners = [
     {src: "assets/images/produto-teste.png",
-     height: "577px",
+     height: "600px",
+     width: "495px"
     },
-    {src: "assets/images/produto-teste.png",
-     height: "577px"
+    {src: "assets/images/arrow-down.png",
+     height: "600px",
+     width: "495px"
     },
-    {src: "assets/images/produto-teste.png",
-     height: "577px"
+    {src: "assets/images/icon_instagram.png",
+     height: "600px",
+     width: "495px"
     },
-    {src: "assets/images/produto-teste.png",
-     height: "577px"
+    {src: "assets/images/header 2.png",
+     height: "600px",
+     width: "495px"
     },
-    {src: "assets/images/produto-teste.png",
-     height: "577px"
+    {src: "assets/images/shopp-icon.png",
+     height: "600px",
+     width: "495px"
     },
-    {src: "assets/images/produto-teste.png",
-     height: "577px"
+    {src: "assets/images/shopping-icon.png",
+     height: "600px",
+     width: "495px"
     },
   ]
 
