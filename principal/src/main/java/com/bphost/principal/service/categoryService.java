@@ -1,23 +1,24 @@
 package com.bphost.principal.service;
 
-import java.lang.reflect.Array;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.bphost.principal.model.category;
 import com.bphost.principal.model.product;
+import com.bphost.principal.model.specification_color;
+import com.bphost.principal.model.specification_prod;
+import com.bphost.principal.model.specification_prodId;
+import com.bphost.principal.model.specification_size;
 import com.bphost.principal.model.subcat_product;
 import com.bphost.principal.model.subcat_productId;
 import com.bphost.principal.model.subcategory;
 import com.bphost.principal.repository.categoryRepo;
 import com.bphost.principal.repository.productRepo;
+import com.bphost.principal.repository.specification_colorRepo;
+import com.bphost.principal.repository.specification_prodRepo;
+import com.bphost.principal.repository.specification_sizeRepo;
 import com.bphost.principal.repository.subcat_productRepo;
 import com.bphost.principal.repository.subcategoryRepo;
-
 import jakarta.transaction.Transactional;
 
 @Service
@@ -34,35 +35,25 @@ public class categoryService {
     @Autowired
     private productRepo prodRepo;
 
-    public String[] getClothesSize(){
-        String[] list = {"PP","P","M","G","GG","XGG"};
-        return list;
+    @Autowired
+    private specification_colorRepo speccolorRepo;
+
+    @Autowired
+    private specification_sizeRepo specsizeRepo;
+
+    @Autowired
+    private specification_prodRepo specprodRepo;
+
+
+
+    public List<specification_color> getColorsOption(){
+        List<specification_color> colors = speccolorRepo.findAll();
+        return colors;
     }
 
-    public String[] getPantsSize(){
-        String[] list = {"30","32","34","36","38","40","42","44","46","48"};
-        return list;
-    }
-
-    public String[] getTennisSize(){
-        String[] list = {"36","37","38","39","40","41","42","43","44","45"};
-        return list;
-    }
-
-    public String[] getColorsOption(){
-        String[] list = {"Preto","Branco","Vermelho","Cinza","Verde"};
-        return list;
-    }
-
-    public String[] getEspecificationSize(Integer categ_id){
-        switch (categ_id) {
-            case 2:
-            case 3:
-            case 6: return getClothesSize();
-            case 4: return getTennisSize();
-            case 5: return getPantsSize();
-            default: return null;
-        }
+    public List<specification_size> getSpecificationSize(Integer categ_id){
+        List<specification_size> sizes = specsizeRepo.findAllSizeByCategoryID(categ_id);
+        return sizes;
     }
     
     public List<category> findAllCategoriesActives(){
@@ -105,5 +96,28 @@ public class categoryService {
         subcategprod.setId(subcategprodId);
 
         subcatprodRepo.save(subcategprod);
+    }
+
+    @Transactional
+    public void registerProductSize(Integer product_id, Integer size_id, Integer color_id, Integer storage){
+        product product = prodRepo.findProductById(product_id);
+        if(product == null) throw new RuntimeException("Não encontrado o produto com o Código '" + product_id + "'!");
+
+        specification_size size = specsizeRepo.findSizeById(size_id);
+        if(size == null)  throw new RuntimeException("Não encontrado o tamanho do produto informado!"); 
+
+        specification_color color = speccolorRepo.findColorById(color_id);
+        if(color == null)  throw new RuntimeException("Não encontrado a cor produto informado!"); 
+
+        specification_prodId specprodId = new specification_prodId();
+        specprodId.setColor_id(color_id);
+        specprodId.setSize_id(size_id);
+        specprodId.setProduct_id(product_id);
+
+        specification_prod specprod = new specification_prod();
+        specprod.setId(specprodId);
+        specprod.setStorage(storage);
+
+        specprodRepo.save(specprod);
     }
 }

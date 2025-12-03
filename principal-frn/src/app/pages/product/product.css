@@ -43,7 +43,7 @@ a  {text-decoration: none;}
 
 .especification  {display: flex;}
 .especification .control-button {padding: 3px 6px; font-size: 16px;}
-.selected {border: 1px solid var(--color-primary, #292617) !important; background: var(--tertiary-background, #eeeeee); font-weight: 700;}
+.selected {border: 1px solid var(--color-primary, #292617) !important; background: #292617; font-weight: 700; color: var(--color-label-inv, #eeeeee) !important;}
 
 .alert {opacity: 0; visibility: hidden; transition: opacity 0.3s;}
 .alert span {color: #b60000; font-size: 12px;}

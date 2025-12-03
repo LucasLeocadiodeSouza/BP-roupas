@@ -1,9 +1,17 @@
 package com.bphost.principal.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.bphost.principal.model.product;
 import com.bphost.principal.model.product_img;
 import com.bphost.principal.model.product_imgId;
@@ -19,24 +27,40 @@ public class productService {
     @Autowired
     private product_imgRepo prodImgRepo;
 
+    @Autowired
+    private categoryService categservice;
+
+    public static String uploadDirectory = System.getProperty("user.dir") + "/uploadImage/products";
+    public static String tempDirectory = System.getProperty("user.dir") + "/uploadImage/temp";
+
     @Transactional
-    public void registerImage(String image, Integer product_id){
+    public void registerImage(MultipartFile image, Integer product_id) throws IOException{
        product product = prodRepo.findProductById(product_id);
        if(product == null) throw new RuntimeException("Não encontrado o produto com o Código '" + product_id + "'!");
     
        Integer seqimg = prodImgRepo.findMaxSeqByProductId(product_id);
        if(seqimg == null) seqimg = 0;
+
+        seqimg = seqimg + 1;
+
+        String original = Objects.requireNonNull(image.getOriginalFilename());
+        String ext = original.substring(original.lastIndexOf("."));
+
+        String newName = "product_" + product.getId() + "_" + seqimg + ext;
+
+        Path fileNameAndPath = Paths.get(uploadDirectory, newName);
+        Files.write(fileNameAndPath, image.getBytes());
+
+       product_img prod_image = new product_img();
+       prod_image.setProduct(product);
+       prod_image.setSrc(newName);
+       prod_image.setId(new product_imgId(product_id, seqimg));
     
-       product_img imagemimovel = new product_img();
-       imagemimovel.setProduct(product);
-       imagemimovel.setSrc(image);
-       imagemimovel.setId(new product_imgId(seqimg + 1, product_id));
-    
-       prodImgRepo.save(imagemimovel);
+       prodImgRepo.save(prod_image);
     }
 
     @Transactional
-    public void registerProduct(Integer id, String name, String description, BigDecimal price){
+    public Integer registerProduct(Integer id, String name, String description, BigDecimal price){
         product product = prodRepo.findProductById(id);
         if(product == null) product = new product();
         
@@ -50,5 +74,34 @@ public class productService {
         product.setActive(true);
 
         prodRepo.save(product);
+
+        return product.getId();
+    }
+
+    @Transactional
+    public void adapterRegisterProduct(Integer         id, 
+                                       String          name, 
+                                       String          description, 
+                                       BigDecimal      price, 
+                                       Integer         category_id, 
+                                       Integer         subcategory_seq, 
+                                       Integer         color_id, 
+                                       Integer[]       size_id, 
+                                       Integer         storage, 
+                                       MultipartFile[] images) throws IOException{
+
+        if(images == null || images.length < 3) throw new RuntimeException("Deve ser anexado pelo menos 3 imagens do produto!");
+        if(images.length > 7) throw new RuntimeException("Limite de anexos ao produto atingido! Limite: 6");
+
+        for (Integer size : size_id) {
+            Integer prodId = registerProduct(id, name, description, price);
+    
+            categservice.registerSubCategProd(prodId, category_id, subcategory_seq);
+            categservice.registerProductSize(prodId, size, color_id, storage);
+    
+            for (MultipartFile image : images) {
+                registerImage(image, prodId);
+            }
+        }
     }
 }

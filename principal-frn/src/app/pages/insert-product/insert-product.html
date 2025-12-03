@@ -29,40 +29,40 @@
 
                 <div class="disprow">
                   <div class="list-image">
-                      <img *ngFor="let productbanner of imageProducts; let i = index" [src]="productbanner.src">
+                      <img *ngFor="let productbanner of imageTempProducts; let i = index" [src]="productbanner.src">
                   </div>
                   <div class="container-img">
                       <div class="main-image">
-                          <app-banner [banners]="imageProducts" [hiddenEffect]="true"></app-banner>
+                          <app-banner [banners]="imageTempProducts" [hiddenEffect]="true"></app-banner>
                       </div>
                   </div>
                 </div>
             </div>
 
             <div class="product">
-                <div class="input-sett" [style.display]="isChanging? 'block':'none' ">
+                <div class="input-sett" [style.display]="isChanging? 'block':'none'">
                   <label class="label">Código do produto:</label>
-                  <input autocomplete="off" class="input" type="text" id="hproductid" name="hproductid" disabled>
+                  <input autocomplete="off" class="input" type="text" [(ngModel)]="productId" disabled>
                 </div>
 
                 <div class="input-sett">
                   <label class="label">Nome do Produto:</label>
-                  <input autocomplete="off" class="input" type="text" maxlength="40">
+                  <input autocomplete="off" class="input" type="text" maxlength="40" [(ngModel)]="productName">
                 </div>
 
                 <div class="input-sett">
                   <label class="label">Descrição:</label>
-                  <textarea autocomplete="off" class="textarea" maxlength="500"></textarea>
+                  <textarea autocomplete="off" class="textarea" maxlength="500" [(ngModel)]="productDescription"></textarea>
                 </div>
 
                 <div class="input-sett">
                   <label class="label">Quantidade:</label>
-                  <input autocomplete="off" class="input" type="number" title="Quantidade disponível em estoque do produto citado.">
+                  <input autocomplete="off" class="input" type="number" title="Quantidade disponível em estoque do produto citado." [(ngModel)]="productStorage">
                 </div>
 
                 <div class="input-sett">
                   <label class="label">Preço:</label>
-                  <input autocomplete="off" class="input" type="number">
+                  <input autocomplete="off" class="input" type="number" [(ngModel)]="productPrice">
                 </div>
 
                 <div class="disprow jc-center">
@@ -79,19 +79,28 @@
                         <option value="0">Selecione uma categoria</option>
                         <option *ngFor="let option of optionsCategories" [value]="option.id">{{ option.name }}</option>
                       </select>
+
+                      <div class="alert" [ngClass]="{'alert-active': selectCategory == '0'}">
+                          <span>(*) É preciso informar a categoria do produto para concluir o Cadastro</span>
+                      </div>
                     </div>
+
                 </div>
 
                 <div class="subcategories" [ngClass]="{'dnone': selectCategory == '0'}">
-                  <div class="title">
+                    <div class="title">
                         <label>Subcategoria (*):</label>
                     </div>
 
                     <div class="subcategory">
-                      <select #selsubcategory class="select" (change)="selectSubCategories($event)">
+                      <select class="select" (change)="selectSubCategories($event)">
                         <option value="0">Selecione uma subcategoria</option>
-                        <option *ngFor="let option of optionsSubCategories" [value]="option.id">{{ option.name }}</option>
+                        <option *ngFor="let option of optionsSubCategories" [value]="option.id.seq">{{ option.name }}</option>
                       </select>
+
+                      <div class="alert" [ngClass]="{'alert-active': selectSubCategory == '0'}">
+                          <span>(*) É preciso informar a subcategoria do produto para concluir o Cadastro</span>
+                      </div>
                     </div>
                 </div>
 
@@ -104,12 +113,12 @@
                         <label>Especificações (*):</label>
                     </div>
 
-                    <div class="especification" [ngClass]="{'dnone': !hasEspecificationSize}">
+                    <div class="especification" [ngClass]="{'dnone': !hasSpecificationSize}">
                         <label>Tamanho:</label>
 
-                        <div id="especificationsize" class="control-buttons">
-                            <div class="control-button" (click)="selectEspecification($event)" *ngFor="let size of especificationSize">
-                                <span>{{size}}</span>
+                        <div #divSpecificationSize class="control-buttons">
+                            <div class="control-button" [id]="'specsize#' + specsize.id" (click)="selectSpecificationSize($event)" *ngFor="let specsize of specificationSize">
+                                <span>{{specsize.size}}</span>
                             </div>
                         </div>
 
@@ -121,9 +130,9 @@
                     <div class="especification">
                         <label>Cor:</label>
 
-                        <div id="colors" class="control-buttons">
-                            <div #selcolor class="control-button" (click)="selectEspecification($event)" *ngFor="let color of especificationColor">
-                                <span>{{color}}</span>
+                        <div #divSpecificationColors class="control-buttons">
+                            <div class="control-button" [id]="'speccolor#' + speccolor.id" (click)="selectSpecification($event)" *ngFor="let speccolor of specificationColor">
+                                <span>{{speccolor.color}}</span>
                             </div>
                         </div>
 
@@ -134,11 +143,9 @@
                 </div>
 
                 <div class="submit-buttons">
-                    <a href="/">
-                        <div class="submit-button buy-now">
-                            <span>Cadastrar</span>
-                        </div>
-                    </a>
+                    <div class="submit-button buy-now" (click)="registerProduct()">
+                        <span>Cadastrar</span>
+                    </div>
                 </div>
             </div>
         </div>

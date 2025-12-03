@@ -13,10 +13,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "specification_size_prod")
-public class specification_size_prod {
+@Table(name = "specification_prod")
+public class specification_prod {
     @EmbeddedId
-    private specification_sizeId id;
+    private specification_prodId id;
 
     private Integer storage;
 }

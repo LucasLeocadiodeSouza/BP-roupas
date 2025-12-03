@@ -5,34 +5,34 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Embeddable
-public class specification_color_prodId implements Serializable {
+public class specification_prodId implements Serializable{
     @Column(name = "product_id")
     private Integer product_id;
 
-    @Column(name = "seq")
-    private Integer seq;
+    @Column(name = "size_id")
+    private Integer size_id;
+
+    @Column(name = "color_id")
+    private Integer color_id;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof specification_color_prodId)) return false;
-        specification_color_prodId that = (specification_color_prodId) o;
+        if (!(o instanceof specification_prodId)) return false;
+        specification_prodId that = (specification_prodId) o;
         return Objects.equals(product_id, that.product_id) &&
-               Objects.equals(seq, that.seq);
+               Objects.equals(size_id, that.size_id)     &&
+               Objects.equals(color_id, that.color_id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(product_id, seq);
+        return Objects.hash(product_id, size_id, color_id);
     }
 }

@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
+
+import com.bphost.principal.model.specification_color;
+import com.bphost.principal.model.specification_size;
 import com.bphost.principal.service.categoryService;
 import com.bphost.principal.service.productService;
 
@@ -79,41 +82,20 @@ public class genController {
         }
     }
 
-    @PostMapping(value = "/registerImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> registerImage(@RequestParam(value = "product_id", required = false) Integer product_id,
-                                           @RequestParam(value = "image", required = false) MultipartFile image,
-                                            HttpServletRequest request) throws IOException{
-        try {
-            Path fileNameAndPath = Paths.get(uploadDirectory, image.getOriginalFilename());
-            Files.write(fileNameAndPath, image.getBytes());
-
-            prodService.registerImage(image.getOriginalFilename(), product_id);
-
-            Map<String, String> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Image uploaded successfully");
-
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-            
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro interno ao cadastrar Imagem do Produto: " + e.getMessage());
-        }
-    }
-
-    @PostMapping(value = "/registerProduct")
-    public ResponseEntity<?> registerProduct(@RequestParam(value = "product_id", required = false) Integer product_id,
-                                             @RequestParam(value = "name", required = false) String name,
-                                             @RequestParam(value = "description", required = false) String description,
-                                             @RequestParam(value = "price", required = false) BigDecimal price,
-                                             @RequestParam(value = "category_id", required = false) Integer category_id,
+    @PostMapping(value = "/registerProduct", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> registerProduct(@RequestParam(value = "product_id", required = false)      Integer product_id,
+                                             @RequestParam(value = "name", required = false)            String name,
+                                             @RequestParam(value = "description", required = false)     String description,
+                                             @RequestParam(value = "price", required = false)           BigDecimal price,
+                                             @RequestParam(value = "category_id", required = false)     Integer category_id,
                                              @RequestParam(value = "subcategory_seq", required = false) Integer subcategory_seq,
+                                             @RequestParam(value = "color_id", required = false)        Integer color_id,
+                                             @RequestParam(value = "size_id[]", required = false)       Integer[] size_id,
+                                             @RequestParam(value = "storage", required = false)         Integer storage,
+                                             @RequestParam(value = "images[]", required = false)        MultipartFile[] images,
                                              HttpServletRequest request) throws IOException{
         try {
-            prodService.registerProduct(product_id, uploadDirectory, tempDirectory, null);
-
-            categservice.registerSubCategProd(product_id, category_id, subcategory_seq);
+            prodService.adapterRegisterProduct(product_id, name, description, price, category_id, subcategory_seq, color_id, size_id, storage, images);
 
             Map<String, String> response = new HashMap<>();
             response.put("status", "success");
@@ -122,20 +104,19 @@ public class genController {
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
-            
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro interno ao cadastrar Imagem do Produto: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Erro interno ao cadastrar Produto: " + e.getMessage());
         }
     }
 
-    @GetMapping("/getEspecificationColor")
-    public String[] getEspecificationColor(){
+    @GetMapping("/getSpecificationColor")
+    public List<specification_color> getSpecificationColor(){
         return categservice.getColorsOption();
     }
 
-    @GetMapping("/getEspecificationSize")
-    public String[] getEspecificationSize(@RequestParam(value = "categ_id", required = false) Integer categ_id){
-        return categservice.getEspecificationSize(categ_id);
+    @GetMapping("/getSpecificationSize")
+    public List<specification_size> getSpecificationSize(@RequestParam(value = "categ_id", required = false) Integer categ_id){
+        return categservice.getSpecificationSize(categ_id);
     }
 
     @GetMapping("/findAllCategoriesActive")
