@@ -32,7 +32,7 @@ export class ProductCardRow implements AfterViewInit   {
     if(this.isOverflowVisible(container)) {
       prevbutton.classList.remove("dnone");
       nextbutton.classList.remove("dnone");
-      
+
       prevbutton.classList.add("dflex");
       nextbutton.classList.add("dflex");
     }else {

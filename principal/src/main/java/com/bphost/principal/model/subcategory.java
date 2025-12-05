@@ -32,4 +32,6 @@ public class subcategory {
 
     @Column(columnDefinition = "TINYINT(1)")
     private Boolean active;
+
+    private String image;
 }

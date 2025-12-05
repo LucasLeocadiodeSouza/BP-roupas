@@ -2,16 +2,12 @@ package com.bphost.principal.controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -24,12 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
-
+import com.bphost.principal.model.category;
+import com.bphost.principal.model.categoryCardDTO;
+import com.bphost.principal.model.productCardDTO;
 import com.bphost.principal.model.specification_color;
 import com.bphost.principal.model.specification_size;
 import com.bphost.principal.service.categoryService;
 import com.bphost.principal.service.productService;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -42,8 +39,10 @@ public class genController {
     @Autowired
     private productService prodService;
 
-    public static String uploadDirectory = System.getProperty("user.dir") + "/uploadImage/products";
-    public static String tempDirectory = System.getProperty("user.dir") + "/uploadImage/temp";
+    public static String uploadDirectory      = System.getProperty("user.dir") + "/uploadImage/products";
+    public static String categoryDirectory    = System.getProperty("user.dir") + "/uploadImage/categories";
+    public static String subcategoryDirectory = System.getProperty("user.dir") + "/uploadImage/categories/subcategories";
+    public static String tempDirectory        = System.getProperty("user.dir") + "/uploadImage/temp";
 
 
     @PostMapping(value = "/registerTempImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -66,10 +65,58 @@ public class genController {
         }
     }
 
+    @GetMapping("/product/{filename}")
+    public ResponseEntity<Resource> getProdImage(@PathVariable String filename) {
+        try {
+            Path filePath = Paths.get(uploadDirectory).resolve(filename);
+            Resource resource = new UrlResource(filePath.toUri());
+            
+            if (resource.exists() && resource.isReadable()) {
+                return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/temp/{filename}")
     public ResponseEntity<Resource> getTempImage(@PathVariable String filename) {
         try {
             Path filePath = Paths.get(tempDirectory).resolve(filename);
+            Resource resource = new UrlResource(filePath.toUri());
+            
+            if (resource.exists() && resource.isReadable()) {
+                return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/categoryImg/{filename}")
+    public ResponseEntity<Resource> getCategoryImage(@PathVariable String filename) {
+        try {
+            Path filePath = Paths.get(categoryDirectory).resolve(filename);
+            Resource resource = new UrlResource(filePath.toUri());
+            
+            if (resource.exists() && resource.isReadable()) {
+                return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/subcategoryImg/{filename}")
+    public ResponseEntity<Resource> getSubCategoryImage(@PathVariable String filename) {
+        try {
+            Path filePath = Paths.get(subcategoryDirectory).resolve(filename);
             Resource resource = new UrlResource(filePath.toUri());
             
             if (resource.exists() && resource.isReadable()) {
@@ -115,17 +162,56 @@ public class genController {
     }
 
     @GetMapping("/getSpecificationSize")
-    public List<specification_size> getSpecificationSize(@RequestParam(value = "categ_id", required = false) Integer categ_id){
-        return categservice.getSpecificationSize(categ_id);
+    public List<specification_size> getSpecificationSize(@RequestParam(value = "category_id", required = false) Integer category_id){
+        return categservice.getSpecificationSize(category_id);
     }
 
     @GetMapping("/findAllCategoriesActive")
-    public List<?> findAllCategoriesActive(){
+    public List<category> findAllCategoriesActive(){
         return categservice.findAllCategoriesActives();
     }
 
+    @GetMapping("/getSubCategoryById")
+    public categoryCardDTO getSubCategoryById(@RequestParam(value = "category_id", required = false) Integer category_id,
+                                       @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
+        return categservice.getSubCategoryById(category_id, subcategory_id);
+    }
+
     @GetMapping("/findAllSubcategoriesByCategory")
-    public List<?> findAllSubcategoriesByCategory(@RequestParam(value = "categ_id", required = false) Integer categ_id){
-        return categservice.findAllSubcategoriesByCategory(categ_id);
+    public List<?> findAllSubcategoriesByCategory(@RequestParam(value = "category_id", required = false) Integer category_id){
+        return categservice.findAllSubcategoriesByCategory(category_id);
+    }
+
+    @GetMapping("/getProductCardByCategoryId")
+    public List<productCardDTO> getProductCardByCategoryId(@RequestParam(value = "category_id", required = false) Integer category_id,
+                                                           @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id,
+                                                           @RequestParam(value = "page", required = false) Integer page){
+        return prodService.getProductCardByCategoryId(category_id, subcategory_id, page);
+    }
+
+    @GetMapping("/getBestSellingProducts")
+    public List<productCardDTO> getBestSellingProducts(@RequestParam(value = "category_id", required = false) Integer category_id,
+                                                       @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
+        return prodService.getBestSellingProducts(category_id, subcategory_id);
+    }
+
+    @GetMapping("/getNewDiscovery")
+    public List<productCardDTO> getNewDiscovery(){
+        return prodService.getNewDiscovery();
+    }
+
+    @GetMapping("/getBestRatedDeals")
+    public List<productCardDTO> getBestRatedDeals(){
+        return prodService.getBestRatedDeals();
+    }
+
+    @GetMapping("/getHouseRecommendations")
+    public List<productCardDTO> getHouseRecommendations(){
+        return prodService.getHouseRecommendations();
+    }
+
+    @GetMapping("/findAllActivesSubcategories")
+    public List<categoryCardDTO> findAllActivesSubcategories(@RequestParam(value = "category_id", required = false) Integer category_id){
+        return categservice.findAllActivesSubcategories(category_id);
     }
 }

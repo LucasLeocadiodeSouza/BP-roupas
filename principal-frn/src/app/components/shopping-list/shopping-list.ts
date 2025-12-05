@@ -20,35 +20,35 @@ export class ShoppingList {
         title: "Fone de Ouvido Headset",
         price: "25,99",
         currency: "R$",
-        extclass: "h110px",
+        extclass: "product-list-minicard-height",
         href: "http://localhost:4200/product"
       },
       {src: "assets/images/produto-teste.png",
         title: "Fone de Ouvido Headset",
         price: "257,90",
         currency: "R$",
-        extclass: "h110px",
+        extclass: "product-list-minicard-height",
         href: "http://localhost:4200/product"
       },
       {src: "assets/images/produto-teste.png",
         title: "Fone de Ouvido Headset",
         price: "785,25",
         currency: "R$",
-        extclass: "h110px",
+        extclass: "product-list-minicard-height",
         href: "http://localhost:4200/product"
       },
       {src: "assets/images/produto-teste.png",
         title: "Fone de Ouvido Headset",
         price: "1.500,25",
         currency: "R$",
-        extclass: "h110px",
+        extclass: "product-list-minicard-height",
         href: "http://localhost:4200/product"
       }
     ];
 
     deleteProductInCart(element: HTMLElement): void{
       element.remove();
-      
+
       const containerProduct = this.produtsLists.element.nativeElement;
 
       if(containerProduct.childNodes.length <= 1) containerProduct.remove();

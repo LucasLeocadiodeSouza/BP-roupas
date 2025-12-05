@@ -10,14 +10,18 @@
         </div>
 
         <div class="container-itenslist">
-            <app-mini-card *ngFor="let item of itens; let i = index"
-                                 [title]="item.title" 
-                                 [srcImages]="item.src" 
-                                 [price]="item.price" 
+            <app-mini-card *ngFor="let item of productCardList; let i = index"
+                                 [title]="item.title"
+                                 [srcImages]="item.src"
+                                 [price]="item.price"
                                  [currency]="item.currency"
                                  [extclass]="item.extclass"
-                                 [href]="item.href" 
+                                 [href]="item.href"
                                  [fullinfo]="item.fullinfo"></app-mini-card>
+        </div>
+
+        <div class="alert" [ngClass]="{'alert-active': endPage}">
+            <span>"Você chegou ao final da página"</span>
         </div>
 
         <div class="control-buttons">
@@ -25,7 +29,7 @@
                 <span>Voltar ao Inicio</span>
             </div>
 
-            <div class="control-button">
+            <div class="control-button" (click)="loadProductsList()">
                 <span>Carregar mais produtos</span>
             </div>
         </div>

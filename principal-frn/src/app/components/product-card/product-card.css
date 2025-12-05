@@ -1,4 +1,4 @@
-.container-card {width: 330px; height: 300px; margin: 10px 30px; background-color: var(--tertiary-background, #eeeeee); overflow: hidden; }
+.container-card {width: 330px; margin: 10px 30px; background-color: var(--tertiary-background, #eeeeee); overflow: hidden; }
 
 .container {margin: 5px 10px;}
 

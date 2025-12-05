@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bphost.principal.model.product;
+import com.bphost.principal.model.productCardDTO;
 import com.bphost.principal.model.product_img;
 import com.bphost.principal.model.product_imgId;
+import com.bphost.principal.model.subcat_product;
+import com.bphost.principal.repository.productCardDTORepo;
 import com.bphost.principal.repository.productRepo;
 import com.bphost.principal.repository.product_imgRepo;
+import com.bphost.principal.repository.subcat_productRepo;
+
 import jakarta.transaction.Transactional;
 
 @Service
@@ -29,6 +36,9 @@ public class productService {
 
     @Autowired
     private categoryService categservice;
+
+    @Autowired
+    private productCardDTORepo prodcardrepo;
 
     public static String uploadDirectory = System.getProperty("user.dir") + "/uploadImage/products";
     public static String tempDirectory = System.getProperty("user.dir") + "/uploadImage/temp";
@@ -92,16 +102,41 @@ public class productService {
 
         if(images == null || images.length < 3) throw new RuntimeException("Deve ser anexado pelo menos 3 imagens do produto!");
         if(images.length > 7) throw new RuntimeException("Limite de anexos ao produto atingido! Limite: 6");
+        
+        Integer prodId = registerProduct(id, name, description, price);
+        categservice.registerSubCategProd(prodId, category_id, subcategory_seq);
 
         for (Integer size : size_id) {
-            Integer prodId = registerProduct(id, name, description, price);
-    
-            categservice.registerSubCategProd(prodId, category_id, subcategory_seq);
             categservice.registerProductSize(prodId, size, color_id, storage);
-    
-            for (MultipartFile image : images) {
-                registerImage(image, prodId);
-            }
         }
+
+        for (MultipartFile image : images) {
+            registerImage(image, prodId);
+        }
+    }
+
+    public List<productCardDTO> getProductCardByCategoryId(Integer category_id, Integer subcategory_id, Integer page){
+        List<productCardDTO> prodCards = prodcardrepo.findAllProductDTOByCategoryId(category_id, subcategory_id, page);
+        return prodCards;
+    }
+
+    public List<productCardDTO> getBestSellingProducts(Integer category_id, Integer subcategory_id){
+        List<productCardDTO> prodCards = prodcardrepo.getBestSellingProducts(category_id, subcategory_id);
+        return prodCards;
+    }
+
+    public List<productCardDTO> getNewDiscovery(){
+        List<productCardDTO> prodCards = prodcardrepo.getNewDiscovery();
+        return prodCards;
+    }
+
+    public List<productCardDTO> getBestRatedDeals(){
+        List<productCardDTO> prodCards = prodcardrepo.getBestRatedDeals();
+        return prodCards;
+    }
+
+    public List<productCardDTO> getHouseRecommendations(){
+        List<productCardDTO> prodCards = prodcardrepo.getHouseRecommendations();
+        return prodCards;
     }
 }

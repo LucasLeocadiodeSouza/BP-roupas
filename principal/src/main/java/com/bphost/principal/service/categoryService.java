@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.bphost.principal.model.category;
+import com.bphost.principal.model.categoryCardDTO;
 import com.bphost.principal.model.product;
 import com.bphost.principal.model.specification_color;
 import com.bphost.principal.model.specification_prod;
@@ -12,6 +13,7 @@ import com.bphost.principal.model.specification_size;
 import com.bphost.principal.model.subcat_product;
 import com.bphost.principal.model.subcat_productId;
 import com.bphost.principal.model.subcategory;
+import com.bphost.principal.repository.categoryCardDTORepo;
 import com.bphost.principal.repository.categoryRepo;
 import com.bphost.principal.repository.productRepo;
 import com.bphost.principal.repository.specification_colorRepo;
@@ -44,6 +46,8 @@ public class categoryService {
     @Autowired
     private specification_prodRepo specprodRepo;
 
+    @Autowired
+    private categoryCardDTORepo categoryDTORepo;
 
 
     public List<specification_color> getColorsOption(){
@@ -72,6 +76,30 @@ public class categoryService {
         return subcategories;
     }
 
+    public categoryCardDTO getSubCategoryById(Integer categ, Integer subcateg){
+        category category = categRepo.findCategById(categ);
+        if(category == null) return null;
+
+        categoryCardDTO categDTO = new categoryCardDTO();
+
+        categDTO.setCategory_id(category.getId());
+        categDTO.setCategory_name(category.getName());
+
+        subcategory subcategory = subcategRepo.findSubCategById(categ, subcateg);
+        if(subcategory == null) return categDTO;
+
+        categDTO.setSubcategory_name(subcategory.getName());
+        categDTO.setSubcategory_seq(subcategory.getId().getSeq());
+
+        return categDTO;
+    }
+
+    public List<categoryCardDTO> findAllActivesSubcategories(Integer categ){
+        List<categoryCardDTO> categoryDTO = categoryDTORepo.findAllActivesSubcategories(categ);
+        if(categoryDTO == null) return null;
+
+        return categoryDTO;
+    }
 
     @Transactional
     public void registerSubCategProd(Integer product_id, Integer categ_id, Integer subcateg_seq){
