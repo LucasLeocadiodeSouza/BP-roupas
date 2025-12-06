@@ -3,7 +3,7 @@
 .dlegenda {max-height: 22%; width: 100%; font: 24px Arial, sans-serif; font-weight: bold; padding: 15px 20px; font-size: 21px}
 
 .mov-button {border: 1px solid rgb(68, 68, 68); backdrop-filter: blur(6px); border-radius: 20px; padding: 3px; position: absolute; top: 50%; transform: translateY(-50%); transition: 0.2s; z-index: 10; width: 25px; height: 30px; cursor: pointer; background-color: #fafafa87; display: flex; justify-content:center; align-items: center;}
-.mov-button img {width: 14px; height: 23px;}
+.mov-button img {width: 14px; height: 23px; user-select: none;}
 
 .mov-button:hover {width: 27px; height: 42px; .mov-button img {width: 16px; height: 25px;}}
 

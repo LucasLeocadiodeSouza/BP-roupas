@@ -30,7 +30,7 @@ export class ElementsForm {
 
          let scrollPosition = newposition * widthContainer;
 
-         if (currentScroll > maxScroll) scrollPosition = -scrollPosition; //lllll - nao da para usar por conta de cair no scrollTo com o valor negativo ele voltara para a posicao 0!
+         //if (currentScroll > maxScroll) scrollPosition = -scrollPosition; //lllll - nao da para usar por conta de cair no scrollTo com o valor negativo ele voltara para a posicao 0!
 
          rowDOM.scrollTo({
              left: scrollPosition,

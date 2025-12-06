@@ -130,7 +130,7 @@ export class Home {
               href: `/products-list?category_id=${category.id}`
           }));
 
-          this.cards = [...this.cards, {extclass: "container-category", miniCard: categformat }];
+          this.cards = [...this.cards, {extclass: "container-category",  miniCard: categformat }];
         }
 
         this.cdRef.detectChanges();

@@ -6,7 +6,7 @@
 }
 
 .container-banners {height: 100%; width: 100%;  overflow: hidden;  display: flex;}
-.container-banners img {transition: opacity 0.5s;}
+.container-banners img {transition: opacity 0.5s; user-select: none;}
 
 .mov-button {border: 1px solid #44444440;
              backdrop-filter: blur(6px);
@@ -27,7 +27,7 @@
              visibility: hidden;
              opacity: 0;}
 
-.mov-button img {width: 14px; height: 23px;}
+.mov-button img {width: 14px; height: 23px; user-select: none;}
 
 .mov-button:hover {width: 27px; height: 42px;}
 .mov-button:hover img {width: 16px; height: 25px;}

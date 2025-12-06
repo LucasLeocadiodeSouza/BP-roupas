@@ -25,6 +25,9 @@ body {margin: 0; background: var(--primary-background, #e5e5e5); min-width: 1500
 .itens-class    {width: 150px; border: 1px solid var(--color-border, #bdbdbd); padding: 15px; border-radius: 14px;}
 .product-class  {width: 170px;}
 .category-class {width: 200px; border-top-right-radius: 30px; border-top-left-radius: 30px; height: 100% !important;}
+.category-class .desc-prod-card {display: none !important;}
+.category-class .image-card     {height: 100% !important;}
+
 .subcategory-class {width: 100px; display: flex; align-items: center; height: 100% !important;}
 
 .container-subcategory {height: 166px !important; margin: 10px !important;}
