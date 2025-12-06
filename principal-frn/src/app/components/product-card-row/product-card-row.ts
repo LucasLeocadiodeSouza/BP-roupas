@@ -37,7 +37,6 @@ export class ProductCardRow implements AfterViewInit   {
       prevbutton.classList.add("dnone");
       nextbutton.classList.add("dnone");
     }
-
   }
 
   prevButtonClick(): void{
@@ -112,16 +111,22 @@ export class ProductCardRow implements AfterViewInit   {
   }
 
   getPrevFeaturedProduct(childNodes: any[], widthContainer: any){
-    let childrenwidth = this.beforeWidthCarrOn(childNodes);
+    let childrenwidth  = this.beforeWidthCarrOn(childNodes);
 
-    for(let index = 0; childNodes.length > index; index++){
+    for(let index = childNodes.length - 2; index > 0; index--){
       const node = childNodes[index];
       if (node.nodeType === Node.COMMENT_NODE) continue;
 
       childrenwidth = childrenwidth - node.offsetWidth;
 
-      if( childrenwidth >= 0) {
-        const newposition = Math.floor(childrenwidth / widthContainer) * widthContainer;
+      const remainingWidth = this.widthRow(childNodes) - childrenwidth;
+      const sizeByYourself = Math.floor(this.widthRow(childNodes) / widthContainer);
+
+      if( childrenwidth > 0 && (remainingWidth >= widthContainer || sizeByYourself == 1)) {
+        var newposition = 0;
+
+        if(sizeByYourself != 1) newposition = Math.floor(childrenwidth / widthContainer) * widthContainer;
+        else newposition = 0;
 
         this.newCardCarrOnByWidth(childNodes, newposition, false);
 
