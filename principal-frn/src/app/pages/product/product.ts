@@ -1,7 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ViewChild, ViewContainerRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Banner } from "../../components/banner/banner";
 import { MiniCard } from "../../components/mini-card/mini-card";
+import { ActivatedRoute } from '@angular/router';
+import { RequestForm } from '../../service/request-form';
+import { spec } from 'node:test/reporters';
 
 @Component({
   selector: 'app-product',
@@ -10,15 +13,39 @@ import { MiniCard } from "../../components/mini-card/mini-card";
   styleUrl: './product.css'
 })
 export class Product {
-  //@Input() category: any;
-  //@Input() product: any;
-  //@Input() subcategory: any;
+  private request = inject(RequestForm);
 
-  category    = "Camiseta";
-  subcategory = "Oversize";
-  product     = "Camisa oversizer com estampa";
+  constructor(private cdRef: ChangeDetectorRef, private route: ActivatedRoute) {}
 
-  selectEspecification(event: any) {
+  @ViewChild('buttcolor', { read: ViewContainerRef }) buttcolor!: ViewContainerRef;
+
+  category: string    = "";
+  subcategory: string = "";
+  product: string     = "";
+  description: string = "";
+  price: string       = "";
+  active: boolean     = true;
+  currency: string    = "";
+  sales: string       = "";
+  score: string       = "";
+
+  specificationSize:  { id: number; size: string}[] = [];
+  specificationColor: { id: number; color: string; extclass: string}[] = [];
+
+  specificationSizeSelected: string  = "";
+  specificationColorSelected: string = "";
+
+  productCardList: { src:      string;
+                     title:    string;
+                     price:    string;
+                     currency: string;
+                     fullinfo: boolean;
+                     extclass: string;
+                     href:     string }[] = [];
+
+  selectEspecificationSize(event: any) {
+    if(!this.active) return;
+
     const element = event.target.closest('.control-button');
 
     const selects = element.parentNode.querySelectorAll('.selected');
@@ -27,258 +54,223 @@ export class Product {
     });
 
     element.classList.add("selected");
+    this.specificationSizeSelected = element.id;
+
+    this.getSpecificationSizeByProduct();
   }
 
-  banners = [
-    {src: "assets/images/produto-teste.png",
-     height: "600px",
-     width: "495px"
-    },
-    {src: "assets/images/arrow-down.png",
-     height: "600px",
-     width: "495px"
-    },
-    {src: "assets/images/icon_instagram.png",
-     height: "600px",
-     width: "495px"
-    },
-    {src: "assets/images/header 2.png",
-     height: "600px",
-     width: "495px"
-    },
-    {src: "assets/images/shopp-icon.png",
-     height: "600px",
-     width: "495px"
-    },
-    {src: "assets/images/shopping-icon.png",
-     height: "600px",
-     width: "495px"
-    },
-  ]
+  selectEspecificationColor(event: any) {
+    if(!this.active) return;
 
-  title       = "Camiseta Esportiva Masculina Manga Curta Dryline Elite 025392";
-  description = "Camiseta Esportiva Masculina - Elite * Ideal para a prática de esporte e uso diário * Confeccionado em poliéster * Gola careca * Manga curta * Tecnologia dryline, que permite a rápida secagem da peça proporcionando maior conforto e melhor desempenho * Cores neutras que permitem combinações diversas com outras peças e acessórios Composição: 100% Poliéster Marca: Elite Ref: 25392";
-  price       = "49,49";
-  currency    = "R$";
-  sales       = "534";
-  score       = "4.5";
+    const element = event.target.closest('.control-button');
 
-  itens = [
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "3.700,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "70,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "0,99",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "3.700,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "70,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "0,99",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "3.700,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "70,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "0,99",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        }
-      ];
+    if(element.classList.contains("inactive")) return;
+
+    const selects = element.parentNode.querySelectorAll('.selected');
+    selects.forEach((sel: any) => {
+      sel.classList.remove("selected");
+    });
+
+    element.classList.add("selected");
+    this.specificationColorSelected = element.id;
+  }
+
+  banners: { src: string; height: string; width: string }[] = [];
+
+  getTitleSearch(){
+    const paramsurl = this.route.snapshot.root.queryParams;
+
+    this.request.executeRequestGET('api/getSubCategoryById', paramsurl).subscribe({
+      next: (response) => {
+
+        this.category = response.category_name;
+
+        if(response.subcategory_name) this.subcategory = response.subcategory_name;
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
+
+  loadProductsList(){
+    var param = this.route.snapshot.root.queryParams;
+
+    this.request.executeRequestGET('api/getSimilarProductCard', param).subscribe({
+      next: (response) => {
+        var cards: { product_id:      string;
+                     name:            string;
+                     description:     string;
+                     price:           string;
+                     srcimage:        string;
+                     category_id:     string;
+                     subcategory_seq: string }[] = [];
+
+        cards = response;
+
+        const newCards = cards.map(card => ({
+            src:      "http://localhost:8080/api/product/product_" + card.product_id + "_1" + card.srcimage.substring(card.srcimage.lastIndexOf(".")),
+            title:    card.name,
+            price:    card.price,
+            fullinfo: true,
+            currency: "R$",
+            extclass: "itens-class",
+            href:     `/product?id=${card.product_id}&category_id=${card.category_id}&subcategory_id=${card.subcategory_seq}`
+        }));
+
+        this.productCardList = [...this.productCardList, ...newCards];
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
+
+  getColorsSpecification(){
+    var param = this.route.snapshot.root.queryParams;
+
+    this.request.executeRequestGET('api/getColorsSpecification', param).subscribe({
+      next: (response) => {
+        var colors: { id: number; color: string;}[] = [];
+
+        colors = response;
+
+        const colorsFormat = colors.map(color => ({
+            color:     color.color,
+            id:        color.id,
+            extclass:  "inactive"
+        }));
+
+        this.specificationColor = [...this.specificationColor, ...colorsFormat];
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
+
+  getSizesSpecification(){
+    var param = this.route.snapshot.root.queryParams;
+
+    this.request.executeRequestGET('api/getSizesByCategory', param).subscribe({
+      next: (response) => {
+        var sizes: { id: number; size: string;}[] = [];
+
+        sizes = response;
+
+        const sizesFormat = sizes.map(size => ({
+            size:      size.size,
+            id:        size.id,
+            extclass:  ""
+        }));
+
+        this.specificationSize = [...this.specificationSize, ...sizesFormat];
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
+
+  getSpecificationSizeByProduct(){
+    var param = this.route.snapshot.root.queryParams;
+
+    const requestParams = {
+        ...param,
+        size_id: this.specificationSizeSelected
+    };
+
+    this.request.executeRequestGET('api/getSpecificationColorByProduct', requestParams).subscribe({
+      next: (response) => {
+        var colors: { prod_id:  number;
+                      size_id:  number;
+                      size:     string;
+                      color_id: number;
+                      color:    string;
+                      storage:  number;
+                    }[] = [];
+
+        colors = response;
+
+        this.specificationColor.forEach(speccolor => { speccolor.extclass = "inactive"; });
+
+        const buttcolorElement = this.buttcolor.element.nativeElement;
+
+        buttcolorElement.childNodes.forEach((child: any) => {
+          if (child.nodeType === Node.COMMENT_NODE) return;
+
+          child.classList.remove("selected");
+        });
+
+        this.specificationColor.forEach(speccolor => {
+          colors.forEach(color => {
+            if(color.color_id == speccolor.id) speccolor.extclass = "active";
+          });
+        });
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
+
+  loadProductsInformation(){
+    var param = this.route.snapshot.root.queryParams;
+
+    this.request.executeRequestGET('api/getProductInformation', param).subscribe({
+      next: (response) => {
+        var prod: { product_id:      string;
+                    name:            string;
+                    description:     string;
+                    price:           string;
+                    srcimage:        string;
+                    active:          boolean;
+                    category_id:     string;
+                    subcategory_seq: string;
+                   }[] = [];
+
+        prod = response;
+
+        if(prod.length == 0) console.error('Erro:', "Nao encontrado informacao para o produto");
+
+        this.product     = prod[0].name;
+        this.description = prod[0].description;
+        this.price       = prod[0].price;
+        this.active      = prod[0].active,
+        this.currency    = "R$";
+        this.sales       = "0";
+        this.score       = "5.0";
+
+        this.banners = prod.map(prod => ({
+            ...this.banners,
+            src: "http://localhost:8080/api/product/" + prod.srcimage,
+            height: "600px",
+            width: "495px"
+        }));
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.getTitleSearch();
+    this.loadProductsInformation();
+    this.loadProductsList();
+    this.getColorsSpecification();
+    this.getSizesSpecification();
+  }
 }

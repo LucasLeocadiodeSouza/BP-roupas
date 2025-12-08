@@ -35,7 +35,7 @@
 
             <div class="product">
                 <div class="title">
-                    <label>{{title}}</label>
+                    <label>{{product}}</label>
                 </div>
 
                 <div class="score">
@@ -69,7 +69,7 @@
                 <div class="quantity">
                     <label>Quantidade: </label>
 
-                    <input type="number" id="inpquant" name="inpquant" class="genip" value="1">
+                    <input type="number" id="inpquant" name="inpquant" class="genip" value="1" [disabled]="!active">
                 </div>
 
                 <div class="row">
@@ -93,21 +93,9 @@
                     <div id="tamroupa" class="especification">
                         <label>Tamanho:</label>
 
-                        <div class="control-buttons">
-                            <div class="control-button" (click)="selectEspecification($event)">
-                                <span>P</span>
-                            </div>
-                            <div class="control-button" (click)="selectEspecification($event)">
-                                <span>M</span>
-                            </div>
-                            <div class="control-button" (click)="selectEspecification($event)">
-                                <span>G</span>
-                            </div>
-                            <div class="control-button" (click)="selectEspecification($event)">
-                                <span>GG</span>
-                            </div>
-                            <div class="control-button" (click)="selectEspecification($event)">
-                                <span>XGG</span>
+                        <div class="control-buttons" [ngClass]="{'inactive': !active}">
+                            <div class="control-button" (click)="selectEspecificationSize($event)" *ngFor="let size of specificationSize;" [id]="size.id">
+                                <span>{{ size.size }}</span>
                             </div>
                         </div>
 
@@ -119,21 +107,9 @@
                     <div id="corroupa" class="especification">
                         <label>Cor:</label>
 
-                        <div class="control-buttons">
-                            <div class="control-button" (click)="selectEspecification($event)">
-                                <span>Preto</span>
-                            </div>
-                            <div class="control-button" (click)="selectEspecification($event)">
-                                <span>Branco</span>
-                            </div>
-                            <div class="control-button" (click)="selectEspecification($event)">
-                                <span>Vermelho</span>
-                            </div>
-                            <div class="control-button" (click)="selectEspecification($event)">
-                                <span>Cinza</span>
-                            </div>
-                            <div class="control-button" (click)="selectEspecification($event)">
-                                <span>Verde</span>
+                        <div class="control-buttons" [ngClass]="{'inactive': !active}" #buttcolor>
+                            <div class="control-button" (click)="selectEspecificationColor($event)" *ngFor="let color of specificationColor;" [id]="color.id" [class]="color.extclass">
+                                <span>{{ color.color }}</span>
                             </div>
                         </div>
 
@@ -144,17 +120,13 @@
                 </div>
 
                 <div class="finish-buttons">
-                    <a href="/checkout">
-                        <div class="control-button buy-now">
-                            <span>Comprar agora</span>
-                        </div>
-                    </a>
+                    <div class="control-button buy-now" [ngClass]="{'inactive': !active}">
+                        <span>Comprar agora</span>
+                    </div>
 
-                    <a href="/checkout">
-                        <div class="control-button">
-                            <span>Adicionar ao Carrinho</span>
-                        </div>
-                    </a>
+                    <div class="control-button" [ngClass]="{'inactive': !active}">
+                        <span>Adicionar ao Carrinho</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -169,7 +141,7 @@
             </div>
 
             <div class="container-itenslist">
-                <app-mini-card *ngFor="let item of itens; let i = index"
+                <app-mini-card *ngFor="let item of productCardList; let i = index"
                                     [title]="item.title"
                                     [srcImages]="item.src"
                                     [price]="item.price"

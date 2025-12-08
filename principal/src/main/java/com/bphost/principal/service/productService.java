@@ -1,28 +1,28 @@
 package com.bphost.principal.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.bphost.principal.model.product;
 import com.bphost.principal.model.productCardDTO;
 import com.bphost.principal.model.product_img;
 import com.bphost.principal.model.product_imgId;
-import com.bphost.principal.model.subcat_product;
+import com.bphost.principal.model.specificationDTO;
+import com.bphost.principal.model.specification_color;
+import com.bphost.principal.model.specification_size;
 import com.bphost.principal.repository.productCardDTORepo;
 import com.bphost.principal.repository.productRepo;
 import com.bphost.principal.repository.product_imgRepo;
-import com.bphost.principal.repository.subcat_productRepo;
+import com.bphost.principal.repository.specificationDTORepo;
+import com.bphost.principal.repository.specification_colorRepo;
+import com.bphost.principal.repository.specification_sizeRepo;
 
 import jakarta.transaction.Transactional;
 
@@ -39,6 +39,15 @@ public class productService {
 
     @Autowired
     private productCardDTORepo prodcardrepo;
+
+    @Autowired
+    private specificationDTORepo specDTOrepo;
+    
+    @Autowired
+    private specification_sizeRepo sizerepo;
+    
+    @Autowired
+    private specification_colorRepo colorrepo;
 
     public static String uploadDirectory = System.getProperty("user.dir") + "/uploadImage/products";
     public static String tempDirectory = System.getProperty("user.dir") + "/uploadImage/temp";
@@ -115,8 +124,33 @@ public class productService {
         }
     }
 
+    public List<productCardDTO> getProductInformation(Integer product_id){
+        List<productCardDTO> productinfo = prodcardrepo.getProductInformation(product_id);
+        return productinfo;
+    }
+
+    public List<specification_size> getSizesByCategory(Integer categ_id){
+        List<specification_size> sizes = sizerepo.findAllSizeByCategoryID(categ_id);
+        return sizes;
+    }
+
+    public List<specification_color> getColorsSpecification(){
+        List<specification_color> colors = colorrepo.findAll();
+        return colors;
+    }
+
+    public List<specificationDTO> getSpecificationColorByProduct(Integer product_id, Integer size_id){
+        List<specificationDTO> specifications = specDTOrepo.findAllSpecificationColorByProduct(product_id, size_id);
+        return specifications;
+    }
+
     public List<productCardDTO> getProductCardByCategoryId(Integer category_id, Integer subcategory_id, Integer page){
         List<productCardDTO> prodCards = prodcardrepo.findAllProductDTOByCategoryId(category_id, subcategory_id, page);
+        return prodCards;
+    }
+
+    public List<productCardDTO> getProductCardByCategoryId(Integer category_id, Integer subcategory_id){
+        List<productCardDTO> prodCards = prodcardrepo.findAllProductDTOByCategoryId(category_id, subcategory_id);
         return prodCards;
     }
 

@@ -52,6 +52,68 @@ public class productCardDTORepo {
         return q.getResultList();
     }
 
+    public List<productCardDTO> findAllProductDTOByCategoryId(Integer categ_id, Integer subcateg_id){
+        String query = "SELECT new com.bphost.principal.model.productCardDTO( " +
+                       "prod.id, " +
+                       "prod.name, " +
+                       "prod.price, " +
+                       "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
+                       "subcat.id.category_id, " +
+                       "subcat.id.subcategory_seq) " +
+                       "FROM product prod " +
+                       "JOIN subcat_product subcat ON prod.id = subcat.id.product_id ";
+
+        boolean hasand = false;
+        Integer size   = 30;
+
+        if(categ_id != null && categ_id != 0){
+            query += (hasand?" AND ":" WHERE ") + " subcat.id.category_id = :categ_id";
+            hasand = true;
+        }
+
+        if(subcateg_id != null && subcateg_id != 0){
+            query += (hasand?" AND ":" WHERE ") + " subcat.id.subcategory_seq = :subcateg_id";
+            hasand = true;
+        }
+
+        var q = em.createQuery(query, productCardDTO.class);
+        
+        q.setMaxResults(size);
+
+        if(categ_id != null && categ_id != 0) q.setParameter("categ_id", categ_id);
+        if(subcateg_id != null && subcateg_id != 0) q.setParameter("subcateg_id", subcateg_id);
+
+        return q.getResultList();
+    }
+
+    public List<productCardDTO> getProductInformation(Integer product_id){
+        String query = "SELECT new com.bphost.principal.model.productCardDTO( " +
+                       "prod.id, " +
+                       "prod.name, " +
+                       "prod.description, " +
+                       "prod.price, " +
+                       "img.src, " +
+                       "prod.active, " +
+                       "subcat.id.category_id, " +
+                       "subcat.id.subcategory_seq) " +
+                       "FROM product prod " +
+                       "JOIN subcat_product subcat ON prod.id = subcat.id.product_id " +
+                       "JOIN product_img img ON prod.id = img.id.product_id ";
+
+        boolean hasand = false;
+
+        if(product_id != null && product_id != 0){
+            query += (hasand?" AND ":" WHERE ") + " prod.id = :product_id";
+            hasand = true;
+        }
+
+        var q = em.createQuery(query, productCardDTO.class);
+
+        if(product_id != null && product_id != 0) q.setParameter("product_id", product_id);
+
+        return q.getResultList();
+    }
+
     public List<productCardDTO> getBestSellingProducts(Integer categ_id, Integer subcateg_id){
         String query = "SELECT new com.bphost.principal.model.productCardDTO( " +
                        "prod.id, " +

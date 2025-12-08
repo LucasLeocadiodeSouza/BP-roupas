@@ -23,6 +23,7 @@ import org.springframework.http.MediaType;
 import com.bphost.principal.model.category;
 import com.bphost.principal.model.categoryCardDTO;
 import com.bphost.principal.model.productCardDTO;
+import com.bphost.principal.model.specificationDTO;
 import com.bphost.principal.model.specification_color;
 import com.bphost.principal.model.specification_size;
 import com.bphost.principal.service.categoryService;
@@ -173,7 +174,7 @@ public class genController {
 
     @GetMapping("/getSubCategoryById")
     public categoryCardDTO getSubCategoryById(@RequestParam(value = "category_id", required = false) Integer category_id,
-                                       @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
+                                              @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
         return categservice.getSubCategoryById(category_id, subcategory_id);
     }
 
@@ -187,6 +188,33 @@ public class genController {
                                                            @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id,
                                                            @RequestParam(value = "page", required = false) Integer page){
         return prodService.getProductCardByCategoryId(category_id, subcategory_id, page);
+    }
+
+    @GetMapping("/getSimilarProductCard")
+    public List<productCardDTO> getSimilarProductCard(@RequestParam(value = "category_id", required = false) Integer category_id,
+                                                      @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
+        return prodService.getProductCardByCategoryId(category_id, subcategory_id);
+    }
+
+    @GetMapping("/getProductInformation")
+    public List<productCardDTO> getProductInformation(@RequestParam(value = "id", required = true) Integer product_id){
+        return prodService.getProductInformation(product_id);
+    }
+
+    @GetMapping("/getColorsSpecification")
+    public List<specification_color> getColorsSpecification(){
+        return prodService.getColorsSpecification();
+    }
+
+    @GetMapping("/getSizesByCategory")
+    public List<specification_size> getSizesByCategory(@RequestParam(value = "category_id", required = true) Integer category_id){
+        return prodService.getSizesByCategory(category_id);
+    }
+
+    @GetMapping("/getSpecificationColorByProduct")
+    public List<specificationDTO> getSpecificationColorByProduct(@RequestParam(value = "id", required = true) Integer product_id,
+                                                                 @RequestParam(value = "size_id", required = false) Integer size_id){
+        return prodService.getSpecificationColorByProduct(product_id, size_id);
     }
 
     @GetMapping("/getBestSellingProducts")
