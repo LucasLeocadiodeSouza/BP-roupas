@@ -59,7 +59,7 @@ export class ProductMenu {
             price:    card.price,
             fullinfo: true,
             currency: "R$",
-            extclass: "w100",
+            extclass: "w100 line-clamp2",
             href:     `/product?id=${card.product_id}&category_id=${card.category_id}&subcategory_id=${card.subcategory_seq}`
         }));
 

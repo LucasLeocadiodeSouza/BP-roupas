@@ -130,7 +130,7 @@ export class Home {
               href: `/products-list?category_id=${category.id}`
           }));
 
-          this.cards = [...this.cards, {extclass: "container-category",  miniCard: categformat }];
+          this.cards = [...this.cards, {extclass: "container-category", title: "Categorias", miniCard: categformat }];
         }
 
         this.cdRef.detectChanges();
@@ -144,9 +144,9 @@ export class Home {
   ngOnInit() {
     this.loadActivesCategories();
     this.LoadCardRowProducts("Em Oferta!", "getBestSellingProducts");
-    this.LoadCardRowProducts("Ultimos lancamentos!", "getBestSellingProducts");
+    this.LoadCardRowProducts("Ultimos lançamentos!", "getBestSellingProducts");
     this.LoadHighlightCardsProducts("Novas descobertas","getNewDiscovery");
     this.LoadHighlightCardsProducts("Melhores ofertas avaliadas","getBestRatedDeals");
-    this.LoadHighlightCardsProducts("Recomendacões da casa","getHouseRecommendations");
+    this.LoadHighlightCardsProducts("Recomendações da casa","getHouseRecommendations");
   }
 }

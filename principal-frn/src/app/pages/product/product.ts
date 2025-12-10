@@ -4,11 +4,12 @@ import { Banner } from "../../components/banner/banner";
 import { MiniCard } from "../../components/mini-card/mini-card";
 import { ActivatedRoute } from '@angular/router';
 import { RequestForm } from '../../service/request-form';
-import { spec } from 'node:test/reporters';
+import { Comments } from "../../components/comments/comments";
+import { StarRating } from "../../components/star-rating/star-rating";
 
 @Component({
   selector: 'app-product',
-  imports: [Banner, CommonModule, MiniCard],
+  imports: [Banner, CommonModule, MiniCard, Comments, StarRating],
   templateUrl: './product.html',
   styleUrl: './product.css'
 })
@@ -19,15 +20,13 @@ export class Product {
 
   @ViewChild('buttcolor', { read: ViewContainerRef }) buttcolor!: ViewContainerRef;
 
-  category: string    = "";
-  subcategory: string = "";
-  product: string     = "";
-  description: string = "";
-  price: string       = "";
-  active: boolean     = true;
+  category:    {id: number, name: string} = {id: 0, name: ""};
+  subcategory: {id: number, name: string} = {id: 0, name: ""};
+  product:     {id: number, name: string, description: string, price: string, active: boolean} = {id: 0, name: "", description: "", price: "", active: true};
+
   currency: string    = "";
-  sales: string       = "";
-  score: string       = "";
+  sales:    string    = "";
+  score:    number    = 0;
 
   specificationSize:  { id: number; size: string}[] = [];
   specificationColor: { id: number; color: string; extclass: string}[] = [];
@@ -44,7 +43,7 @@ export class Product {
                      href:     string }[] = [];
 
   selectEspecificationSize(event: any) {
-    if(!this.active) return;
+    if(!this.product.active) return;
 
     const element = event.target.closest('.control-button');
 
@@ -60,7 +59,7 @@ export class Product {
   }
 
   selectEspecificationColor(event: any) {
-    if(!this.active) return;
+    if(!this.product.active) return;
 
     const element = event.target.closest('.control-button');
 
@@ -83,9 +82,9 @@ export class Product {
     this.request.executeRequestGET('api/getSubCategoryById', paramsurl).subscribe({
       next: (response) => {
 
-        this.category = response.category_name;
+        this.category = {id: response.category_id, name: response.category_name};
 
-        if(response.subcategory_name) this.subcategory = response.subcategory_name;
+        if(response.subcategory_name) this.subcategory = {id: response.subcategory_seq, name: response.subcategory_name};
 
         this.cdRef.detectChanges();
       },
@@ -116,7 +115,7 @@ export class Product {
             price:    card.price,
             fullinfo: true,
             currency: "R$",
-            extclass: "itens-class",
+            extclass: "line-clamp2 itens-class",
             href:     `/product?id=${card.product_id}&category_id=${card.category_id}&subcategory_id=${card.subcategory_seq}`
         }));
 
@@ -133,7 +132,7 @@ export class Product {
   getColorsSpecification(){
     var param = this.route.snapshot.root.queryParams;
 
-    this.request.executeRequestGET('api/getColorsSpecification', param).subscribe({
+    this.request.executeRequestGET('api/getSpecificationColor', param).subscribe({
       next: (response) => {
         var colors: { id: number; color: string;}[] = [];
 
@@ -158,7 +157,7 @@ export class Product {
   getSizesSpecification(){
     var param = this.route.snapshot.root.queryParams;
 
-    this.request.executeRequestGET('api/getSizesByCategory', param).subscribe({
+    this.request.executeRequestGET('api/getSpecificationSize', param).subscribe({
       next: (response) => {
         var sizes: { id: number; size: string;}[] = [];
 
@@ -229,7 +228,7 @@ export class Product {
 
     this.request.executeRequestGET('api/getProductInformation', param).subscribe({
       next: (response) => {
-        var prod: { product_id:      string;
+        var prod: { product_id:      number;
                     name:            string;
                     description:     string;
                     price:           string;
@@ -243,13 +242,16 @@ export class Product {
 
         if(prod.length == 0) console.error('Erro:', "Nao encontrado informacao para o produto");
 
-        this.product     = prod[0].name;
-        this.description = prod[0].description;
-        this.price       = prod[0].price;
-        this.active      = prod[0].active,
+        this.product     = {id:          prod[0].product_id,
+                            name:        prod[0].name,
+                            description: prod[0].description,
+                            price:       prod[0].price,
+                            active:      prod[0].active
+                          };
+
         this.currency    = "R$";
         this.sales       = "0";
-        this.score       = "5.0";
+        this.score       = 4;
 
         this.banners = prod.map(prod => ({
             ...this.banners,
@@ -267,8 +269,8 @@ export class Product {
   }
 
   ngOnInit() {
-    this.getTitleSearch();
     this.loadProductsInformation();
+    this.getTitleSearch();
     this.loadProductsList();
     this.getColorsSpecification();
     this.getSizesSpecification();

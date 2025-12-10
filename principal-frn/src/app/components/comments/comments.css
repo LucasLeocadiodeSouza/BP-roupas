@@ -1,0 +1,44 @@
+.container-main {padding: 20px 10px;}
+
+.title-comments {font: 24px "Poppins", sans-serif;}
+.title-h3       {font: 17px "Poppins", sans-serif; text-align: center;}
+.title-h3    h3 {margin-block: 5px;}
+
+.mb30          {margin-bottom: 30px;}
+.dnone         {display: none !important;}
+.alert-comment {color: #b60000; font-size: 15px; margin-top: 5px;}
+.divisior     {border: 1px solid var(--color-border, #bdbdbd);  width: 85%; margin-block: 15px;}
+.score        {display: flex; flex-direction: row; justify-content: space-between; margin-right: 30px; gap: 5px;}
+.stars-rating {display: flex;}
+.invert-star  {transform: rotateY(180deg);}
+
+.comment-item {margin-bottom: 40px;}
+
+.container-comments {display: flex; flex-direction: row; gap: 15px; margin-top: 15px;}
+
+.filter        {width: calc(30% - 20px); border-right: 1px solid #bdbdbd; padding-inline: 10px;}
+.filter-rating {display: flex; gap: 10px;}
+.total-comments {font: 14px "Inter", sans-serif; opacity: 0.6; display: flex; align-items: center;}
+
+.container-listcomments {width: calc(70% - 20px); padding-inline: 10px;}
+.list-comments  {max-height: 900px; overflow-y: auto;}
+.comment-header {display: flex; flex-direction: row; align-items: center; gap: 10px;}
+.username       {font: 17px "Inter", sans-serif;}
+.comment-rating {display: flex; flex-direction: row; align-items: center;}
+
+.comment-date {font: 12px "Inter", sans-serif; opacity: 0.6;}
+
+.comment-body {font: 14px "Inter", sans-serif;}
+
+.comment-like {padding: 5px 3px; border: 1px solid #bdbdbd; width: 50px; text-align: center; font: 12px "Inter"; cursor: pointer; user-select: none; border-radius: 15px;}
+.comment-like-active {background-color: var(--color-primary, #292617);}
+.comment-like-active span {color: #ffffff}
+
+.control-buttons {display: flex; justify-content: center; align-items: center; gap: 10px;}
+.control-buttons a {color: #000; text-decoration: none;}
+.control-button  {border: 1px solid var(--color-border, #bdbdbd); border-radius: 20px; padding: 5px 10px; cursor: pointer; transition: 0.2s ease-out;}
+.control-button:hover {border: 1px solid var(--color-primary, #292617); background: var(--tertiary-background, #eeeeee);}
+
+.alert {opacity: 0; visibility: hidden; transition: opacity 0.3s; display: flex; justify-content: center; margin-block: 10px;}
+.alert span {color: #b60000; font-size: 14px; font-family: "Inter";}
+.alert-active {opacity: 0.8; visibility: visible;}

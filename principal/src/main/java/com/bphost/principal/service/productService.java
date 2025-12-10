@@ -5,11 +5,18 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.bphost.principal.model.comments;
+import com.bphost.principal.model.commentsDTO;
+import com.bphost.principal.model.comments_prod;
+import com.bphost.principal.model.comments_prodId;
 import com.bphost.principal.model.product;
 import com.bphost.principal.model.productCardDTO;
 import com.bphost.principal.model.product_img;
@@ -17,6 +24,9 @@ import com.bphost.principal.model.product_imgId;
 import com.bphost.principal.model.specificationDTO;
 import com.bphost.principal.model.specification_color;
 import com.bphost.principal.model.specification_size;
+import com.bphost.principal.repository.commentsDTORepo;
+import com.bphost.principal.repository.commentsProdRepo;
+import com.bphost.principal.repository.commentsRepo;
 import com.bphost.principal.repository.productCardDTORepo;
 import com.bphost.principal.repository.productRepo;
 import com.bphost.principal.repository.product_imgRepo;
@@ -44,10 +54,13 @@ public class productService {
     private specificationDTORepo specDTOrepo;
     
     @Autowired
-    private specification_sizeRepo sizerepo;
+    private commentsProdRepo commentsprodrepo;
     
     @Autowired
-    private specification_colorRepo colorrepo;
+    private commentsRepo commentrepo;
+
+    @Autowired
+    private commentsDTORepo commentDTORepo;
 
     public static String uploadDirectory = System.getProperty("user.dir") + "/uploadImage/products";
     public static String tempDirectory = System.getProperty("user.dir") + "/uploadImage/temp";
@@ -98,6 +111,33 @@ public class productService {
     }
 
     @Transactional
+    public void sendReviewComment(Integer id, String description, Integer rating){
+        product product = prodRepo.findProductById(id);
+        if(product == null) throw new RuntimeException("Não encontrado o produto com o Código '" + id + "'!");
+
+        if(description == null || description.isBlank()) throw new RuntimeException("Deve ser informado a descrição do produto!");
+        if(rating == null || rating < 1 || rating > 5) throw new RuntimeException("Deve ser informado uma avaliação válida para o produto!");
+
+        comments comment = new comments();
+
+        comment.setDescription(description);
+        comment.setRating(rating);
+        comment.setCreated_at(LocalDate.now());
+
+        comments commentSaved = commentrepo.save(comment);
+
+        comments_prodId commentprodId = new comments_prodId();
+        commentprodId.setComment_id(commentSaved.getId());
+        commentprodId.setProduct_id(product.getId());
+        
+        comments_prod commentprod = new comments_prod();
+        commentprod.setId(commentprodId);
+        commentprod.setProduct(product);
+        commentprod.setComments(commentSaved);
+        commentsprodrepo.save(commentprod);
+    }
+
+    @Transactional
     public void adapterRegisterProduct(Integer         id, 
                                        String          name, 
                                        String          description, 
@@ -110,7 +150,7 @@ public class productService {
                                        MultipartFile[] images) throws IOException{
 
         if(images == null || images.length < 3) throw new RuntimeException("Deve ser anexado pelo menos 3 imagens do produto!");
-        if(images.length > 7) throw new RuntimeException("Limite de anexos ao produto atingido! Limite: 6");
+        if(images.length > 10) throw new RuntimeException("Limite de anexos ao produto atingido! Limite: 10");
         
         Integer prodId = registerProduct(id, name, description, price);
         categservice.registerSubCategProd(prodId, category_id, subcategory_seq);
@@ -124,19 +164,11 @@ public class productService {
         }
     }
 
+    // ########### PRODUCT METHODS ###########
+
     public List<productCardDTO> getProductInformation(Integer product_id){
         List<productCardDTO> productinfo = prodcardrepo.getProductInformation(product_id);
         return productinfo;
-    }
-
-    public List<specification_size> getSizesByCategory(Integer categ_id){
-        List<specification_size> sizes = sizerepo.findAllSizeByCategoryID(categ_id);
-        return sizes;
-    }
-
-    public List<specification_color> getColorsSpecification(){
-        List<specification_color> colors = colorrepo.findAll();
-        return colors;
     }
 
     public List<specificationDTO> getSpecificationColorByProduct(Integer product_id, Integer size_id){
@@ -153,6 +185,14 @@ public class productService {
         List<productCardDTO> prodCards = prodcardrepo.findAllProductDTOByCategoryId(category_id, subcategory_id);
         return prodCards;
     }
+
+    public List<commentsDTO> getCommentsByProductId(Integer product_id, Integer rating, Integer page){
+        List<commentsDTO> comments = commentDTORepo.findCommentsByProduct(product_id, rating, page);
+        return comments;
+    }
+
+
+    // ########### DASHBOARD METHODS ###########
 
     public List<productCardDTO> getBestSellingProducts(Integer category_id, Integer subcategory_id){
         List<productCardDTO> prodCards = prodcardrepo.getBestSellingProducts(category_id, subcategory_id);

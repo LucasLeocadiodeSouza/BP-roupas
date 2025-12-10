@@ -1,0 +1,38 @@
+<div class="container-main">
+    <div class="container-product">
+        <div class="product-image">
+            <img [src]="product_img" alt="{{ product_name }}" width="80px" height="80px">
+        </div>
+
+        <div class="product-info">
+            <div class="title">
+                <h3>Sua experiência com o produto?</h3>
+            </div>
+            <div class="name">
+                <label>{{ product_name }}</label>
+            </div>
+        </div>
+    </div>
+
+    <div>
+      <app-star-rating [enable]="true" [starHeight]="'40px'" [rating]="0" [name]="'insert-comment-rating'" (newValue)="getValue($event)"></app-star-rating>
+    </div>
+
+    <div class="about">
+      <h3>Escreva sua avaliação</h3>
+    </div>
+
+    <div class="textarea-sett">
+      <textarea class="comment-textarea" placeholder="Escreva seu comentário aqui..." class="textarea" (input)="changeTextArea($event)"></textarea>
+    </div>
+
+    <div class="alert" [ngClass]="{'alert-active': texterro != null, 'dnone': texterro == null}">
+        <span>{{ texterro }}</span>
+    </div>
+
+    <div class="control-buttons">
+        <div class="control-button" (click)="sendReview()">
+            <span>Enviar</span>
+        </div>
+    </div>
+</div>

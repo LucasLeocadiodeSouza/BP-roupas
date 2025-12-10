@@ -8,15 +8,15 @@
                         <span>></span>
                     </li>
                     <li>
-                        <a href="/products-list" class="overcolor">{{ category }}</a>
+                        <a href="/products-list?category_id={{ category.id }}" class="overcolor">{{ category.name }}</a>
                         <span>></span>
                     </li>
                     <li>
-                        <a href="/products-list" class="overcolor">{{ subcategory }}</a>
+                        <a href="/products-list?category_id={{ category.id }}&subcategory_id={{ subcategory.id }}" class="overcolor">{{ subcategory.name }}</a>
                         <span>></span>
                     </li>
                     <li>
-                        <a href="/product" class="overcolor">{{ product }}</a>
+                        <a href="/product?id={{ product.id }}&category_id={{ category.id }}&subcategory_id={{ subcategory.id }}" class="overcolor">{{ product.name }}</a>
                     </li>
                 </ol>
             </div>
@@ -35,7 +35,7 @@
 
             <div class="product">
                 <div class="title">
-                    <label>{{product}}</label>
+                    <label>{{product.name}}</label>
                 </div>
 
                 <div class="score">
@@ -45,16 +45,7 @@
 
                     <div class="row">
                         <div class="stars-rating">
-                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12">
-                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12" class="invert-star">
-                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12">
-                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12" class="invert-star">
-                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12">
-                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12" class="invert-star">
-                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12">
-                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12" class="invert-star">
-                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12">
-                            <img src="assets/images/half-rating-star-icon.jpg" width="7" height="12" class="invert-star">
+                            <app-star-rating [enable]="false" [starHeight]="'10px'" [rating]="score" [name]="'product-rating'"></app-star-rating>
                         </div>
                         <div class="desc-score">
                             <span>{{ score }}</span>
@@ -63,13 +54,13 @@
                 </div>
 
                 <div class="description">
-                    <label>{{description}}</label>
+                    <label>{{product.description}}</label>
                 </div>
 
                 <div class="quantity">
                     <label>Quantidade: </label>
 
-                    <input type="number" id="inpquant" name="inpquant" class="genip" value="1" [disabled]="!active">
+                    <input type="number" id="inpquant" name="inpquant" class="genip" value="1" [disabled]="!product.active">
                 </div>
 
                 <div class="row">
@@ -77,7 +68,7 @@
 
                     <div class="container-price">
                         <div class="currency"> {{ currency }}</div>
-                        <div class="price">{{ price }}</div>
+                        <div class="price">{{ product.price }}</div>
                     </div>
                 </div>
 
@@ -93,7 +84,7 @@
                     <div id="tamroupa" class="especification">
                         <label>Tamanho:</label>
 
-                        <div class="control-buttons" [ngClass]="{'inactive': !active}">
+                        <div class="control-buttons" [ngClass]="{'inactive': !product.active}">
                             <div class="control-button" (click)="selectEspecificationSize($event)" *ngFor="let size of specificationSize;" [id]="size.id">
                                 <span>{{ size.size }}</span>
                             </div>
@@ -107,7 +98,7 @@
                     <div id="corroupa" class="especification">
                         <label>Cor:</label>
 
-                        <div class="control-buttons" [ngClass]="{'inactive': !active}" #buttcolor>
+                        <div class="control-buttons" [ngClass]="{'inactive': !product.active}" #buttcolor>
                             <div class="control-button" (click)="selectEspecificationColor($event)" *ngFor="let color of specificationColor;" [id]="color.id" [class]="color.extclass">
                                 <span>{{ color.color }}</span>
                             </div>
@@ -120,15 +111,23 @@
                 </div>
 
                 <div class="finish-buttons">
-                    <div class="control-button buy-now" [ngClass]="{'inactive': !active}">
+                    <div class="control-button buy-now" [ngClass]="{'inactive': !product.active}">
                         <span>Comprar agora</span>
                     </div>
 
-                    <div class="control-button" [ngClass]="{'inactive': !active}">
+                    <div class="control-button" [ngClass]="{'inactive': !product.active}">
                         <span>Adicionar ao Carrinho</span>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="disprow jc-center">
+            <div class="divisior"></div>
+        </div>
+
+        <div>
+          <app-comments [product_id]="product.id"></app-comments>
         </div>
 
         <div class="disprow jc-center">

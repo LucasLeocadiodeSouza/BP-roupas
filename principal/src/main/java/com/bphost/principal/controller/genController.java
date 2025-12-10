@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
 import com.bphost.principal.model.category;
 import com.bphost.principal.model.categoryCardDTO;
+import com.bphost.principal.model.commentsDTO;
 import com.bphost.principal.model.productCardDTO;
 import com.bphost.principal.model.specificationDTO;
 import com.bphost.principal.model.specification_color;
@@ -46,6 +47,8 @@ public class genController {
     public static String tempDirectory        = System.getProperty("user.dir") + "/uploadImage/temp";
 
 
+    // ######### Endpoints for Product Management #########
+
     @PostMapping(value = "/registerTempImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> registerTempImage(@RequestParam(value = "image", required = false) MultipartFile image,
                                                 HttpServletRequest request) throws IOException{
@@ -65,6 +68,54 @@ public class genController {
             return ResponseEntity.internalServerError().body("Erro interno ao cadastrar Imagem do Produto: " + e.getMessage());
         }
     }
+
+    @PostMapping(value = "/registerProduct", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> registerProduct(@RequestParam(value = "product_id", required = false)      Integer product_id,
+                                             @RequestParam(value = "name", required = false)            String name,
+                                             @RequestParam(value = "description", required = false)     String description,
+                                             @RequestParam(value = "price", required = false)           BigDecimal price,
+                                             @RequestParam(value = "category_id", required = false)     Integer category_id,
+                                             @RequestParam(value = "subcategory_seq", required = false) Integer subcategory_seq,
+                                             @RequestParam(value = "color_id", required = false)        Integer color_id,
+                                             @RequestParam(value = "size_id[]", required = false)       Integer[] size_id,
+                                             @RequestParam(value = "storage", required = false)         Integer storage,
+                                             @RequestParam(value = "images[]", required = false)        MultipartFile[] images,
+                                             HttpServletRequest request) throws IOException{
+        try {
+            prodService.adapterRegisterProduct(product_id, name, description, price, category_id, subcategory_seq, color_id, size_id, storage, images);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("message", "Product uploaded successfully");
+
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro interno ao cadastrar Produto: " + e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/sendReviewComment")
+    public ResponseEntity<?> sendReviewComment(@RequestParam(value = "id", required = true)          Integer product_id,
+                                               @RequestParam(value = "description", required = true) String description,
+                                               @RequestParam(value = "rating", required = true)      Integer rating){
+        try {
+            prodService.sendReviewComment(product_id, description, rating);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("message", "Comment sent successfully");
+
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro interno ao enviar Comentário: " + e.getMessage());
+        }
+    }
+
+    // ######### Endpoints for Images Management #########
 
     @GetMapping("/product/{filename}")
     public ResponseEntity<Resource> getProdImage(@PathVariable String filename) {
@@ -130,32 +181,8 @@ public class genController {
         }
     }
 
-    @PostMapping(value = "/registerProduct", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> registerProduct(@RequestParam(value = "product_id", required = false)      Integer product_id,
-                                             @RequestParam(value = "name", required = false)            String name,
-                                             @RequestParam(value = "description", required = false)     String description,
-                                             @RequestParam(value = "price", required = false)           BigDecimal price,
-                                             @RequestParam(value = "category_id", required = false)     Integer category_id,
-                                             @RequestParam(value = "subcategory_seq", required = false) Integer subcategory_seq,
-                                             @RequestParam(value = "color_id", required = false)        Integer color_id,
-                                             @RequestParam(value = "size_id[]", required = false)       Integer[] size_id,
-                                             @RequestParam(value = "storage", required = false)         Integer storage,
-                                             @RequestParam(value = "images[]", required = false)        MultipartFile[] images,
-                                             HttpServletRequest request) throws IOException{
-        try {
-            prodService.adapterRegisterProduct(product_id, name, description, price, category_id, subcategory_seq, color_id, size_id, storage, images);
 
-            Map<String, String> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Product uploaded successfully");
-
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro interno ao cadastrar Produto: " + e.getMessage());
-        }
-    }
+    // ######### Endpoints for Product Specification #########
 
     @GetMapping("/getSpecificationColor")
     public List<specification_color> getSpecificationColor(){
@@ -167,21 +194,51 @@ public class genController {
         return categservice.getSpecificationSize(category_id);
     }
 
+    @GetMapping("/getProductInformation")
+    public List<productCardDTO> getProductInformation(@RequestParam(value = "id", required = true) Integer product_id){
+        return prodService.getProductInformation(product_id);
+    }
+
+    @GetMapping("/getSpecificationColorByProduct")
+    public List<specificationDTO> getSpecificationColorByProduct(@RequestParam(value = "id", required = true) Integer product_id,
+                                                                 @RequestParam(value = "size_id", required = false) Integer size_id){
+        return prodService.getSpecificationColorByProduct(product_id, size_id);
+    }
+
+
+    // ######### Endpoints for Category Management #########
+
     @GetMapping("/findAllCategoriesActive")
     public List<category> findAllCategoriesActive(){
         return categservice.findAllCategoriesActives();
     }
 
     @GetMapping("/getSubCategoryById")
-    public categoryCardDTO getSubCategoryById(@RequestParam(value = "category_id", required = false) Integer category_id,
+    public categoryCardDTO getSubCategoryById(@RequestParam(value = "category_id", required = true) Integer category_id,
                                               @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
         return categservice.getSubCategoryById(category_id, subcategory_id);
     }
 
     @GetMapping("/findAllSubcategoriesByCategory")
-    public List<?> findAllSubcategoriesByCategory(@RequestParam(value = "category_id", required = false) Integer category_id){
+    public List<?> findAllSubcategoriesByCategory(@RequestParam(value = "category_id", required = true) Integer category_id){
         return categservice.findAllSubcategoriesByCategory(category_id);
     }
+
+    @GetMapping("/findAllActivesSubcategories")
+    public List<categoryCardDTO> findAllActivesSubcategories(@RequestParam(value = "category_id", required = false) Integer category_id){
+        return categservice.findAllActivesSubcategories(category_id);
+    }
+
+    // ######### Endpoints for Comments Management #########
+
+    @GetMapping("/getCommentsByProductId")
+    public List<commentsDTO> getCommentsByProductId(@RequestParam(value = "id", required = true) Integer product_id,
+                                                    @RequestParam(value = "rating", required = false) Integer rating,
+                                                    @RequestParam(value = "page", required = false) Integer page){
+        return prodService.getCommentsByProductId(product_id, rating, page);
+    }
+
+    // ######### Endpoints for Dashboard Management #########
 
     @GetMapping("/getProductCardByCategoryId")
     public List<productCardDTO> getProductCardByCategoryId(@RequestParam(value = "category_id", required = false) Integer category_id,
@@ -194,27 +251,6 @@ public class genController {
     public List<productCardDTO> getSimilarProductCard(@RequestParam(value = "category_id", required = false) Integer category_id,
                                                       @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
         return prodService.getProductCardByCategoryId(category_id, subcategory_id);
-    }
-
-    @GetMapping("/getProductInformation")
-    public List<productCardDTO> getProductInformation(@RequestParam(value = "id", required = true) Integer product_id){
-        return prodService.getProductInformation(product_id);
-    }
-
-    @GetMapping("/getColorsSpecification")
-    public List<specification_color> getColorsSpecification(){
-        return prodService.getColorsSpecification();
-    }
-
-    @GetMapping("/getSizesByCategory")
-    public List<specification_size> getSizesByCategory(@RequestParam(value = "category_id", required = true) Integer category_id){
-        return prodService.getSizesByCategory(category_id);
-    }
-
-    @GetMapping("/getSpecificationColorByProduct")
-    public List<specificationDTO> getSpecificationColorByProduct(@RequestParam(value = "id", required = true) Integer product_id,
-                                                                 @RequestParam(value = "size_id", required = false) Integer size_id){
-        return prodService.getSpecificationColorByProduct(product_id, size_id);
     }
 
     @GetMapping("/getBestSellingProducts")
@@ -236,10 +272,5 @@ public class genController {
     @GetMapping("/getHouseRecommendations")
     public List<productCardDTO> getHouseRecommendations(){
         return prodService.getHouseRecommendations();
-    }
-
-    @GetMapping("/findAllActivesSubcategories")
-    public List<categoryCardDTO> findAllActivesSubcategories(@RequestParam(value = "category_id", required = false) Integer category_id){
-        return categservice.findAllActivesSubcategories(category_id);
     }
 }

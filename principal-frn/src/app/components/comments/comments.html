@@ -1,0 +1,101 @@
+<div class="container-main">
+    <div class="title-comments">
+        <label>Comentários</label>
+    </div>
+
+    <div class="container-comments">
+      <div class="filter">
+        <div class="title-comments">
+          <label>Avaliações de clientes</label>
+        </div>
+
+        <div class="filter-rating">
+          <div>
+              <app-star-rating [enable]="false" [starHeight]="'30px'" [rating]="5" [name]="'comment_product_evaluation'"></app-star-rating>
+          </div>
+
+          <div class="total-comments">
+            <span>{{ totalComments | number:'1.0-0' }} avaliações</span>
+          </div>
+        </div>
+
+        <div>
+          <app-star-filter (newValue)="getValue($event)"></app-star-filter>
+        </div>
+
+        <div class="disprow jc-center">
+            <div class="divisior"></div>
+        </div>
+
+        <div class="comment-body">
+            <p>Avaliações do produto ajudam outros clientes a tomar decisões de compra informadas e também fornecem feedback valioso para os vendedores!.</p>
+            <p>A classificação do produto é calcular pelas estrelas fornecidas pelos outros usuário que já compraram o produto destaque. Usamos também o quão recente foi a avaliação para determinar a relevância.</p>
+        </div>
+
+        <div class="disprow jc-center">
+            <div class="divisior"></div>
+        </div>
+
+        <div class="title-h3">
+          <h3>Avalie esse produto</h3>
+        </div>
+
+        <div class="comment-body">
+            <p>Ajuda a outros clientes compartilhando com sua experiência com o produto.</p>
+        </div>
+
+        <div class="control-buttons">
+          <a href="/product/insert-comment?id={{ product_id }}">
+            <div class="control-button">
+                <span>Escreva uma avaliação</span>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="container-listcomments">
+        <div class="title-comments mb30">
+          <label>Principais avaliações</label>
+        </div>
+        <div>
+          <div class="comment-body" [ngClass]="{'dnone': comments.length > 0}">
+            <p class="alert-comment">Nenhum comentario associado ao produto ainda!</p>
+        </div>
+        </div>
+        <div class="list-comments">
+          <div class="comment-item" *ngFor="let comment of comments">
+              <div class="comment-header">
+                  <div class="comment-user">
+                      <span class="username">{{ comment.name }}</span>
+                  </div>
+                  <div class="comment-rating">
+                      <app-star-rating [enable]="false" [starHeight]="'12px'" [rating]="comment.rating" [name]="'rate-' + comment.id"></app-star-rating>
+                  </div>
+              </div>
+              <div class="comment-date">
+                  <span>{{ comment.date | date:'mediumDate' }}</span>
+              </div>
+              <div class="comment-body">
+                  <p>{{ comment.text }}</p>
+              </div>
+              <div class="comment-like" (click)="likeComment($event)">
+                  <span>Útil</span>
+              </div>
+          </div>
+        </div>
+
+        <div class="alert" [ngClass]="{'alert-active': endPage, 'dnone': comments.length == 0}">
+            <span>"Você chegou ao final dos comentarios"</span>
+        </div>
+
+        <div class="control-buttons">
+            <div class="control-button" (click)="backToStart()">
+                <span>Voltar ao Inicio</span>
+            </div>
+
+            <div class="control-button" (click)="getCommentsByProductId()" [ngClass]="{'dnone': comments.length == 0}">
+                <span>Carregar mais produtos</span>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>

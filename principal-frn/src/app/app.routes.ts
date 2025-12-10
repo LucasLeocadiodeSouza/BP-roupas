@@ -16,28 +16,33 @@ import { ProfileOrdersShipped } from './pages/profile-orders-shipped/profile-ord
 import { ProfileOrdersDelivered } from './pages/profile-orders-delivered/profile-orders-delivered';
 import { Insert } from './layout/insert/insert';
 import { InsertProduct } from './pages/insert-product/insert-product';
+import { InsertComment } from './pages/insert-comment/insert-comment';
 
 export const routes: Routes = [
     {
         path: '',
         component: Main,
         children: [
-        {
-            path: "home",
-            component: Home
-        },
-        {
-            path: "products-list",
-            component: ProductsList
-        },
-        {
-            path: "product",
-            component: Product
-        },
-        {
-            path: "",
-            component: Home
-        }
+          {
+              path: "",
+              component: Home
+          },
+          {
+              path: "home",
+              component: Home
+          },
+          {
+              path: "products-list",
+              component: ProductsList
+          },
+          {
+              path: "product",
+              component: Product
+          },
+          {
+              path: "product/insert-comment",
+              component: InsertComment
+          }
         ]
     },
     {
@@ -46,7 +51,7 @@ export const routes: Routes = [
         children: [
            {
             path: '',
-             component: OrderCheckout
+            component: OrderCheckout
            }
         ]
     },
@@ -56,7 +61,7 @@ export const routes: Routes = [
         children: [
            {
             path: '',
-             component: InsertProduct
+            component: InsertProduct
            }
         ]
     },
