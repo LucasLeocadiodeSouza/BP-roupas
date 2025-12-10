@@ -37,4 +37,25 @@ public class categoryCardDTORepo {
 
         return q.getResultList();
     }
+
+    public categoryCardDTO findSubCategoryDTOByProduct(Integer product_id){
+        String query = "SELECT new com.bphost.principal.model.categoryCardDTO( " +
+                       "categ.id, " +
+                       "categ.name, " +
+                       "subcateg.id.seq, " +
+                       "subcateg.name) " +
+                       "FROM subcat_product subcatprod " +
+                       "JOIN category categ ON subcatprod.id.category_id = categ.id " +
+                       "JOIN subcategory subcateg ON subcatprod.id.category_id = subcateg.id.category_id AND subcatprod.id.subcategory_seq = subcateg.id.seq " +
+                       "WHERE subcatprod.id.product_id = :product_id";
+
+        var q = em.createQuery(query, categoryCardDTO.class);
+
+        q.setParameter("product_id", product_id);
+
+        List<categoryCardDTO> results = q.getResultList();
+        if(results == null || results.isEmpty()) return null;
+
+        return results.get(0);
+    }
 }

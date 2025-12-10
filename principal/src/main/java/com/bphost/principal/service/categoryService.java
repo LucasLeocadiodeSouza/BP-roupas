@@ -69,6 +69,13 @@ public class categoryService {
         return categories;
     }
 
+    public categoryCardDTO findSubCategoryDTOByProduct(Integer product_id){
+        categoryCardDTO subcategoryDTO = categoryDTORepo.findSubCategoryDTOByProduct(product_id);
+
+        return subcategoryDTO;
+    }
+
+
     public List<subcategory> findAllSubcategoriesByCategory(Integer categ){
         List<subcategory> subcategories = subcategRepo.findAllSubcategoriesByCategory(categ);
         if(subcategories == null || subcategories.isEmpty()) return null;

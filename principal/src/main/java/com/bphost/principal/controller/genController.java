@@ -213,6 +213,11 @@ public class genController {
         return categservice.findAllCategoriesActives();
     }
 
+    @GetMapping("/getSubCategoryByProduct")
+    public categoryCardDTO getSubCategoryByProduct(@RequestParam(value = "id", required = true) Integer product_id){
+        return categservice.findSubCategoryDTOByProduct(product_id);
+    }
+
     @GetMapping("/getSubCategoryById")
     public categoryCardDTO getSubCategoryById(@RequestParam(value = "category_id", required = true) Integer category_id,
                                               @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){

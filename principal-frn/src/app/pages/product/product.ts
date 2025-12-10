@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RequestForm } from '../../service/request-form';
 import { Comments } from "../../components/comments/comments";
 import { StarRating } from "../../components/star-rating/star-rating";
+import id from '@angular/common/locales/extra/id';
 
 @Component({
   selector: 'app-product',
@@ -42,6 +43,8 @@ export class Product {
                      extclass: string;
                      href:     string }[] = [];
 
+  banners: { src: string; height: string; width: string }[] = [];
+
   selectEspecificationSize(event: any) {
     if(!this.product.active) return;
 
@@ -74,17 +77,59 @@ export class Product {
     this.specificationColorSelected = element.id;
   }
 
-  banners: { src: string; height: string; width: string }[] = [];
+  loadProductsInformation(){
+    var param = this.route.snapshot.root.queryParams;
 
-  getTitleSearch(){
-    const paramsurl = this.route.snapshot.root.queryParams;
-
-    this.request.executeRequestGET('api/getSubCategoryById', paramsurl).subscribe({
+    this.request.executeRequestGET('api/getProductInformation', param).subscribe({
       next: (response) => {
+        var prod: { product_id:      number;
+                    name:            string;
+                    description:     string;
+                    price:           string;
+                    srcimage:        string;
+                    active:          boolean;
+                    category_id:     number;
+                    subcategory_seq: number;
+                   }[] = [];
 
-        this.category = {id: response.category_id, name: response.category_name};
+        prod = response;
 
-        if(response.subcategory_name) this.subcategory = {id: response.subcategory_seq, name: response.subcategory_name};
+        if(prod.length == 0) console.error('Erro:', "Nao encontrado informacao para o produto");
+
+        this.product     = {id:          prod[0].product_id,
+                            name:        prod[0].name,
+                            description: prod[0].description,
+                            price:       prod[0].price,
+                            active:      prod[0].active
+                          };
+
+        this.category.id    = prod[0].category_id;
+        this.subcategory.id = prod[0].subcategory_seq
+
+        this.currency    = "R$";
+        this.sales       = "0";
+        this.score       = 4;
+
+        this.banners = prod.map(prod => ({
+            ...this.banners,
+            src: "http://localhost:8080/api/product/" + prod.srcimage,
+            height: "600px",
+            width: "495px"
+        }));
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
+
+  getSubcategoryName(){
+    this.request.executeRequestGET('api/getSubCategoryByProduct', {id: this.product.id}).subscribe({
+      next: (response) => {
+        this.category.name = response.category_name;
+        if(response.subcategory_name) this.subcategory.name = response.subcategory_name;
 
         this.cdRef.detectChanges();
       },
@@ -95,9 +140,7 @@ export class Product {
   }
 
   loadProductsList(){
-    var param = this.route.snapshot.root.queryParams;
-
-    this.request.executeRequestGET('api/getSimilarProductCard', param).subscribe({
+    this.request.executeRequestGET('api/getSimilarProductCard', {category_id: this.category.id, subcategory_id: this.subcategory.id}).subscribe({
       next: (response) => {
         var cards: { product_id:      string;
                      name:            string;
@@ -116,7 +159,7 @@ export class Product {
             fullinfo: true,
             currency: "R$",
             extclass: "line-clamp2 itens-class",
-            href:     `/product?id=${card.product_id}&category_id=${card.category_id}&subcategory_id=${card.subcategory_seq}`
+            href:     `/product?id=${card.product_id}`
         }));
 
         this.productCardList = [...this.productCardList, ...newCards];
@@ -130,9 +173,7 @@ export class Product {
   }
 
   getColorsSpecification(){
-    var param = this.route.snapshot.root.queryParams;
-
-    this.request.executeRequestGET('api/getSpecificationColor', param).subscribe({
+    this.request.executeRequestGET('api/getSpecificationColor').subscribe({
       next: (response) => {
         var colors: { id: number; color: string;}[] = [];
 
@@ -155,9 +196,7 @@ export class Product {
   }
 
   getSizesSpecification(){
-    var param = this.route.snapshot.root.queryParams;
-
-    this.request.executeRequestGET('api/getSpecificationSize', param).subscribe({
+    this.request.executeRequestGET('api/getSpecificationSize', {category_id: this.category.id}).subscribe({
       next: (response) => {
         var sizes: { id: number; size: string;}[] = [];
 
@@ -180,14 +219,7 @@ export class Product {
   }
 
   getSpecificationSizeByProduct(){
-    var param = this.route.snapshot.root.queryParams;
-
-    const requestParams = {
-        ...param,
-        size_id: this.specificationSizeSelected
-    };
-
-    this.request.executeRequestGET('api/getSpecificationColorByProduct', requestParams).subscribe({
+    this.request.executeRequestGET('api/getSpecificationColorByProduct', {id: this.product.id, size_id: this.specificationSizeSelected}).subscribe({
       next: (response) => {
         var colors: { prod_id:  number;
                       size_id:  number;
@@ -223,54 +255,9 @@ export class Product {
     });
   }
 
-  loadProductsInformation(){
-    var param = this.route.snapshot.root.queryParams;
-
-    this.request.executeRequestGET('api/getProductInformation', param).subscribe({
-      next: (response) => {
-        var prod: { product_id:      number;
-                    name:            string;
-                    description:     string;
-                    price:           string;
-                    srcimage:        string;
-                    active:          boolean;
-                    category_id:     string;
-                    subcategory_seq: string;
-                   }[] = [];
-
-        prod = response;
-
-        if(prod.length == 0) console.error('Erro:', "Nao encontrado informacao para o produto");
-
-        this.product     = {id:          prod[0].product_id,
-                            name:        prod[0].name,
-                            description: prod[0].description,
-                            price:       prod[0].price,
-                            active:      prod[0].active
-                          };
-
-        this.currency    = "R$";
-        this.sales       = "0";
-        this.score       = 4;
-
-        this.banners = prod.map(prod => ({
-            ...this.banners,
-            src: "http://localhost:8080/api/product/" + prod.srcimage,
-            height: "600px",
-            width: "495px"
-        }));
-
-        this.cdRef.detectChanges();
-      },
-      error: (error) => {
-        console.error('Erro:', error);
-      }
-    });
-  }
-
   ngOnInit() {
     this.loadProductsInformation();
-    this.getTitleSearch();
+    this.getSubcategoryName();
     this.loadProductsList();
     this.getColorsSpecification();
     this.getSizesSpecification();

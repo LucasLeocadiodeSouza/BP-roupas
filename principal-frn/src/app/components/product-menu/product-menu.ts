@@ -60,7 +60,7 @@ export class ProductMenu {
             fullinfo: true,
             currency: "R$",
             extclass: "w100 line-clamp2",
-            href:     `/product?id=${card.product_id}&category_id=${card.category_id}&subcategory_id=${card.subcategory_seq}`
+            href:     `/product?id=${card.product_id}`
         }));
 
         this.productCardList = [...this.productCardList, ...newCards];
