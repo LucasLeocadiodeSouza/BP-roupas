@@ -16,6 +16,5 @@ export class MiniCard {
   @Input() extclass: any;
   @Input() fullinfo!: boolean;
   @Input() href: any;
-
-  score = 4;
+  @Input() score: number = 5;
 }

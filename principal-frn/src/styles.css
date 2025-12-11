@@ -57,8 +57,7 @@ body {margin: 0; background: var(--primary-background, #e5e5e5); min-width: 1500
         border-radius:    0.3vw;
         box-shadow:       0 0 0 .05vw rgba(160, 177, 184, 0.075);
         padding:          2.5px;
-        transition:       .2s;
-      }
+        transition:       .2s;}
 
 .genip:disabled {border-color: rgba(118, 118, 118, 0.3); color: var(--color-input-disab, #6b6b6b); background-color: #a1a1a170;}
 

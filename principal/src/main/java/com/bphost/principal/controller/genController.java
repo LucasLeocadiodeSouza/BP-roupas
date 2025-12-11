@@ -255,7 +255,7 @@ public class genController {
     @GetMapping("/getSimilarProductCard")
     public List<productCardDTO> getSimilarProductCard(@RequestParam(value = "category_id", required = false) Integer category_id,
                                                       @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
-        return prodService.getProductCardByCategoryId(category_id, subcategory_id);
+        return prodService.getProductCardByCategoryId(category_id, subcategory_id, null);
     }
 
     @GetMapping("/getBestSellingProducts")

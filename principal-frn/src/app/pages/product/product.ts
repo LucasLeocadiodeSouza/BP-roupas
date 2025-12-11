@@ -23,11 +23,10 @@ export class Product {
 
   category:    {id: number, name: string} = {id: 0, name: ""};
   subcategory: {id: number, name: string} = {id: 0, name: ""};
-  product:     {id: number, name: string, description: string, price: string, active: boolean} = {id: 0, name: "", description: "", price: "", active: true};
+  product:     {id: number, name: string, description: string, price: string, active: boolean, score: number, total_comments: number} = {id: 0, name: "", description: "", price: "", active: true, score: 0, total_comments: 0};
 
   currency: string    = "";
   sales:    string    = "";
-  score:    number    = 0;
 
   specificationSize:  { id: number; size: string}[] = [];
   specificationColor: { id: number; color: string; extclass: string}[] = [];
@@ -41,7 +40,9 @@ export class Product {
                      currency: string;
                      fullinfo: boolean;
                      extclass: string;
-                     href:     string }[] = [];
+                     href:     string;
+                     score:    number;
+                    }[] = [];
 
   banners: { src: string; height: string; width: string }[] = [];
 
@@ -90,17 +91,21 @@ export class Product {
                     active:          boolean;
                     category_id:     number;
                     subcategory_seq: number;
+                    avarage_rating:  number;
+                    total_comments:  number;
                    }[] = [];
 
         prod = response;
 
         if(prod.length == 0) console.error('Erro:', "Nao encontrado informacao para o produto");
 
-        this.product     = {id:          prod[0].product_id,
-                            name:        prod[0].name,
-                            description: prod[0].description,
-                            price:       prod[0].price,
-                            active:      prod[0].active
+        this.product     = {id:             prod[0].product_id,
+                            name:           prod[0].name,
+                            description:    prod[0].description,
+                            price:          prod[0].price,
+                            active:         prod[0].active,
+                            score:          Math.floor(prod[0].avarage_rating),
+                            total_comments: prod[0].total_comments
                           };
 
         this.category.id    = prod[0].category_id;
@@ -108,7 +113,6 @@ export class Product {
 
         this.currency    = "R$";
         this.sales       = "0";
-        this.score       = 4;
 
         this.banners = prod.map(prod => ({
             ...this.banners,
@@ -128,8 +132,10 @@ export class Product {
   getSubcategoryName(){
     this.request.executeRequestGET('api/getSubCategoryByProduct', {id: this.product.id}).subscribe({
       next: (response) => {
-        this.category.name = response.category_name;
-        if(response.subcategory_name) this.subcategory.name = response.subcategory_name;
+        if (!response) return;
+
+        this.category    = {id: response.category_id, name: response.category_name};
+        this.subcategory = {id: response.subcategory_seq, name: response.subcategory_name};
 
         this.cdRef.detectChanges();
       },
@@ -148,7 +154,8 @@ export class Product {
                      price:           string;
                      srcimage:        string;
                      category_id:     string;
-                     subcategory_seq: string }[] = [];
+                     subcategory_seq: string;
+                     avarage_rating:  number;}[] = [];
 
         cards = response;
 
@@ -159,7 +166,8 @@ export class Product {
             fullinfo: true,
             currency: "R$",
             extclass: "line-clamp2 itens-class",
-            href:     `/product?id=${card.product_id}`
+            href:     `/product?id=${card.product_id}`,
+            score:    Math.floor(card.avarage_rating)
         }));
 
         this.productCardList = [...this.productCardList, ...newCards];
@@ -258,8 +266,8 @@ export class Product {
   ngOnInit() {
     this.loadProductsInformation();
     this.getSubcategoryName();
-    this.loadProductsList();
     this.getColorsSpecification();
     this.getSizesSpecification();
+    this.loadProductsList();
   }
 }

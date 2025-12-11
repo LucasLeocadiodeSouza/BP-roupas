@@ -83,7 +83,7 @@ export class ProductsList {
               fullinfo: false,
               currency: "R$",
               extclass: "product-class",
-              href:     `/product?id=${card.product_id}&category_id=${card.category_id}&subcategory_id=${card.subcategory_seq}`
+              href:     `/product?id=${card.product_id}`
           }));
 
           this.cards = [...this.cards, {extclass: "m10", title: titlerow, miniCard: cardsFormat }];
@@ -131,7 +131,6 @@ export class ProductsList {
 
     this.request.executeRequestGET('api/getSubCategoryById', paramsurl).subscribe({
       next: (response) => {
-
         this.titlemenu = response.category_name;
 
         if(response.subcategory_name) this.titlemenu = this.titlemenu + " - " + response.subcategory_name;

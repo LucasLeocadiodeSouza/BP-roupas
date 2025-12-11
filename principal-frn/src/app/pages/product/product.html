@@ -45,10 +45,11 @@
 
                     <div class="row">
                         <div class="stars-rating">
-                            <app-star-rating [enable]="false" [starHeight]="'10px'" [rating]="score" [name]="'product-rating'"></app-star-rating>
+                            <app-star-rating [enable]="false" [starHeight]="'13px'" [rating]="product.score" [name]="'product-rating'"></app-star-rating>
                         </div>
                         <div class="desc-score">
-                            <span>{{ score }}</span>
+                            <span>{{ product.score }} </span>
+                            <span> &#40;{{ product.total_comments }}&#41;</span>
                         </div>
                     </div>
                 </div>
@@ -60,7 +61,7 @@
                 <div class="quantity">
                     <label>Quantidade: </label>
 
-                    <input type="number" id="inpquant" name="inpquant" class="genip" value="1" [disabled]="!product.active">
+                    <input type="number" id="inpquant" name="inpquant" value="1" [disabled]="!product.active">
                 </div>
 
                 <div class="row">
@@ -147,7 +148,8 @@
                                     [currency]="item.currency"
                                     [extclass]="item.extclass"
                                     [href]="item.href"
-                                    [fullinfo]="item.fullinfo"></app-mini-card>
+                                    [fullinfo]="item.fullinfo"
+                                    [score]="item.score"></app-mini-card>
             </div>
         </div>
     </div>

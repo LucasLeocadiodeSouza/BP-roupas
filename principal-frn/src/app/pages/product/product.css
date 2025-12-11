@@ -32,7 +32,7 @@ a  {text-decoration: none;}
 .score        {display: flex; flex-direction: row; justify-content: space-between; margin-right: 30px; gap: 5px;}
 .stars-rating {display: flex;}
 .invert-star  {transform: rotateY(180deg);}
-.desc-score   {font-size: 13px;}
+.desc-score   {font-size: 14px;}
 .desc-sales   {font-size: 13px; margin-left: 10px;}
 
 .description {margin-block: 10px;}
@@ -52,7 +52,30 @@ a  {text-decoration: none;}
 .inactive {opacity: 0.3; background: transparent !important;}
 .active   {background: #e9e9e9;}
 
-#inpquant {width: 70px;}
+#inpquant {width: 80px;
+           border: 0px;
+           border-bottom: 1px solid #000;
+           font-family: "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+           font-weight: 180;
+           font-size: var(--font-size-label, 15px);
+           color: #000;
+           background-color: #0000000d;
+           padding: 2.5px;
+           transition: .2s;}
+
+#inpquant:focus-visible  {outline: 0px; border: 0px; border-bottom: 0.6mm solid #000;}
+
+#inpquant:disabled {border-color: rgba(118, 118, 118, 0.3); color: var(--color-input-disab, #6b6b6b); background-color: #a1a1a170;}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
 .container-price {display: flex; flex-direction: row; margin-left: 10px; margin-top: 10px;}
 .price, .currency {font-family: monospace, Arial, sans-serif; font-size: 23px;}

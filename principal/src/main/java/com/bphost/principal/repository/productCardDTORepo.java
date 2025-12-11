@@ -1,6 +1,8 @@
 package com.bphost.principal.repository;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.bphost.principal.model.productCardDTO;
 import jakarta.persistence.EntityManager;
@@ -12,6 +14,9 @@ public class productCardDTORepo {
     public productCardDTORepo(EntityManager em){
         this.em = em;
     }
+
+    @Autowired
+    private commentsProdRepo commentsprodrepo;
 
     public List<productCardDTO> findAllProductDTOByCategoryId(Integer categ_id, Integer subcateg_id, Integer page){
         String query = "SELECT new com.bphost.principal.model.productCardDTO( " +
@@ -87,6 +92,20 @@ public class productCardDTORepo {
     }
 
     public List<productCardDTO> getProductInformation(Integer product_id){
+
+        Integer total_comments = commentsprodrepo.countCommentsByProductId(product_id);
+
+        Double avarage_rating = 5.0;
+
+        if(total_comments != 0){
+            avarage_rating = ((commentsprodrepo.countCommentsWithRating1ByProductId(product_id) * 1.0) +
+                             (commentsprodrepo.countCommentsWithRating2ByProductId(product_id) * 2.0)  + 
+                             (commentsprodrepo.countCommentsWithRating3ByProductId(product_id) * 3.0)  + 
+                             (commentsprodrepo.countCommentsWithRating4ByProductId(product_id) * 4.0)  + 
+                             (commentsprodrepo.countCommentsWithRating5ByProductId(product_id) * 5.0)) /
+                              total_comments;
+        }
+
         String query = "SELECT new com.bphost.principal.model.productCardDTO( " +
                        "prod.id, " +
                        "prod.name, " +
@@ -95,7 +114,9 @@ public class productCardDTORepo {
                        "img.src, " +
                        "prod.active, " +
                        "subcat.id.category_id, " +
-                       "subcat.id.subcategory_seq) " +
+                       "subcat.id.subcategory_seq, " +
+                       avarage_rating.toString() + ", " +
+                       total_comments.toString() + ") " +
                        "FROM product prod " +
                        "JOIN subcat_product subcat ON prod.id = subcat.id.product_id " +
                        "JOIN product_img img ON prod.id = img.id.product_id ";

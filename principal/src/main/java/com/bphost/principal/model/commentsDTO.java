@@ -18,4 +18,24 @@ public class commentsDTO {
     private String    description;
     private Integer   rating;
     private LocalDate created_at;
+    private Double    average_rating;
+    private Integer   total_comments;
+
+
+    public commentsDTO(Integer comment_id, 
+                       Integer product_id, 
+                       String user_name, 
+                       String description, 
+                       Integer rating,
+                       LocalDate created_at) {
+        
+        this.comment_id  = comment_id;
+        this.product_id  = product_id;
+        this.user_name   = user_name;
+        this.description = description;
+        this.rating      = rating;
+        this.created_at  = created_at;
+    }
+
+    
 }

@@ -17,7 +17,8 @@ export class Comments {
 
   @Input() product_id: number = 0;
 
-  totalComments: number = 20423;
+  totalComments:   number = 0;
+  averageRating:   number = 0;
   starFilterValue: number = 0;
 
   comments: { id:     number;
@@ -43,13 +44,18 @@ export class Comments {
 
     this.request.executeRequestGET('api/getCommentsByProductId', requestParams).subscribe({
       next: (response) => {
-        let commentsresponse: { comment_id:  number;
-                                product_id:  number;
-                                user_name:   string;
-                                description: string;
-                                rating:      number;
-                                created_at:  string;
+        let commentsresponse: { comment_id:     number;
+                                product_id:     number;
+                                user_name:      string;
+                                description:    string;
+                                rating:         number;
+                                created_at:     string;
+                                average_rating: number;
+                                total_comments: number;
                               }[] = [];
+
+
+                              
 
         commentsresponse = response;
 
@@ -75,6 +81,8 @@ export class Comments {
             }))
           ];
 
+          this.totalComments = commentsresponse.length > 0 ? commentsresponse[0].total_comments : 0;
+          this.averageRating = commentsresponse.length > 0 ? Math.floor(commentsresponse[0].average_rating) : 1;
           if(commentsresponse.length == 0) this.endPage = true;
         }
 

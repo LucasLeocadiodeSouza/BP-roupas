@@ -20,6 +20,8 @@ public class productCardDTO {
     private Boolean    active;
     private Integer    category_id;
     private Integer    subcategory_seq;
+    private Double     avarage_rating;
+    private Integer    total_comments;
 
 
     public productCardDTO(Integer    product_id, 
@@ -56,6 +58,28 @@ public class productCardDTO {
         this.subcategory_seq = subcategory_seq;
     }
 
+    public productCardDTO(Integer    product_id, 
+                          String     name, 
+                          String     description, 
+                          BigDecimal price, 
+                          String     srcimage,
+                          Boolean    active, 
+                          Integer    category_id, 
+                          Integer    subcategory_seq,
+                          Double     avarage_rating,
+                          Integer    total_comments) {
+        this.product_id      = product_id;
+        this.name            = name;
+        this.description     = description;
+        this.price           = price;
+        this.srcimage        = srcimage;
+        this.active          = active;
+        this.category_id     = category_id;
+        this.subcategory_seq = subcategory_seq;
+        this.avarage_rating  = avarage_rating;
+        this.total_comments  = total_comments;
+    }
+
     public productCardDTO(Integer product_id, 
                           String name, 
                           String description, 
@@ -73,4 +97,26 @@ public class productCardDTO {
         this.category_id     = category_id;
         this.subcategory_seq = subcategory_seq;
     }
+
+    public productCardDTO(Integer product_id, 
+                          String name, 
+                          String description, 
+                          BigDecimal price, 
+                          String srcimage,
+                          String[] srcimages, 
+                          Boolean active, 
+                          Integer category_id, 
+                          Integer subcategory_seq) {
+        this.product_id      = product_id;
+        this.name            = name;
+        this.description     = description;
+        this.price           = price;
+        this.srcimage        = srcimage;
+        this.srcimages       = srcimages;
+        this.active          = active;
+        this.category_id     = category_id;
+        this.subcategory_seq = subcategory_seq;
+    }
+
+    
 }

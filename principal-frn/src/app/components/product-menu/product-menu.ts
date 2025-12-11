@@ -25,7 +25,9 @@ export class ProductMenu {
                      currency: string;
                      fullinfo: boolean;
                      extclass: string;
-                     href: string }[] = [];
+                     href: string;
+                     score: number;
+                     }[] = [];
 
   endPage:    boolean = false;
   pageNumber: number  = -1;
@@ -47,7 +49,10 @@ export class ProductMenu {
                      price:           string;
                      srcimage:        string;
                      category_id:     string;
-                     subcategory_seq: string }[] = [];
+                     subcategory_seq: string;
+                     avarage_rating:  number;
+                     total_comments:  number;
+                   }[] = [];
 
         cards = response;
 
@@ -60,7 +65,8 @@ export class ProductMenu {
             fullinfo: true,
             currency: "R$",
             extclass: "w100 line-clamp2",
-            href:     `/product?id=${card.product_id}`
+            href:     `/product?id=${card.product_id}`,
+            score:    Math.floor(card.avarage_rating)
         }));
 
         this.productCardList = [...this.productCardList, ...newCards];
