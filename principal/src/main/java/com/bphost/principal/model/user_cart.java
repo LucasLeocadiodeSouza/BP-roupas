@@ -1,5 +1,6 @@
 package com.bphost.principal.model;
 
+import java.time.LocalDate;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -16,18 +17,31 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "comments_prod")
-public class comments_prod {
+@Table(name = "user_cart")
+public class user_cart {
     @EmbeddedId
-    private comments_prodId id;
+    private user_cartId id;
 
     @ManyToOne
-    @MapsId("comment_id")
-    @JoinColumn(name = "comment_id")
-    private comments comments;
+    @MapsId("useraccount_id")
+    @JoinColumn(name = "useraccount_id")
+    private user_account useraccount;
 
     @ManyToOne
     @MapsId("product_id")
     @JoinColumn(name = "product_id")
     private product product;
+    
+    @ManyToOne
+    @MapsId("spec_size_id")
+    @JoinColumn(name = "spec_size_id")
+    private specification_size spec_size;
+    
+    @ManyToOne
+    @MapsId("spec_color_id")
+    @JoinColumn(name = "spec_color_id")
+    private specification_color spec_color;
+
+    private Integer   quantity;
+    private LocalDate create_at;
 }
