@@ -17,6 +17,8 @@ import { ProfileOrdersDelivered } from './pages/profile-orders-delivered/profile
 import { Insert } from './layout/insert/insert';
 import { InsertProduct } from './pages/insert-product/insert-product';
 import { InsertComment } from './pages/insert-comment/insert-comment';
+import { CreateUser } from './pages/create-user/create-user';
+import { Login } from './pages/login/login';
 
 export const routes: Routes = [
     {
@@ -62,6 +64,14 @@ export const routes: Routes = [
            {
             path: '',
             component: InsertProduct
+           },
+           {
+            path: 'create-user',
+            component: CreateUser
+           },
+           {
+            path: 'login',
+            component: Login
            }
         ]
     },

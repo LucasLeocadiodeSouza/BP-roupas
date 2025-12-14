@@ -8,10 +8,6 @@
 .info           {margin-top: 10px; cursor: pointer; display: flex; justify-content: center;}
 .info         a {text-decoration: none; color: #000; text-align: center;}
 
-.input-ddd {width: 30px !important; text-align: center;}
-
-.ml0 {margin-left: 0px !important;}
-
 .inputForm {
   border: 1.5px solid #ecedec;
   border-radius: 10px;
@@ -37,8 +33,6 @@
 .inputForm:focus-within {
   border: 1.5px solid #2d79f3;
 }
-
-.input-email {width: 300px;}
 
 .control-buttons {display: flex; justify-content: center; align-items: center; gap: 10px;}
 .control-button  {border: 1px solid var(--color-border, #bdbdbd); color: #fff; background: var(--color-primary, #eeeeee); border-radius: 30px; font-size: 18px; padding: 15px 20px; cursor: pointer; transition: 0.2s ease-out;}

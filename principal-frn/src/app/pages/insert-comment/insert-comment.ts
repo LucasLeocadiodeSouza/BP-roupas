@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { StarRating } from "../../components/star-rating/star-rating";
 import { CommonModule } from '@angular/common';
+import { StarRating } from "../../components/star-rating/star-rating";
 import { ActivatedRoute } from '@angular/router';
 import { RequestForm } from '../../service/request-form';
 

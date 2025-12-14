@@ -1,1 +1,62 @@
-<p>create-user works!</p>
+<div class="container-main">
+  <div class="container">
+    <div class="container-product">
+        <div class="product-info">
+            <div class="title">
+                <h3>Crie sua Conta</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="inputForm">
+      <svg fill="#000000" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1,1,0,0,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1A10,10,0,0,0,15.71,12.71ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z"/></svg>
+      <input type="text" class="input" placeholder="Digite seu nome de Usuário" (input)="changeUsername($event)">
+    </div>
+
+    <div class="alert" [ngClass]="{'alert-active': textUsernameError, 'dnone': !textUsernameError}">
+      <span>Nome do usuario deve conter mais de 7 caracteres</span>
+    </div>
+
+    <div class="inputForm">
+      <svg height="20" viewBox="0 0 32 32" width="20" xmlns="http://www.w3.org/2000/svg"><g id="Layer_3" data-name="Layer 3"><path d="m30.853 13.87a15 15 0 0 0 -29.729 4.082 15.1 15.1 0 0 0 12.876 12.918 15.6 15.6 0 0 0 2.016.13 14.85 14.85 0 0 0 7.715-2.145 1 1 0 1 0 -1.031-1.711 13.007 13.007 0 1 1 5.458-6.529 2.149 2.149 0 0 1 -4.158-.759v-10.856a1 1 0 0 0 -2 0v1.726a8 8 0 1 0 .2 10.325 4.135 4.135 0 0 0 7.83.274 15.2 15.2 0 0 0 .823-7.455zm-14.853 8.13a6 6 0 1 1 6-6 6.006 6.006 0 0 1 -6 6z"></path></g></svg>
+      <input type="text" class="input" placeholder="Digite seu Email" (input)="changeEmail($event)">
+    </div>
+
+    <div class="alert" [ngClass]="{'alert-active': textEmailError, 'dnone': !textEmailError}">
+      <span>Endereço de email não encontrado</span>
+    </div>
+
+    <div class="inputForm">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve"><g><path fill="#231F20" d="M84.96,70.237c-0.167-1.032-0.814-1.914-1.783-2.438l-14.335-8.446l-0.118-0.066 c-0.579-0.297-1.249-0.45-1.937-0.45c-1.201,0-2.348,0.455-3.144,1.253l-4.231,4.233c-0.181,0.172-0.771,0.421-0.95,0.43 c-0.049-0.004-4.923-0.355-13.896-9.329c-8.957-8.955-9.337-13.844-9.34-13.844c0.005-0.25,0.251-0.838,0.426-1.02l3.608-3.607 c1.271-1.274,1.652-3.386,0.898-5.022L32.19,16.938c-0.579-1.192-1.704-1.928-2.952-1.928c-0.883,0-1.735,0.366-2.401,1.031 l-9.835,9.813c-0.943,0.938-1.755,2.578-1.932,3.898c-0.086,0.631-1.831,15.693,18.819,36.346	C51.42,83.627,65.09,84.989,68.865,84.989l0,0c0.812,0,1.285-0.058,1.376-0.071c1.316-0.176,2.954-0.986,3.891-1.925l9.827-9.826 C84.761,72.361,85.127,71.296,84.96,70.237z"/></g></svg>
+      <input #inputddd type="text" class="input input-ddd" [ngClass]="{'dnone': !isFullPhoneNumber}" disabled>
+      <input type="text" class="input" [ngClass]="{'ml0': isFullPhoneNumber}" placeholder="Digite seu número de telefone" (input)="changePhoneNumber($event)">
+    </div>
+
+    <div class="alert" [ngClass]="{'alert-active': textNumberError, 'dnone': !textNumberError}">
+      <span>Número de telefone incorreto. Não se esqueça de informar o DDD</span>
+    </div>
+
+    <div class="inputForm">
+      <svg height="20" viewBox="-64 0 512 512" width="20" xmlns="http://www.w3.org/2000/svg"><path d="m336 512h-288c-26.453125 0-48-21.523438-48-48v-224c0-26.476562 21.546875-48 48-48h288c26.453125 0 48 21.523438 48 48v224c0 26.476562-21.546875 48-48 48zm-288-288c-8.8125 0-16 7.167969-16 16v224c0 8.832031 7.1875 16 16 16h288c8.8125 0 16-7.167969 16-16v-224c0-8.832031-7.1875-16-16-16zm0 0"></path><path d="m304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969 16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0"></path></svg>
+      <input type="password" class="input" placeholder="Digite sua senha" (input)="changePassword($event)">
+    </div>
+
+    <div class="alert" [ngClass]="{'alert-active': textPasswordError, 'dnone': !textPasswordError}">
+      <span>Sua senha deve conter mais de 11 caracteres</span>
+    </div>
+
+    <div class="control-buttons">
+        <div class="control-button">
+            <span>Criar</span>
+        </div>
+    </div>
+
+    <div class="info">
+      <a href="/insert/login">
+        <div class="about">
+            <p>Já Tem uma Conta? Entre</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

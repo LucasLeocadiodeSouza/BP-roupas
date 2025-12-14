@@ -6,13 +6,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.bphost.principal.model.comments;
 import com.bphost.principal.model.commentsDTO;
 import com.bphost.principal.model.comments_prod;
@@ -22,8 +20,6 @@ import com.bphost.principal.model.productCardDTO;
 import com.bphost.principal.model.product_img;
 import com.bphost.principal.model.product_imgId;
 import com.bphost.principal.model.specificationDTO;
-import com.bphost.principal.model.specification_color;
-import com.bphost.principal.model.specification_size;
 import com.bphost.principal.repository.commentsDTORepo;
 import com.bphost.principal.repository.commentsProdRepo;
 import com.bphost.principal.repository.commentsRepo;
@@ -31,8 +27,6 @@ import com.bphost.principal.repository.productCardDTORepo;
 import com.bphost.principal.repository.productRepo;
 import com.bphost.principal.repository.product_imgRepo;
 import com.bphost.principal.repository.specificationDTORepo;
-import com.bphost.principal.repository.specification_colorRepo;
-import com.bphost.principal.repository.specification_sizeRepo;
 
 import jakarta.transaction.Transactional;
 
