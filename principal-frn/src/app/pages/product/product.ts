@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RequestForm } from '../../service/request-form';
 import { Comments } from "../../components/comments/comments";
 import { StarRating } from "../../components/star-rating/star-rating";
-import id from '@angular/common/locales/extra/id';
+import { CartForm } from '../../service/cart-form';
 
 @Component({
   selector: 'app-product',
@@ -17,13 +17,17 @@ import id from '@angular/common/locales/extra/id';
 export class Product {
   private request = inject(RequestForm);
 
-  constructor(private cdRef: ChangeDetectorRef, private route: ActivatedRoute) {}
+  constructor(private cdRef: ChangeDetectorRef, private route: ActivatedRoute, private cartForm: CartForm) {}
 
   @ViewChild('buttcolor', { read: ViewContainerRef }) buttcolor!: ViewContainerRef;
 
   category:    {id: number, name: string} = {id: 0, name: ""};
   subcategory: {id: number, name: string} = {id: 0, name: ""};
   product:     {id: number, name: string, description: string, price: string, active: boolean, score: number, total_comments: number} = {id: 0, name: "", description: "", price: "", active: true, score: 0, total_comments: 0};
+  quantity:    number = 1;
+
+  textColorErro: boolean = false;
+  textSizeErro:  boolean = false;
 
   currency: string    = "";
   sales:    string    = "";
@@ -46,6 +50,10 @@ export class Product {
 
   banners: { src: string; height: string; width: string }[] = [];
 
+  changeQuantity(event: any) {
+    this.quantity = event.target.value;
+  }
+
   selectEspecificationSize(event: any) {
     if(!this.product.active) return;
 
@@ -57,9 +65,11 @@ export class Product {
     });
 
     element.classList.add("selected");
-    this.specificationSizeSelected = element.id;
+    this.specificationSizeSelected  = element.id;
+    this.specificationColorSelected = "";
+    this.textSizeErro               = false;
 
-    this.getSpecificationSizeByProduct();
+    this.getSpecificationColorByProduct();
   }
 
   selectEspecificationColor(event: any) {
@@ -76,6 +86,8 @@ export class Product {
 
     element.classList.add("selected");
     this.specificationColorSelected = element.id;
+
+    this.textColorErro = false;
   }
 
   loadProductsInformation(){
@@ -121,6 +133,9 @@ export class Product {
             width: "495px"
         }));
 
+        this.registerUserHistory();
+        this.getSubcategoryName();
+
         this.cdRef.detectChanges();
       },
       error: (error) => {
@@ -136,6 +151,8 @@ export class Product {
 
         this.category    = {id: response.category_id, name: response.category_name};
         this.subcategory = {id: response.subcategory_seq, name: response.subcategory_name};
+
+        this.getSizesSpecification();
 
         this.cdRef.detectChanges();
       },
@@ -180,29 +197,6 @@ export class Product {
     });
   }
 
-  getColorsSpecification(){
-    this.request.executeRequestGET('api/getSpecificationColor').subscribe({
-      next: (response) => {
-        var colors: { id: number; color: string;}[] = [];
-
-        colors = response;
-
-        const colorsFormat = colors.map(color => ({
-            color:     color.color,
-            id:        color.id,
-            extclass:  "inactive"
-        }));
-
-        this.specificationColor = [...this.specificationColor, ...colorsFormat];
-
-        this.cdRef.detectChanges();
-      },
-      error: (error) => {
-        console.error('Erro:', error);
-      }
-    });
-  }
-
   getSizesSpecification(){
     this.request.executeRequestGET('api/getSpecificationSize', {category_id: this.category.id}).subscribe({
       next: (response) => {
@@ -226,7 +220,30 @@ export class Product {
     });
   }
 
-  getSpecificationSizeByProduct(){
+  getColorsSpecification(){
+    this.request.executeRequestGET('api/getSpecificationColor').subscribe({
+      next: (response) => {
+        var colors: { id: number; color: string;}[] = [];
+
+        colors = response;
+
+        const colorsFormat = colors.map(color => ({
+            color:     color.color,
+            id:        color.id,
+            extclass:  "inactive"
+        }));
+
+        this.specificationColor = [...this.specificationColor, ...colorsFormat];
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
+
+  getSpecificationColorByProduct(){
     this.request.executeRequestGET('api/getSpecificationColorByProduct', {id: this.product.id, size_id: this.specificationSizeSelected}).subscribe({
       next: (response) => {
         var colors: { prod_id:  number;
@@ -263,11 +280,44 @@ export class Product {
     });
   }
 
+  registerUserHistory(){
+    this.request.isLoggedIn().subscribe(isLogged =>{
+      if(!isLogged) return;
+
+      this.request.executeRequestPOST('account/registerUserHistory', {product_id: this.product.id}).subscribe({
+        next: (response) => {},
+        error: (error) => console.error('Erro:', error)
+      });
+    });
+  }
+
+  addToCart() {
+    if(Number(this.specificationSizeSelected) == 0) {
+      this.textSizeErro  = true;
+      return;
+    }
+
+    if(Number(this.specificationColorSelected) == 0) {
+      this.textColorErro = true;
+      return;
+    }
+
+    const item = { product_id: this.product.id,
+                   size_id:    Number(this.specificationSizeSelected),
+                   color_id:   Number(this.specificationColorSelected),
+                   quantity:   this.quantity};
+
+    this.cartForm.registerProductFromCart(item);
+  }
+
+  buyNow(){
+    this.addToCart();
+  }
+
+
   ngOnInit() {
     this.loadProductsInformation();
-    this.getSubcategoryName();
     this.getColorsSpecification();
-    this.getSizesSpecification();
     this.loadProductsList();
   }
 }

@@ -25,14 +25,21 @@ a  {text-decoration: none;}
 
 .divproduct {position: relative;}
 
-.delete-prod {width: 25px; height: 25px; 
-              border-radius: 13px;
-              margin-inline: 10px; 
-              background-color: #ffffff; 
-              display: flex; justify-content: center; align-items: center; 
-              position: absolute;
-              right: -10px;
-              top: 0;
-              cursor: pointer;}
+.delete-prod, .size-prod, .quantity-prod { border-radius: 13px;
+                                           margin-inline: 10px;
+                                           display:       flex; justify-content: center; align-items: center;
+                                           position:      absolute;
+                                           padding:       7px 10px;
+                                           font-size:     12px;}
+
+.size-prod, .quantity-prod {background: var(--color-primary, #292617); color: var(--color-label-inv, #eaeaea);}
+
+.delete-prod   {right: -10px; top: 0;    cursor: pointer; background-color: #ffffff;}
+.size-prod     {left: -20px;  top: 30px; opacity: 0.7;}
+.quantity-prod {left: -20px;  top: 60px; opacity: 0.7;}
 
 .ff-Inter {font-family: "Inter"; font-size: 24px; margin-block: 15px;}
+
+.alert {height: 0; opacity: 0; visibility: hidden; overflow: hidden; transition: opacity 0.3s, height 0.3s; display: flex; justify-content: center;}
+.alert span {color: #b60000; font-size: 14px; font-family: "Inter";}
+.alert-active { height: auto; opacity: 0.8; visibility: visible; margin-block: 10px;}

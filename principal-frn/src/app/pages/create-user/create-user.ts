@@ -16,17 +16,66 @@ export class CreateUser {
 
   @ViewChild('inputddd', { read: ViewContainerRef }) inputddd!: ViewContainerRef;
 
-  textUsernameError: boolean = false;
-  textEmailError:    boolean = false;
-  textNumberError:   boolean = false;
-  textPasswordError: boolean = false;
+  hasTextUsernameError: boolean = false;
+  hasTextEmailError:    boolean = false;
+  hasTextNumberError:   boolean = false;
+  hasTextPasswordError: boolean = false;
+  hasTextInternalError: boolean = false;
 
-  textEmail:       string = "";
-  textUsername:    string = "";
-  textPhoneNumber: number = 0;
-  textPassword:    string = "";
+  textUsername:      string = "";
+  textEmail:         string = "";
+  textPhoneNumber:   number = 0;
+  textPassword:      string = "";
+  textInternalError: string = "";
 
   isFullPhoneNumber: boolean = false
+
+
+  validFields(){
+    if(this.textUsername.length < 7) this.hasTextUsernameError = true;
+
+    if(this.textEmail == null || this.textEmail == "") this.hasTextEmailError = true;
+    //if(!this.textEmail.contains("@") || !email.textEmail(".com")) this.textEmailError = true;
+
+    if(!this.textPhoneNumber || this.textPhoneNumber == 0) this.hasTextNumberError = true;
+    if(String(this.textPhoneNumber).length != 11) this.hasTextNumberError = true;
+
+    if(this.textPassword.length < 11) this.hasTextPasswordError = true;
+  }
+
+  registerUserAccount(){
+    this.validFields();
+
+    const param = {
+      username:  this.textUsername,
+      email:     this.textEmail,
+      telephone: this.textPhoneNumber,
+      password:  this.textPassword
+    }
+
+    this.request.executeRequestPOST('account/registerUserAccount', param).subscribe({
+      next: (response) => {
+
+        window.open('/insert/login', '_self');
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+
+        this.textInternalError = error.error;
+        this.hasTextInternalError = true;
+
+        // reset ts errors
+        this.hasTextUsernameError = false;
+        this.hasTextEmailError    = false;
+        this.hasTextNumberError   = false;
+        this.hasTextPasswordError = false;
+        this.cdRef.detectChanges();
+      }
+    });
+  }
+
 
   changeUsername(event: any) {
     this.textUsername = event.target.value;

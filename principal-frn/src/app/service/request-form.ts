@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class RequestForm {
           url += '?' + queryParams;
       }
 
-      return this.http.get(url);
+      return this.http.get(url, {withCredentials: true});
   }
 
   executeRequestPOST(path: string, body: any, params?: any): Observable<any> {
@@ -40,6 +40,13 @@ export class RequestForm {
         url += '?' + queryParams;
     }
 
-    return this.http.post(url, body);
+    return this.http.post(url, body, {withCredentials: true});
+  }
+
+  isLoggedIn(): Observable<boolean> {
+    return this.http.get(`${this.apiUrl}/auth/me`, { withCredentials: true }).pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
   }
 }

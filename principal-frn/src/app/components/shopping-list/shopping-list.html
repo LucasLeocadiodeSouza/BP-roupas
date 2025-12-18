@@ -9,8 +9,8 @@
             <div class="separador"></div>
 
             <div class="disprow jc-center ai-c">
-                <h4 class="dcurrency">R$</h4>
-                <h4 class="dprice">25,99</h4>
+                <h4 class="dcurrency">{{ currency }}</h4>
+                <h4 class="dprice">{{ getPriceSum() }}</h4>
             </div>
 
             <div class="separador"></div>
@@ -27,13 +27,21 @@
             </div>
         </div>
         <div class="divisor container-down" #produtsLists>
-            <div class="divproduct" *ngFor="let miniCard of miniCards" #product>
-                <div class="delete-prod" (click)="deleteProductInCart(product)">
-                    <img src="assets/images/close-icon.png" height="10px">
-                </div>
+          <div class="divproduct" *ngFor="let miniCard of cartItems$ | async as cartItems" #product>
+              <div class="delete-prod" (click)="removeFromCart(miniCard.product_id, miniCard.size_id, miniCard.color_id, miniCard.quantity)">
+                  <img src="assets/images/close-icon.png" height="10px">
+              </div>
 
-                <app-mini-card [title]="miniCard.title" [srcImages]="miniCard.src" [price]="miniCard.price" [extclass]="miniCard.extclass" [href]="miniCard.href"  [currency]="miniCard.currency"></app-mini-card>
-            </div>
+              <div class="size-prod">
+                  <span>{{ miniCard.size }}</span>
+              </div>
+
+              <div class="quantity-prod">
+                  <span>{{ miniCard.quantity }}</span>
+              </div>
+
+             <app-mini-card [title]="miniCard.title" [srcImages]="miniCard.src" [price]="miniCard.price" [extclass]="miniCard.extclass" [href]="miniCard.href"  [currency]="miniCard.currency"></app-mini-card>
+          </div>
 
         </div>
     </main>

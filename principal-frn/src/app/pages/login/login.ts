@@ -17,11 +17,35 @@ export class Login {
   textUsername:    string = "";
   textPassword:    string = "";
 
+  loginUserAccount(){
+    const param = {
+      username: this.textUsername,
+      password: this.textPassword
+    }
+
+    this.request.executeRequestPOST('auth/login', param).subscribe({
+      next: (response) => {
+        window.open('/', '_self');
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+
+        this.textError = true;
+        this.cdRef.detectChanges();
+      }
+    });
+
+  }
+
+
+
   changeUsername(event: any) {
     this.textUsername = event.target.value;
+    this.textError    = false;
   }
 
   changePassword(event: any) {
     this.textPassword = event.target.value;
+    this.textError    = false;
   }
 }

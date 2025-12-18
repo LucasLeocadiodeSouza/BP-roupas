@@ -4,11 +4,11 @@
     <router-outlet></router-outlet>
   </main>
 
-  <div class="w-17 z200">
+  <div class="z200" [ngClass]="{'dnone': ThisEmptycart()}">
     <app-shopping-list></app-shopping-list>
   </div>
 </div>
 
-<div class="w-83">
+<div class="w-footer">
     <app-footer></app-footer>
 </div>

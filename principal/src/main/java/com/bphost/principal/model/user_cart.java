@@ -25,7 +25,7 @@ public class user_cart {
     @ManyToOne
     @MapsId("useraccount_id")
     @JoinColumn(name = "useraccount_id")
-    private user_account useraccount;
+    private user_account userAccount;
 
     @ManyToOne
     @MapsId("product_id")

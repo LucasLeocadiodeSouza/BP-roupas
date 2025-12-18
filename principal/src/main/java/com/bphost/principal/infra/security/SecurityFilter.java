@@ -7,7 +7,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.bphost.principal.repository.user_accountRepo;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -21,16 +20,15 @@ public class SecurityFilter extends OncePerRequestFilter{
     tokenService tokenservice;
 
     @Autowired
-    user_accountRepo userRepository;
+    UserDetailsServiceImpl userDetails;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)throws ServletException, IOException {        
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {        
         String path = request.getServletPath();
         String method = request.getMethod();
 
         if (path.equals("/webhook") && method.equals("POST") ||
-            path.equals("/auth/login") ||
-            path.equals("/login") ||
+            (path.startsWith("/auth") && !path.equals("/auth/me")) ||
             path.startsWith("/impressao") ||
             path.equals("/")) {
             
@@ -43,7 +41,8 @@ public class SecurityFilter extends OncePerRequestFilter{
         if(token != null){
             var login = tokenservice.validateToken(token);
             if(login != null){
-                UserDetails user = userRepository.findByUsername(login);
+                UserDetails user = userDetails.loadUserByUsername(login); //userRepository.findByUsername(login);
+
                 if(user != null){
                     var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);

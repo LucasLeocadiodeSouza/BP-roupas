@@ -6,10 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,14 +28,14 @@ public class config {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("*"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
-            
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("http://localhost:4200"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 
@@ -44,26 +46,34 @@ public class config {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
                 .authorizeHttpRequests(authorize -> authorize
-                                                     .requestMatchers("/").permitAll()
-                                                     .requestMatchers("/impressao/**").permitAll()
-                                                     .requestMatchers(HttpMethod.GET, "/impressao").permitAll()
-                                                     .requestMatchers(HttpMethod.POST, "/impressao").permitAll()
-                                                     .requestMatchers(HttpMethod.HEAD, "/impressao").permitAll()
-                                                     .requestMatchers(HttpMethod.OPTIONS, "/impressao").permitAll()
+                                                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                                      .requestMatchers(HttpMethod.POST, "/webhook", "/impressao").permitAll()
                                                      .requestMatchers(HttpMethod.GET, "/login").permitAll()
                                                      .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                                                      .requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN")
+                                                     .requestMatchers(HttpMethod.GET, "/auth/me").permitAll()
                                                      .requestMatchers(HttpMethod.GET, "/icons/**", "/css/**", "/js/**").permitAll()
-                                                     .anyRequest().permitAll()
+                                                     .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                                                     .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
-            return authenticationConfiguration.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(
+            UserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder) {
+
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
     }
 
     @Bean

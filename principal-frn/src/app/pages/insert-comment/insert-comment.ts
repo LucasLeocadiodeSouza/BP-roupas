@@ -60,7 +60,7 @@ export class InsertComment {
   }
 
   sendReview(){
-    this.request.executeRequestPOST('api/sendReviewComment', null, {id: this.product_id, description: this.product_description, rating: this.rating}).subscribe({
+    this.request.executeRequestPOST('api/sendReviewComment', {id: this.product_id, description: this.product_description, rating: this.rating}).subscribe({
       next: (response) => {
         window.open('/product?id=' + this.product_id, '_self');
       },

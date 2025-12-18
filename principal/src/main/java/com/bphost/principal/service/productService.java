@@ -56,11 +56,11 @@ public class productService {
     @Autowired
     private commentsDTORepo commentDTORepo;
 
-    public static String uploadDirectory = System.getProperty("user.dir") + "/uploadImage/products";
-    public static String tempDirectory = System.getProperty("user.dir") + "/uploadImage/temp";
+    private String uploadDirectory = System.getProperty("user.dir") + "/uploadImage/products";
+    private String tempDirectory = System.getProperty("user.dir") + "/uploadImage/temp";
 
     @Transactional
-    public void registerImage(MultipartFile image, Integer product_id) throws IOException{
+    private void registerImage(MultipartFile image, Integer product_id) throws IOException{
        product product = prodRepo.findProductById(product_id);
        if(product == null) throw new RuntimeException("Não encontrado o produto com o Código '" + product_id + "'!");
     
@@ -86,7 +86,7 @@ public class productService {
     }
 
     @Transactional
-    public Integer registerProduct(Integer id, String name, String description, BigDecimal price){
+    private Integer registerProduct(Integer id, String name, String description, BigDecimal price){
         product product = prodRepo.findProductById(id);
         if(product == null) product = new product();
         

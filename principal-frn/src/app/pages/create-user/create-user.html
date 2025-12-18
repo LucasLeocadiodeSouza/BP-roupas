@@ -13,7 +13,7 @@
       <input type="text" class="input" placeholder="Digite seu nome de Usuário" (input)="changeUsername($event)">
     </div>
 
-    <div class="alert" [ngClass]="{'alert-active': textUsernameError, 'dnone': !textUsernameError}">
+    <div class="alert" [ngClass]="{'alert-active': hasTextUsernameError}">
       <span>Nome do usuario deve conter mais de 7 caracteres</span>
     </div>
 
@@ -22,7 +22,7 @@
       <input type="text" class="input" placeholder="Digite seu Email" (input)="changeEmail($event)">
     </div>
 
-    <div class="alert" [ngClass]="{'alert-active': textEmailError, 'dnone': !textEmailError}">
+    <div class="alert" [ngClass]="{'alert-active': hasTextEmailError}">
       <span>Endereço de email não encontrado</span>
     </div>
 
@@ -32,7 +32,7 @@
       <input type="text" class="input" [ngClass]="{'ml0': isFullPhoneNumber}" placeholder="Digite seu número de telefone" (input)="changePhoneNumber($event)">
     </div>
 
-    <div class="alert" [ngClass]="{'alert-active': textNumberError, 'dnone': !textNumberError}">
+    <div class="alert" [ngClass]="{'alert-active': hasTextNumberError}">
       <span>Número de telefone incorreto. Não se esqueça de informar o DDD</span>
     </div>
 
@@ -41,12 +41,16 @@
       <input type="password" class="input" placeholder="Digite sua senha" (input)="changePassword($event)">
     </div>
 
-    <div class="alert" [ngClass]="{'alert-active': textPasswordError, 'dnone': !textPasswordError}">
+    <div class="alert" [ngClass]="{'alert-active': hasTextPasswordError}">
       <span>Sua senha deve conter mais de 11 caracteres</span>
     </div>
 
+    <div class="alert" [ngClass]="{'alert-active': hasTextInternalError}">
+      <span>{{ textInternalError }}</span>
+    </div>
+
     <div class="control-buttons">
-        <div class="control-button">
+        <div class="control-button" (click)="registerUserAccount()">
             <span>Criar</span>
         </div>
     </div>

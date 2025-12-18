@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
 import com.bphost.principal.model.category;
 import com.bphost.principal.model.categoryCardDTO;
+import com.bphost.principal.model.comments;
 import com.bphost.principal.model.commentsDTO;
 import com.bphost.principal.model.productCardDTO;
 import com.bphost.principal.model.specificationDTO;
@@ -29,7 +31,6 @@ import com.bphost.principal.model.specification_color;
 import com.bphost.principal.model.specification_size;
 import com.bphost.principal.service.categoryService;
 import com.bphost.principal.service.productService;
-import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api")
@@ -41,17 +42,16 @@ public class genController {
     @Autowired
     private productService prodService;
 
-    public static String uploadDirectory      = System.getProperty("user.dir") + "/uploadImage/products";
-    public static String categoryDirectory    = System.getProperty("user.dir") + "/uploadImage/categories";
-    public static String subcategoryDirectory = System.getProperty("user.dir") + "/uploadImage/categories/subcategories";
-    public static String tempDirectory        = System.getProperty("user.dir") + "/uploadImage/temp";
+    private String uploadDirectory      = System.getProperty("user.dir") + "/uploadImage/products";
+    private String categoryDirectory    = System.getProperty("user.dir") + "/uploadImage/categories";
+    private String subcategoryDirectory = System.getProperty("user.dir") + "/uploadImage/categories/subcategories";
+    private String tempDirectory        = System.getProperty("user.dir") + "/uploadImage/temp";
 
 
     // ######### Endpoints for Product Management #########
 
     @PostMapping(value = "/registerTempImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> registerTempImage(@RequestParam(value = "image", required = false) MultipartFile image,
-                                                HttpServletRequest request) throws IOException{
+    public ResponseEntity<?> registerTempImage(@RequestParam(value = "image", required = false) MultipartFile image) throws IOException{
         try {
             Path fileNameAndPath = Paths.get(tempDirectory, image.getOriginalFilename());
             Files.write(fileNameAndPath, image.getBytes());
@@ -79,8 +79,7 @@ public class genController {
                                              @RequestParam(value = "color_id", required = false)        Integer color_id,
                                              @RequestParam(value = "size_id[]", required = false)       Integer[] size_id,
                                              @RequestParam(value = "storage", required = false)         Integer storage,
-                                             @RequestParam(value = "images[]", required = false)        MultipartFile[] images,
-                                             HttpServletRequest request) throws IOException{
+                                             @RequestParam(value = "images[]", required = false)        MultipartFile[] images) throws IOException{
         try {
             prodService.adapterRegisterProduct(product_id, name, description, price, category_id, subcategory_seq, color_id, size_id, storage, images);
 
@@ -97,11 +96,9 @@ public class genController {
     }
 
     @PostMapping(value = "/sendReviewComment")
-    public ResponseEntity<?> sendReviewComment(@RequestParam(value = "id", required = true)          Integer product_id,
-                                               @RequestParam(value = "description", required = true) String description,
-                                               @RequestParam(value = "rating", required = true)      Integer rating){
+    public ResponseEntity<?> sendReviewComment(@RequestBody comments comment){
         try {
-            prodService.sendReviewComment(product_id, description, rating);
+            prodService.sendReviewComment(comment.getId(), comment.getDescription(), comment.getRating());
 
             Map<String, String> response = new HashMap<>();
             response.put("status", "success");

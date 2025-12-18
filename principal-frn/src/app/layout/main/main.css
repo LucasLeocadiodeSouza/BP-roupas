@@ -1,5 +1,9 @@
-main  {width: calc(100% - 260px);}
-.w-17 {width: 260px}
-.w-83 {width: 83%;}
+:host{
+  --layout-main-w-shop: 260px;
+}
+
+main  {width: calc(100% - var(--layout-main-w-shop)); transition: width 0.2s ease-in;}
+.w-shop {width: 260px}
+.w-footer {width: calc(100% - var(--layout-main-w-shop, 260px));}
 
 .z200 {z-index: 200;}

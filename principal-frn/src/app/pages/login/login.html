@@ -18,12 +18,12 @@
       <input type="password" class="input" placeholder="Digite sua senha" (input)="changePassword($event)">
     </div>
 
-    <div class="alert" [ngClass]="{'alert-active': textError, 'dnone': !textError}">
+    <div class="alert" [ngClass]="{'alert-active': textError}">
       <span>Usuário ou senha incorretos</span>
     </div>
 
     <div class="control-buttons">
-        <div class="control-button">
+        <div class="control-button" (click)="loginUserAccount()">
             <span>Entrar</span>
         </div>
     </div>
