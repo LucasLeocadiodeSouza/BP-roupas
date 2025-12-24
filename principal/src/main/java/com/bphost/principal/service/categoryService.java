@@ -3,6 +3,11 @@ package com.bphost.principal.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.bphost.principal.exception.CategoryException;
+import com.bphost.principal.exception.ProductException;
+import com.bphost.principal.exception.ProductNotFoundException;
+import com.bphost.principal.exception.SpecificationNotFoundException;
+import com.bphost.principal.exception.SubCategoryException;
 import com.bphost.principal.model.category;
 import com.bphost.principal.model.categoryCardDTO;
 import com.bphost.principal.model.product;
@@ -111,13 +116,13 @@ public class categoryService {
     @Transactional
     public void registerSubCategProd(Integer product_id, Integer categ_id, Integer subcateg_seq){
         product product = prodRepo.findProductById(product_id);
-        if(product == null) throw new RuntimeException("Não encontrado o produto com o Código '" + product_id + "'!");
+        if(product == null) throw new ProductNotFoundException("Não encontrado o produto com o Código '" + product_id + "'!");
 
         category categ = categRepo.findCategById(categ_id);
-        if(categ == null) throw new RuntimeException("Não encontrado a Categoria informada com o Código'" + categ_id + "'!");
+        if(categ == null) throw new CategoryException("Não encontrado a Categoria informada com o Código'" + categ_id + "'!");
 
         subcategory subcateg = subcategRepo.findSubCategById(categ_id, subcateg_seq);
-        if(subcateg == null) throw new RuntimeException("Não encontrado a Subcategoria informada com o Código'" + subcateg + "'!");
+        if(subcateg == null) throw new SubCategoryException("Não encontrado a Subcategoria informada com o Código'" + subcateg_seq + "'!");
 
         subcat_product subcategprod = subcatprodRepo.findSubcategProdById(product_id, categ_id, subcateg_seq);
         if(subcategprod == null) subcategprod = new subcat_product();
@@ -136,13 +141,13 @@ public class categoryService {
     @Transactional
     public void registerProductSize(Integer product_id, Integer size_id, Integer color_id, Integer storage){
         product product = prodRepo.findProductById(product_id);
-        if(product == null) throw new RuntimeException("Não encontrado o produto com o Código '" + product_id + "'!");
+        if(product == null) throw new ProductNotFoundException("Não encontrado o produto com o Código '" + product_id + "'!");
 
         specification_size size = specsizeRepo.findSizeById(size_id);
-        if(size == null)  throw new RuntimeException("Não encontrado o tamanho do produto informado!"); 
+        if(size == null)  throw new SpecificationNotFoundException("Não encontrado o tamanho do produto informado!"); 
 
         specification_color color = speccolorRepo.findColorById(color_id);
-        if(color == null)  throw new RuntimeException("Não encontrado a cor produto informado!"); 
+        if(color == null)  throw new SpecificationNotFoundException("Não encontrado a cor produto informado!"); 
 
         specification_prodId specprodId = new specification_prodId();
         specprodId.setColor_id(color_id);

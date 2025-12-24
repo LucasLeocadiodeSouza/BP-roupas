@@ -52,21 +52,14 @@ public class genController {
 
     @PostMapping(value = "/registerTempImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> registerTempImage(@RequestParam(value = "image", required = false) MultipartFile image) throws IOException{
-        try {
-            Path fileNameAndPath = Paths.get(tempDirectory, image.getOriginalFilename());
-            Files.write(fileNameAndPath, image.getBytes());
+        Path fileNameAndPath = Paths.get(tempDirectory, image.getOriginalFilename());
+        Files.write(fileNameAndPath, image.getBytes());
 
-            Map<String, String> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("filename", image.getOriginalFilename());
-            response.put("message", "Image uploaded successfully");
-
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro interno ao cadastrar Imagem do Produto: " + e.getMessage());
-        }
+        return ResponseEntity.ok(Map.of(
+                "status", "success",
+                "filename", image.getOriginalFilename(),
+                "message", "Image uploaded successfully"
+        ));
     }
 
     @PostMapping(value = "/registerProduct", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -80,36 +73,23 @@ public class genController {
                                              @RequestParam(value = "size_id[]", required = false)       Integer[] size_id,
                                              @RequestParam(value = "storage", required = false)         Integer storage,
                                              @RequestParam(value = "images[]", required = false)        MultipartFile[] images) throws IOException{
-        try {
-            prodService.adapterRegisterProduct(product_id, name, description, price, category_id, subcategory_seq, color_id, size_id, storage, images);
 
-            Map<String, String> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Product uploaded successfully");
+        prodService.adapterRegisterProduct(product_id, name, description, price, category_id, subcategory_seq, color_id, size_id, storage, images);
 
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro interno ao cadastrar Produto: " + e.getMessage());
-        }
+        return ResponseEntity.ok(Map.of(
+                "status", "success",
+                "message", "Product uploaded successfully"
+        ));
     }
 
     @PostMapping(value = "/sendReviewComment")
     public ResponseEntity<?> sendReviewComment(@RequestBody comments comment){
-        try {
-            prodService.sendReviewComment(comment.getId(), comment.getDescription(), comment.getRating());
+        prodService.sendReviewComment(comment.getId(), comment.getDescription(), comment.getRating());
 
-            Map<String, String> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Comment sent successfully");
-
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro interno ao enviar Comentário: " + e.getMessage());
-        }
+        return ResponseEntity.ok(Map.of(
+            "status", "success",
+            "message", "Comment sent successfully"
+        ));
     }
 
     // ######### Endpoints for Images Management #########

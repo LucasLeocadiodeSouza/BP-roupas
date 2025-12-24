@@ -11,6 +11,9 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import com.bphost.principal.exception.CommentException;
+import com.bphost.principal.exception.ProductException;
+import com.bphost.principal.exception.ProductNotFoundException;
 import com.bphost.principal.model.comments;
 import com.bphost.principal.model.commentsDTO;
 import com.bphost.principal.model.comments_prod;
@@ -57,25 +60,25 @@ public class productService {
     private commentsDTORepo commentDTORepo;
 
     private String uploadDirectory = System.getProperty("user.dir") + "/uploadImage/products";
-    private String tempDirectory = System.getProperty("user.dir") + "/uploadImage/temp";
+    //private String tempDirectory = System.getProperty("user.dir") + "/uploadImage/temp";
 
     @Transactional
     private void registerImage(MultipartFile image, Integer product_id) throws IOException{
        product product = prodRepo.findProductById(product_id);
-       if(product == null) throw new RuntimeException("Não encontrado o produto com o Código '" + product_id + "'!");
+       if(product == null) throw new ProductNotFoundException("Não encontrado o produto com o Código '" + product_id + "'!");
     
        Integer seqimg = prodImgRepo.findMaxSeqByProductId(product_id);
        if(seqimg == null) seqimg = 0;
 
-        seqimg = seqimg + 1;
+       seqimg = seqimg + 1;
 
-        String original = Objects.requireNonNull(image.getOriginalFilename());
-        String ext = original.substring(original.lastIndexOf("."));
+       String original = Objects.requireNonNull(image.getOriginalFilename());
+       String ext = original.substring(original.lastIndexOf("."));
 
-        String newName = "product_" + product.getId() + "_" + seqimg + ext;
+       String newName = "product_" + product.getId() + "_" + seqimg + ext;
 
-        Path fileNameAndPath = Paths.get(uploadDirectory, newName);
-        Files.write(fileNameAndPath, image.getBytes());
+       Path fileNameAndPath = Paths.get(uploadDirectory, newName);
+       Files.write(fileNameAndPath, image.getBytes());
 
        product_img prod_image = new product_img();
        prod_image.setProduct(product);
@@ -90,9 +93,9 @@ public class productService {
         product product = prodRepo.findProductById(id);
         if(product == null) product = new product();
         
-        if(name == null || name.isBlank()) throw new RuntimeException("Deve ser informado o nome do produto!");
-        if(description == null || description.isBlank()) throw new RuntimeException("Deve ser informado a descrição do produto!");
-        if(price == null || price.equals(BigDecimal.ZERO)) throw new RuntimeException("Deve ser informado o preço do produto!");
+        if(name == null || name.isBlank()) throw new ProductException("Deve ser informado o nome do produto!");
+        if(description == null || description.isBlank()) throw new ProductException("Deve ser informado a descrição do produto!");
+        if(price == null || price.equals(BigDecimal.ZERO)) throw new ProductException("Deve ser informado o preço do produto!");
 
         product.setName(name);
         product.setDescription(description);
@@ -107,10 +110,10 @@ public class productService {
     @Transactional
     public void sendReviewComment(Integer id, String description, Integer rating){
         product product = prodRepo.findProductById(id);
-        if(product == null) throw new RuntimeException("Não encontrado o produto com o Código '" + id + "'!");
+        if(product == null) throw new ProductNotFoundException("Não encontrado o produto com o Código '" + id + "'!");
 
-        if(description == null || description.isBlank()) throw new RuntimeException("Deve ser informado a descrição do produto!");
-        if(rating == null || rating < 1 || rating > 5) throw new RuntimeException("Deve ser informado uma avaliação válida para o produto!");
+        if(description == null || description.isBlank()) throw new CommentException("Deve ser informado a descrição do comentario!");
+        if(rating == null || rating < 1 || rating > 5) throw new CommentException("Deve ser informado uma avaliação válida para o produto!");
 
         comments comment = new comments();
 
@@ -143,8 +146,8 @@ public class productService {
                                        Integer         storage, 
                                        MultipartFile[] images) throws IOException{
 
-        if(images == null || images.length < 3) throw new RuntimeException("Deve ser anexado pelo menos 3 imagens do produto!");
-        if(images.length > 10) throw new RuntimeException("Limite de anexos ao produto atingido! Limite: 10");
+        if(images == null || images.length < 3) throw new ProductException("Deve ser anexado pelo menos 3 imagens do produto!");
+        if(images.length > 10) throw new ProductException("Limite de anexos ao produto atingido! Limite: 10");
         
         Integer prodId = registerProduct(id, name, description, price);
         categservice.registerSubCategProd(prodId, category_id, subcategory_seq);

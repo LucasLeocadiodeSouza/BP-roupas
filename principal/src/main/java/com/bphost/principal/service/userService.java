@@ -6,6 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.bphost.principal.exception.ProductException;
+import com.bphost.principal.exception.ProductNotFoundException;
+import com.bphost.principal.exception.SpecificationNotFoundException;
+import com.bphost.principal.exception.UserCartNotFoundException;
+import com.bphost.principal.exception.UserException;
+import com.bphost.principal.exception.UserNotFoundException;
 import com.bphost.principal.infra.security.tokenService;
 import com.bphost.principal.model.product;
 import com.bphost.principal.model.specification_color;
@@ -82,19 +89,19 @@ public class userService {
 
     @Transactional
     public void registerUserAccount( String username, String email, String telephone, String password){
-        if(username == null || username.isBlank()) throw new RuntimeException("Deve ser informado o nome do usuário!");
-        if(username.length() < 7) throw new RuntimeException("Nome do usuário deve conter mais de 7 Caracteres!");
+        if(username == null || username.isBlank()) throw new UserException("Deve ser informado o nome do usuário!");
+        if(username.length() < 7) throw new UserException("Nome do usuário deve conter mais de 7 Caracteres!");
         
-        if(email == null || email.isBlank()) throw new RuntimeException("Deve ser informado o email do usuário!");
-        if(!email.contains("@") || !email.contains(".com")) throw new RuntimeException("Deve ser informado o email do usuário!");
+        if(email == null || email.isBlank()) throw new UserException("Deve ser informado o email do usuário!");
+        if(!email.contains("@") || !email.contains(".com")) throw new UserException("Deve ser informado o email do usuário!");
 
-        if(telephone == null || telephone.isBlank()) throw new RuntimeException("Deve ser informado um número de Telefone!");
-        if(!isValidPhoneNumber(telephone)) throw new RuntimeException("O número de Telefone não é valido!");
+        if(telephone == null || telephone.isBlank()) throw new UserException("Deve ser informado um número de Telefone!");
+        if(!isValidPhoneNumber(telephone)) throw new UserException("O número de Telefone não é valido!");
         
-        if(password == null || password.isBlank()) throw new RuntimeException("Deve ser informado uma senha!");
-        if(password.length() < 11) throw new RuntimeException("A senha deve conter mais de 11 caracteres!");
+        if(password == null || password.isBlank()) throw new UserException("Deve ser informado uma senha!");
+        if(password.length() < 11) throw new UserException("A senha deve conter mais de 11 caracteres!");
 
-        if(userAccountRepo.findByUsername(username) != null) throw new RuntimeException("Nome de usuário já está em uso! Por favor escolha outro.");
+        if(userAccountRepo.findByUsername(username) != null) throw new UserException("Nome de usuário já está em uso! Por favor escolha outro.");
 
         String encryptedPasskey = new BCryptPasswordEncoder().encode(password);
 
@@ -113,8 +120,8 @@ public class userService {
         user_account user = userAccountRepo.findAccountById(useraccount_id);
         product prod      = prodRepo.findProductById(product_id);
 
-        if(user == null) throw new RuntimeException("Usuário não encontrado com o id '" + useraccount_id + "'");
-        if(prod == null) throw new RuntimeException("Produto não encontrado com o id '" + product_id + "'");
+        if(user == null) throw new UserNotFoundException("Usuário não encontrado com o id '" + useraccount_id + "'");
+        if(prod == null) throw new ProductNotFoundException("Produto não encontrado com o id '" + product_id + "'");
 
         user_history history = userHistoryRepo.findHistoryById(useraccount_id, product_id);
         if(history == null){
@@ -135,18 +142,20 @@ public class userService {
 
     @Transactional
     public void registerUserCart(Integer useraccount_id, Integer product_id, Integer size_id, Integer color_id, Integer quantity){
-        user_account user         = userAccountRepo.findAccountById(useraccount_id);
-        product prod              = prodRepo.findProductById(product_id);
-        specification_size size   = specsizeRepo.findSizeById(size_id);
-        specification_color color = speccolorRepo.findColorById(color_id);
+        user_account user = userAccountRepo.findAccountById(useraccount_id);
+        if(user == null) throw new UserNotFoundException("Usuário não encontrado com o id '" + useraccount_id + "'");
 
-        if(user == null) throw new RuntimeException("Usuário não encontrado com o id '" + useraccount_id + "'");
-        if(prod == null) throw new RuntimeException("Produto não encontrado com o id '" + product_id + "'");
-        if(size == null) throw new RuntimeException("Tamanho não encontrado com o id '" + size_id + "'");
-        if(color == null) throw new RuntimeException("Cor não encontrado com o id '" + color_id + "'");
+        product prod = prodRepo.findProductById(product_id);
+        if(prod == null) throw new ProductNotFoundException("Produto não encontrado com o id '" + product_id + "'");
+
+        specification_size size = specsizeRepo.findSizeById(size_id);
+        if(size == null) throw new SpecificationNotFoundException("Tamanho não encontrado com o id '" + size_id + "'");
+
+        specification_color color = speccolorRepo.findColorById(color_id);
+        if(color == null) throw new SpecificationNotFoundException("Cor não encontrado com o id '" + color_id + "'");
 
         specification_prod specprod = specprodRepo.findSpecProdById(product_id, size_id, color_id);
-        if(specprod == null) throw new RuntimeException("Especificação do produto não encontrada!");
+        if(specprod == null) throw new SpecificationNotFoundException("Especificação do produto não encontrada!");
 
         Integer quantitySum = quantity; 
 
@@ -178,21 +187,23 @@ public class userService {
 
     @Transactional
     public void removeProductFromCart(Integer useraccount_id, Integer product_id, Integer size_id, Integer color_id, Integer quantity){
-        user_account user         = userAccountRepo.findAccountById(useraccount_id);
-        product prod              = prodRepo.findProductById(product_id);
-        specification_size size   = specsizeRepo.findSizeById(size_id);
-        specification_color color = speccolorRepo.findColorById(color_id);
+        user_account user = userAccountRepo.findAccountById(useraccount_id);
+        if(user == null) throw new UserNotFoundException("Usuário não encontrado com o id '" + useraccount_id + "'");
 
-        if(user == null) throw new RuntimeException("Usuário não encontrado com o id '" + useraccount_id + "'");
-        if(prod == null) throw new RuntimeException("Produto não encontrado com o id '" + product_id + "'");
-        if(size == null) throw new RuntimeException("Tamanho não encontrado com o id '" + size_id + "'");
-        if(color == null) throw new RuntimeException("Cor não encontrado com o id '" + color_id + "'");
+        product prod = prodRepo.findProductById(product_id);
+        if(prod == null) throw new ProductNotFoundException("Produto não encontrado com o id '" + product_id + "'");
+
+        specification_size size = specsizeRepo.findSizeById(size_id);
+        if(size == null) throw new SpecificationNotFoundException("Tamanho não encontrado com o id '" + size_id + "'");
+
+        specification_color color = speccolorRepo.findColorById(color_id);
+        if(color == null) throw new SpecificationNotFoundException("Cor não encontrado com o id '" + color_id + "'");
 
         specification_prod specprod = specprodRepo.findSpecProdById(product_id, size_id, color_id);
-        if(specprod == null) throw new RuntimeException("Especificação do produto não encontrada!");
+        if(specprod == null) throw new SpecificationNotFoundException("Especificação do produto não encontrada!");
 
         user_cart cart = userCartRepo.findCardById(useraccount_id, product_id, size_id, color_id);
-        if(cart == null) throw new RuntimeException("Produto não encontrado no carrinho!");
+        if(cart == null) throw new UserCartNotFoundException("Produto não encontrado no carrinho!");
 
         userCartRepo.delete(cart);
     }
