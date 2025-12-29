@@ -13,23 +13,21 @@
   <div class="container-settings">
     <div class="input-sett">
       <label class="label">Nome de usuário</label>
-      <input autocomplete="off" class="input" type="text">
+      <input autocomplete="off" class="input" type="text" [(ngModel)]="username">
     </div>
 
     <div class="input-sett">
       <label class="label">E-mail</label>
-      <input autocomplete="on" class="input" type="email">
+      <input autocomplete="on" class="input" type="email" [(ngModel)]="email">
     </div>
 
     <div class="input-sett">
       <label class="label">Numero de telefone</label>
-      <input autocomplete="off" class="input" type="text">
+      <input autocomplete="off" class="input" type="text" [(ngModel)]="numberphone">
     </div>
 
-    <a href="#">
-      <div class="control-button">
-        <span>Salvar</span>
-      </div>
-    </a>
+    <div class="control-button">
+      <span>Salvar</span>
+    </div>
   </div>
 </div>

@@ -2,12 +2,9 @@ package com.bphost.principal.service;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.bphost.principal.exception.ProductException;
 import com.bphost.principal.exception.ProductNotFoundException;
 import com.bphost.principal.exception.SpecificationNotFoundException;
 import com.bphost.principal.exception.UserCartNotFoundException;
@@ -19,18 +16,24 @@ import com.bphost.principal.model.specification_color;
 import com.bphost.principal.model.specification_prod;
 import com.bphost.principal.model.specification_size;
 import com.bphost.principal.model.userCartDTO;
+import com.bphost.principal.model.userDTO;
 import com.bphost.principal.model.user_account;
+import com.bphost.principal.model.user_address;
+import com.bphost.principal.model.user_addressId;
 import com.bphost.principal.model.user_cart;
 import com.bphost.principal.model.user_cartId;
 import com.bphost.principal.model.user_history;
 import com.bphost.principal.model.user_historyId;
 import com.bphost.principal.model.security.userRole;
+import com.bphost.principal.repository.commentsProdRepo;
 import com.bphost.principal.repository.productRepo;
 import com.bphost.principal.repository.specification_colorRepo;
 import com.bphost.principal.repository.specification_prodRepo;
 import com.bphost.principal.repository.specification_sizeRepo;
 import com.bphost.principal.repository.userCartDTORepo;
+import com.bphost.principal.repository.userDTORepo;
 import com.bphost.principal.repository.user_accountRepo;
+import com.bphost.principal.repository.user_addressRepo;
 import com.bphost.principal.repository.user_cartRepo;
 import com.bphost.principal.repository.user_historyRepo;
 import jakarta.servlet.http.Cookie;
@@ -43,8 +46,14 @@ public class userService {
     private user_accountRepo userAccountRepo;
 
     @Autowired
+    private user_addressRepo userAddressRepo;
+
+    @Autowired
     private user_historyRepo userHistoryRepo;
     
+    @Autowired
+    private commentsProdRepo commentsprodrepo;
+
     @Autowired
     private user_cartRepo userCartRepo;
 
@@ -65,6 +74,10 @@ public class userService {
 
     @Autowired
     private userCartDTORepo userCartDTOrepo;
+
+    @Autowired
+    private userDTORepo userDTORepo;
+
 
     public Integer getUserAccountId(String username) {
         user_account user = userAccountRepo.findIdByUsername(username);
@@ -211,6 +224,90 @@ public class userService {
     public List<userCartDTO> getCartByUserAccount(Integer userId){
         List<userCartDTO> usercart = userCartDTOrepo.findAllActivesSubcategories(userId);
         return usercart;
+    }
+
+    public userDTO getUserInformation(Integer userId){
+        user_account account = userAccountRepo.findAccountById(userId);
+        if(account == null) throw new UserNotFoundException("Usuário não encontrado!");
+
+        userDTO user = new userDTO();
+        user.setUsername(account.getUsername());
+        user.setEmail(account.getEmail());
+        user.setTelephone(account.getTelephone());
+
+        return user;
+    }
+
+    public user_address getUserAddress(Integer userId){
+        user_address address = userAddressRepo.findAllAddressByUser(userId);
+        if(address == null) return null;
+
+        return address;
+    }
+
+    public List<userCartDTO> getAllUserHistory(Integer userId){
+        List<userCartDTO> hist = userDTORepo.findAllHistortyByUser(userId);
+        if(hist == null) return null;
+
+        hist.forEach(prodHist -> {
+            Integer total_comments = commentsprodrepo.countCommentsByProductId(prodHist.getProduct_id());
+
+            Double avarage_rating;
+            if(total_comments != 0){
+                avarage_rating = ((commentsprodrepo.countCommentsWithRating1ByProductId(prodHist.getProduct_id()) * 1.0) +
+                                 (commentsprodrepo.countCommentsWithRating2ByProductId(prodHist.getProduct_id()) * 2.0)  + 
+                                 (commentsprodrepo.countCommentsWithRating3ByProductId(prodHist.getProduct_id()) * 3.0)  + 
+                                 (commentsprodrepo.countCommentsWithRating4ByProductId(prodHist.getProduct_id()) * 4.0)  + 
+                                 (commentsprodrepo.countCommentsWithRating5ByProductId(prodHist.getProduct_id()) * 5.0)) /
+                                 total_comments;
+            } else avarage_rating = 5.0;
+
+            prodHist.setAvarage_rating(avarage_rating);
+        });
+
+        return hist;
+    }
+
+    public void registerUserAddress(Integer userId, String street, String number, String neighborhood, String cep, String city, String state, String country){
+        user_account account = userAccountRepo.findAccountById(userId);
+        if(account == null) throw new UserNotFoundException("Usuário não encontrado!");
+
+        if(street == null || street.isBlank()) throw new UserException("Deve ser informado o nome da rua do endereço do usuário");
+        if(neighborhood == null || neighborhood.isBlank()) throw new UserException("Deve ser informado o nome do bairro do usuário");
+        if(number == null || number.isBlank()) throw new UserException("Deve ser informado o número da residencia do endereço do usuário");
+        if(cep == null || cep.isBlank()) throw new UserException("Deve ser informado o CEP do endereço do usuário");
+        if(city == null || city.isBlank()) throw new UserException("Deve ser informado a cidade do endereço do usuário");
+        if(state == null || state.isBlank()) throw new UserException("Deve ser informado o estado do endereço do usuário");
+        if(country == null || country.isBlank()) throw new UserException("Deve ser informado o pais do endereço do usuário");
+
+        if(cep.length() != 8) throw new UserException("O CEP inserido é inválido!");
+        
+        Integer lastSeq = userAddressRepo.findLastSequenceAddressByUser(userId);
+        if(lastSeq == null || lastSeq == 0) lastSeq = 1;
+
+        user_addressId addressId = new user_addressId();
+        addressId.setUseraccount_id(userId);
+        addressId.setSeq(userId);
+
+        user_address address = new user_address();
+        address.setId(addressId);
+        address.setStreet(street);
+        address.setNeighborhood(neighborhood);
+        address.setNumber(number);
+        address.setCEP(cep);
+        address.setCity(city);
+        address.setState(state);
+        address.setActive(true);
+
+        userAddressRepo.save(address);
+    }
+
+    public void removeUserAddress(Integer userId, Integer sequence){
+        user_account account = userAccountRepo.findAccountById(userId);
+        if(account == null) throw new UserNotFoundException("Usuário não encontrado!");
+
+        user_address address = userAddressRepo.findAddressByUser(userId, sequence);
+        userAddressRepo.delete(address);
     }
 
     public static boolean isValidPhoneNumber(String telefone) {

@@ -30,7 +30,7 @@ a  {text-decoration: none;}
   transition: color .3s cubic-bezier(.25,.01,.25,1) 0s;
 }
 
-.input:hover, .input:focus, .input-sett:hover .input {
+.input:hover, .input:focus{
   outline: none;
   border-color: #05060f;
 }

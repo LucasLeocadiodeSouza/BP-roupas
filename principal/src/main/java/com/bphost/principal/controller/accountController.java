@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.bphost.principal.model.userCartDTO;
+import com.bphost.principal.model.userDTO;
 import com.bphost.principal.model.user_account;
+import com.bphost.principal.model.user_address;
+import com.bphost.principal.model.user_history;
 import com.bphost.principal.service.userService;
 
 @RestController
@@ -72,5 +75,31 @@ public class accountController {
     @GetMapping("/getCartByUserAccount")
     public List<userCartDTO> getCartByUserAccount(@AuthenticationPrincipal UserDetails userAccount){
         return user.getCartByUserAccount(user.getUserAccountId(userAccount.getUsername()));
+    }
+
+    @PostMapping("/getUserInformation")
+    public userDTO getUserInformation(@AuthenticationPrincipal UserDetails userAccount){
+        return user.getUserInformation(user.getUserAccountId(userAccount.getUsername()));
+    }
+
+    @PostMapping("/getUserAddress")
+    public user_address getUserAddress(@AuthenticationPrincipal UserDetails userAccount){
+        return user.getUserAddress(user.getUserAccountId(userAccount.getUsername()));
+    }
+
+    @PostMapping("/getAllUserHistory")
+    public List<userCartDTO> getAllUserHistory(@AuthenticationPrincipal UserDetails userAccount){
+        return user.getAllUserHistory(user.getUserAccountId(userAccount.getUsername()));
+    }
+
+    @PostMapping("/registerUserAddress")
+    public ResponseEntity<?> registerUserAddress(@RequestBody userDTO userDTO,
+                                                 @AuthenticationPrincipal UserDetails userAccount){
+        user.registerUserAddress(user.getUserAccountId(userAccount.getUsername()), userDTO.getStreet(), userDTO.getNumber(), userDTO.getNeighborhood(), userDTO.getCep(), userDTO.getCity(), userDTO.getState(), userDTO.getCountry());
+
+        return ResponseEntity.ok(Map.of(
+            "status", "success",
+            "message", "Address register successfully"
+        ));
     }
 }

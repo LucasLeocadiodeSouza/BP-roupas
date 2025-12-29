@@ -10,6 +10,7 @@
     --color-label: #313131;
     --color-label-inv: #eaeaea;
     --color-label-card: #000;
+    --width-inputsett-gen: 325px;
 }
 
 body {margin: 0; background: var(--primary-background, #e5e5e5); min-width: 1500px;}

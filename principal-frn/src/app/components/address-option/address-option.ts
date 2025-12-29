@@ -10,7 +10,6 @@ import { CommonModule } from '@angular/common';
 export class AddressOption {
   @Input() addresses: any;
 
-  //name
   //address1
   //address2
   //number

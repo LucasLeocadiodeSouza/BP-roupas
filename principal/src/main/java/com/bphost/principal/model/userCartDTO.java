@@ -22,6 +22,7 @@ public class userCartDTO {
     private String     color;
     private Integer    quantity;
     private String     image;
+    private Double     avarage_rating;
 
 
     public userCartDTO(Integer    useraccount_id, 
@@ -43,5 +44,41 @@ public class userCartDTO {
         this.image          = image;
     }
 
-    
+
+    public userCartDTO(Integer    useraccount_id, 
+                       Integer    product_id, 
+                       String     name, 
+                       BigDecimal price, 
+                       Integer    size_id,
+                       String     size, 
+                       Integer    color_id, 
+                       String     color, 
+                       Integer    quantity, 
+                       String     image) {
+
+        this.useraccount_id = useraccount_id;
+        this.product_id     = product_id;
+        this.name           = name;
+        this.price          = price;
+        this.size_id        = size_id;
+        this.size           = size;
+        this.color_id       = color_id;
+        this.color          = color;
+        this.quantity       = quantity;
+        this.image          = image;
+    }
+
+    public userCartDTO( Integer    useraccount_id,
+                        Integer    product_id,
+                        String     name,
+                        BigDecimal price,
+                        String     image,
+                        Double     avarage_rating ){
+        this.useraccount_id = useraccount_id;
+        this.product_id     = product_id;
+        this.name           = name;
+        this.price          = price;
+        this.image          = image;
+        this.avarage_rating = avarage_rating;
+    }
 }

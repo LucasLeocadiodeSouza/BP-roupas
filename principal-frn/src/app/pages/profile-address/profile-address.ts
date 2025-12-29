@@ -1,30 +1,69 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MiniCard } from "../../components/mini-card/mini-card";
 import { AddressOption } from "../../components/address-option/address-option";
-import { NewAddress } from "../../components/new-address/new-address";
+import { RequestForm } from '../../service/request-form';
 
 @Component({
   selector: 'app-profile-address',
-  imports: [MiniCard, CommonModule, AddressOption, NewAddress],
+  imports: [CommonModule, AddressOption],
   templateUrl: './profile-address.html',
   styleUrl: './profile-address.css'
 })
 export class ProfileAddress {
-  addresses = [
-    {
-      name: "Lucas Leocadio de Souza",
-      address1: "Rua Joana D'arc 16",
-      address2: "Jardim Liberdade, 87047-080 Maringá, PR, Brasil",
-      number: "44997067494",
-      active: true
-    },
-    {
-      name: "Pedro Paulo e Alex",
-      address1: "Rua Jardim Oliva 23",
-      address2: "Teixera Mendes, 00000-080 Maringá, PR, Brasil",
-      number: "44997786076",
-      active: false
-    },
-  ];
+  private request = inject(RequestForm);
+
+  constructor(private cdRef: ChangeDetectorRef) {}
+
+  addresses!: {
+    address1: string;
+    address2: string;
+    country: string;
+    active: boolean;
+  }[];
+
+
+  getUserAddress(){
+    this.request.isLoggedIn().subscribe(isLogged =>{
+      if(!isLogged) {
+        window.open('/insert/login', '_self');
+        return;
+      }
+
+      this.request.executeRequestPOST('account/getUserAddress', {}).subscribe({
+        next: (response) => {
+          var info: {
+            street:       string,
+            neighborhood: string,
+            number:       string,
+            cep:          string,
+            city:         string,
+            state:        string,
+            active:       boolean
+          }[];
+
+          info = response;
+
+          if(info == null) return;
+
+          const addressFormat = info.map((address: any) => ({
+            address1: address.street + " " + address.number,
+            address2: address.neighborhood + ", " + address.cep  + " " + address.city + ", " + address.state,
+            country:  address.country,
+            active:   address.active
+          }));
+
+          this.addresses = addressFormat;
+
+          this.cdRef.detectChanges();
+        },
+        error: (error) => {
+          console.error('Erro:', error);
+        }
+      });
+    });
+  }
+
+  ngOnInit(){
+    this.getUserAddress();
+  }
 }

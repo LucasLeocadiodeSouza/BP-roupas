@@ -13,40 +13,43 @@
   <div class="container-settings">
     <div class="input-sett">
       <label class="label">Rua:</label>
-      <input autocomplete="off" class="input" type="text">
+      <input autocomplete="off" class="input" type="text" [(ngModel)]="street">
     </div>
 
     <div class="input-sett">
       <label class="label">Numero:</label>
-      <input autocomplete="off" class="input" type="text">
+      <input autocomplete="off" class="input" type="text" [(ngModel)]="number">
     </div>
 
     <div class="input-sett">
       <label class="label">Bairro:</label>
-      <input autocomplete="off" class="input" type="text">
+      <input autocomplete="off" class="input" type="text" [(ngModel)]="neighborhood">
     </div>
 
     <div class="input-sett">
       <label class="label">CEP:</label>
-      <input autocomplete="off" class="input" type="text">
+      <input autocomplete="off" class="input" type="text" [(ngModel)]="cep" (input)="changeCEPNumber($event)">
     </div>
 
     <div class="input-sett">
       <label class="label">Cidade:</label>
-      <input autocomplete="off" class="input" type="text">
+      <input autocomplete="off" class="input" type="text" [(ngModel)]="city">
     </div>
 
     <div class="input-sett">
       <label class="label">Estado:</label>
-      <input autocomplete="off" class="input" type="text">
+      <input autocomplete="off" class="input" type="text" [(ngModel)]="state">
+    </div>
+
+    <div class="input-sett">
+      <label class="label">Pais:</label>
+      <input autocomplete="off" class="input" type="text" [(ngModel)]="country">
     </div>
   </div>
 
   <div class="control-buttons">
-    <a href="/account/address">
-      <div class="control-button">
-        <span>Salvar</span>
-      </div>
-    </a>
+    <div class="control-button" (click)="registerAddress()">
+      <span>Salvar</span>
+    </div>
   </div>
 </div>

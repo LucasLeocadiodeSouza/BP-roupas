@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MiniCard } from "../../components/mini-card/mini-card";
+import { RequestForm } from '../../service/request-form';
 
 @Component({
   selector: 'app-profile-hist',
@@ -9,222 +10,65 @@ import { MiniCard } from "../../components/mini-card/mini-card";
   styleUrl: './profile-hist.css'
 })
 export class ProfileHist {
-  itens = [
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "3.700,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
+  private request = inject(RequestForm);
+
+  constructor(private cdRef: ChangeDetectorRef) {}
+
+  itens: { src:      string;
+           title:    string;
+           price:    string;
+           currency: string;
+           fullinfo: boolean;
+           extclass: string;
+           href:     string;
+           score:    number;
+           }[] = [];
+
+  getUserHistory(){
+    this.request.isLoggedIn().subscribe(isLogged =>{
+      if(!isLogged) {
+        window.open('/insert/login', '_self');
+        return;
+      }
+
+      this.request.executeRequestPOST('account/getAllUserHistory', {}).subscribe({
+        next: (response) => {
+          var info: {
+            useraccount_id: number,
+            product_id:     number,
+            name:           string,
+            price:          string,
+            image:          string,
+            avarage_rating: number
+          }[];
+
+          info = response;
+
+          if(info == null) return;
+
+          const histFormat = info.map((hist: any) => ({
+            src:      "http://localhost:8080/api/product/" + hist.image,
+            title:    hist.name,
+            price:    hist.price,
+            currency: "R$",
+            extclass: "itens-class",
+            fullinfo: true,
+            href:     "/product?id=" + hist.product_id,
+            score:    Math.floor(hist.avarage_rating)
+          }));
+
+          this.itens = histFormat;
+
+          this.cdRef.detectChanges();
         },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "70,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "0,99",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "3.700,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "70,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "0,99",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "3.700,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "70,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "0,99",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
-        },
-        {src: "assets/images/produto-teste.png",
-         title: "Fone de Ouvido Headset",
-         price: "1.500,25",
-         currency: "R$",
-         extclass: "itens-class",
-         fullinfo: true,
-         href: "/product?category=1&subcategory=3"
+        error: (error) => {
+          console.error('Erro:', error);
         }
-      ];
+      });
+    });
+  }
+
+  ngOnInit(){
+    this.getUserHistory();
+  }
 }

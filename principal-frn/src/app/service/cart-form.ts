@@ -57,7 +57,10 @@ export class CartForm {
 
   registerProductFromCart(item: { product_id: number, size_id: number, color_id: number, quantity: number }){
     this.request.isLoggedIn().subscribe(isLogged =>{
-      if(!isLogged) window.open('/insert/login', '_self');
+      if(!isLogged) {
+        window.open('/insert/login', '_self');
+        return;
+      }
 
       this.request.executeRequestPOST('account/registerProductFromCart', item ).subscribe({
         next: (response) => {
