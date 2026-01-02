@@ -37,6 +37,9 @@ public class user_address {
     @Column(length = 50)
     private String state;
 
+    @Column(length = 45)
+    private String country;
+
     @Column(columnDefinition = "TINYINT(1)")
     private Boolean active;
 }

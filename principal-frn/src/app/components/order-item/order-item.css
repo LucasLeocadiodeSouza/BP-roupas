@@ -1,6 +1,20 @@
 * {-webkit-tap-highlight-color: transparent;}
 
-main {display: flex; padding: 20px 10px; margin-block: 10px; border: 1px solid var(--color-border, #bdbdbd); border-radius: 10px; position: relative;}
+main {display: flex;
+      flex-direction: column;
+      border: 1px solid #e0e0e0;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      border-bottom: 0px;
+      margin-block: 10px 30px;
+      position: relative;
+      background-color: #FFF;
+    }
+
+.container-item {
+  display: flex;
+  position: relative;
+}
 
 a  {text-decoration: none;}
 
@@ -9,15 +23,16 @@ a:-webkit-any-link {
     cursor: pointer;
 }
 
-.view-item  {margin-right: 15px; margin-top: 10px;}
-.about-item {margin-left: 3px; width: 100%;}
+.view-item     {margin-right: 15px;}
+.view-item img {border-top-left-radius: 10px; user-select: none;}
+.about-item {margin-left: 3px; width: 100%; padding: 10px;}
 
 .title {display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 14px; font-family: system-ui, Helvetica, Arial, sans-serif;}
 
-.description {margin-bottom: 20px;}
-.quantity {display: flex; justify-content: space-between;}
+.description {margin-bottom: 5px;}
+.info {display: flex; font: 12px system-ui, Helvetica, Arial, sans-serif;}
 
-.dprice {display: flex; gap: 5px; position: absolute; bottom: 15px;}
+.dprice {display: flex; gap: 5px; position: absolute; bottom: 10px;}
 .currency {font-size: 18px; font-family: monospace, Arial, sans-serif;}
 .price    {font-size: 18px; font-family: monospace, Arial, sans-serif;}
 
@@ -25,17 +40,6 @@ a:-webkit-any-link {
 .ai-c       {align-items: center;}
 .jc-c       {justify-content: center;}
 .jc-between {justify-content: space-between;}
-
-.select-opt {width: fit-content;
-             min-width: 103px;
-             height: 30px;
-             margin-left: auto;
-             background: #fff;
-             position: relative;
-             border: 1px solid #d1d1d1;
-             border-radius: 4px;
-             cursor: pointer;
-             padding-inline: 5px;}
 
 .input-quant {display: flex;
               justify-content: center;
@@ -56,10 +60,6 @@ a:-webkit-any-link {
               outline: none;
               border: none;}
 
-.select-opt:focus-within {
-    border: 1px solid #000000;
-}
-
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -73,3 +73,29 @@ input[type=number] {
 .isDisabled {
     background: transparent;
 }
+
+.container-remove {background-color: #419772;
+                   width: calc(100% + 1.5px);
+                   box-shadow: 0px -3px 7px #0000001f;
+                   border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
+                   display: flex; justify-content: center; align-items: center;
+                   transition: 0.5s all;
+                   cursor: pointer;
+                   position: absolute;
+                   bottom: -20px;
+                   left: -0.5px;}
+
+.container-resume     {display: flex; justify-content: center; align-items: center; cursor: pointer;}
+.container-resume img {width: 15px; height: 15px;
+                       margin-left: 50px;
+                       transition: 0.3s all;
+                       user-select: none;}
+
+.container-complete {opacity: 0; visibility: hidden;
+                     color: #FFF; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 500;
+                     cursor: pointer;
+                     transition: 0.8s opacity;}
+
+.container-remove:hover {background-color: #a03535; box-shadow: 0px -3px 7px #0000006b;}
+.container-remove:hover .container-resume img {width: 24px; height: 24px; margin-left: 0;}
+.container-remove:hover .container-complete   {opacity: 1; visibility: visible;}

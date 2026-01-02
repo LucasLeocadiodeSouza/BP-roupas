@@ -1,5 +1,7 @@
-main {padding: 60px;}
+main {padding: 35px 60px;}
 a {text-decoration: none;}
+
+.dnone {display: none !important;}
 
 .divisior {border: 1px solid var(--color-border, #bdbdbd);  width: 100%; margin-block: 15px;}
 
@@ -15,14 +17,13 @@ a {text-decoration: none;}
 
 .main-container {padding: 10px; background: var(--color-secundary, #f1f1f1);}
 
-.title h1{color: #000000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 400; margin-block: 10px;}
-.title h3{color: #000000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 400; margin-block: 10px;}
+.title h1{color: #000000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 400; margin-block: 10px; user-select: none;}
+.title h3{color: #000000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 400; margin-block: 10px; user-select: none;}
 
 .container-itens {display: flex; flex-direction: row;}
 
 .itens      {width: 60%;}
-.checkout   {width: calc(40% - 50px); display: flex; flex-direction: column; align-items: center; gap: 10px; justify-content: flex-start; margin-inline: 25px;}
-
+.checkout   {width: calc(40% - 50px); display: flex; flex-direction: column; align-items: center; gap: 10px; justify-content: flex-start; margin-inline: 25px; user-select: none;}
 
 .order {display: flex; justify-content: space-between; width: 90%;}
 .order .price {font-size: 15px; font-family: monospace, Arial, sans-serif;}
@@ -32,3 +33,12 @@ a {text-decoration: none;}
 
 .control-button  {border: 1px solid var(--color-border, #bdbdbd); background: var(--color-primary, #292617); color: var(--color-label-inv, #eaeaea); border-radius: 20px; padding: 10px 15px; cursor: pointer; transition: 0.2s ease-out; font-size: 21px;}
 .control-button:hover {border: 1px solid var(--color-primary, #292617);}
+
+.container-explorer { display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 50px; width: 100%; user-select: none;}
+.explorer           { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 400; }
+.explorer-button    { margin-block: 40px; background: var(--color-primary, #292617);  border-radius: 20px; padding: 10px 15px; }
+.explorer-button a  {text-decoration: none;}
+.explorer-button a:-webkit-any-link {
+    color: var(--color-label-inv, #eaeaea);
+    cursor: pointer;
+}

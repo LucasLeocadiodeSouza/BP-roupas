@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CartForm } from '../../service/cart-form';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-order-item',
@@ -8,11 +10,26 @@ import { CommonModule } from '@angular/common';
   styleUrl: './order-item.css'
 })
 export class OrderItem {
+  constructor(private cartForm: CartForm) {}
+
+  cartItems$!: Observable<any[]>;
+
   @Input() href: any;
   @Input() view: any;
-  @Input() unid: any;
   @Input() title: any;
+  @Input() quantity: any;
   @Input() currency: any;
   @Input() price: any;
-  @Input() update!: boolean;
+  @Input() size: any;
+  @Input() color: any;
+
+  @Input() product: {
+    product_id: number;
+    size_id:    number;
+    color_id:   number;
+  } = { product_id: 0, size_id: 0, color_id: 0 };
+
+  removeFromCart() {
+    this.cartForm.removeFromCart({product_id: this.product.product_id, size_id: this.product.size_id, color_id: this.product.color_id, quantity: this.quantity});
+  }
 }

@@ -80,7 +80,7 @@ public class userService {
 
 
     public Integer getUserAccountId(String username) {
-        user_account user = userAccountRepo.findIdByUsername(username);
+        user_account user = userAccountRepo.findAccountByUsername(username);
         if(user != null) return user.getId();
 
         return 0;
@@ -125,6 +125,28 @@ public class userService {
         account.setEmail(email);
         account.setRole(userRole.USER);
         account.setCreate_at(LocalDate.now());
+        userAccountRepo.save(account);
+    }
+
+    @Transactional
+    public void setUserAccount(Integer userId, String username, String email, String telephone){
+        user_account account = userAccountRepo.findAccountById(userId);
+        if(account == null) throw new UserException("Usuário não encontrado.");
+
+        if(username == null || username.isBlank()) throw new UserException("Deve ser informado o nome do usuário!");
+        if(username.length() < 7) throw new UserException("Nome do usuário deve conter mais de 7 Caracteres!");
+        
+        if(email == null || email.isBlank()) throw new UserException("Deve ser informado o email do usuário!");
+        if(!email.contains("@") || !email.contains(".com")) throw new UserException("Deve ser informado o email do usuário!");
+
+        if(telephone == null || telephone.isBlank()) throw new UserException("Deve ser informado um número de Telefone!");
+        if(!isValidPhoneNumber(telephone)) throw new UserException("O número de Telefone não é valido!");
+
+        if(userAccountRepo.findAccountByUsername(username) != null && account.getId() == userAccountRepo.findAccountByUsername(username).getId()) throw new UserException("Nome de usuário já está em uso! Por favor escolha outro.");
+
+        account.setUsername(username);
+        account.setTelephone(telephone);
+        account.setEmail(email);
         userAccountRepo.save(account);
     }
 
@@ -238,8 +260,8 @@ public class userService {
         return user;
     }
 
-    public user_address getUserAddress(Integer userId){
-        user_address address = userAddressRepo.findAllAddressByUser(userId);
+    public List<user_address> getUserAddress(Integer userId){
+        List<user_address> address = userAddressRepo.findAllAddressByUser(userId);
         if(address == null) return null;
 
         return address;
@@ -283,11 +305,13 @@ public class userService {
         if(cep.length() != 8) throw new UserException("O CEP inserido é inválido!");
         
         Integer lastSeq = userAddressRepo.findLastSequenceAddressByUser(userId);
-        if(lastSeq == null || lastSeq == 0) lastSeq = 1;
+        if(lastSeq == null) lastSeq = 0;
+
+        disableAllAddress(userId);
 
         user_addressId addressId = new user_addressId();
         addressId.setUseraccount_id(userId);
-        addressId.setSeq(userId);
+        addressId.setSeq(lastSeq + 1);
 
         user_address address = new user_address();
         address.setId(addressId);
@@ -297,9 +321,28 @@ public class userService {
         address.setCEP(cep);
         address.setCity(city);
         address.setState(state);
+        address.setCountry(country);
         address.setActive(true);
 
         userAddressRepo.save(address);
+    }
+
+    private void disableAllAddress(Integer userId){
+        List<user_address> addresses = userAddressRepo.findAllAddressByUser(userId);
+        for(user_address address : addresses){
+            address.setActive(false);
+            userAddressRepo.save(address);
+        }
+    }
+
+    public void setActiveAddress(Integer userId, Integer sequence){
+        user_address addressOld = userAddressRepo.findAddressActiveByUser(userId);
+        addressOld.setActive(false);
+        userAddressRepo.save(addressOld);
+
+        user_address addressNew = userAddressRepo.findAddressByUser(userId, sequence);
+        addressNew.setActive(true);
+        userAddressRepo.save(addressNew);
     }
 
     public void removeUserAddress(Integer userId, Integer sequence){

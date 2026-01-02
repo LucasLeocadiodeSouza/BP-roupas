@@ -23,7 +23,7 @@ export class Profile {
   getUserInformation(){
     this.request.isLoggedIn().subscribe(isLogged =>{
       if(!isLogged) {
-        window.open('/insert/login', '_self');
+        window.open('http://localhost:4200/insert/login', '_self');
         return;
       }
 
@@ -45,6 +45,26 @@ export class Profile {
         error: (error) => {
           console.error('Erro:', error);
         }
+      });
+    });
+  }
+
+  setUserInformation(){
+    this.request.isLoggedIn().subscribe(isLogged =>{
+      if(!isLogged) {
+        window.open('http://localhost:4200/insert/login', '_self');
+        return;
+      }
+
+      const body = {
+        username:  this.username,
+        email:     this.email,
+        telephone: this.numberphone,
+      }
+
+      this.request.executeRequestPOST('account/setUserAccount', body).subscribe({
+        next: (response) =>  this.cdRef.detectChanges(),
+        error: (error) =>  console.error('Erro:', error)
       });
     });
   }

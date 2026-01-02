@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderItem } from '../../components/order-item/order-item';
+import { CartForm } from '../../service/cart-form';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-order-checkout',
@@ -9,55 +11,32 @@ import { OrderItem } from '../../components/order-item/order-item';
   styleUrl: './order-checkout.css'
 })
 export class OrderCheckout {
+  constructor(private cartForm: CartForm) {}
 
-  orderproducts = [
-    {img: "assets/images/produto-teste.png",
-     unid: 1,
-     currency: "R$",
-     price: "583.00",
-     update: true,
-     href: "/product?category=1&subcategory=3",
-     title: "Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para"
-    },
-    {img: "assets/images/produto-teste.png",
-     unid: 1,
-     currency: "R$",
-     price: "583.00",
-     update: true,
-     href: "/product?category=1&subcategory=3",
-     title: "Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para"
-    },
-    {img: "assets/images/produto-teste.png",
-     unid: 1,
-     currency: "R$",
-     price: "583.00",
-     update: true,
-     href: "/product?category=1&subcategory=3",
-     title: "Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para"
-    },
-    {img: "assets/images/produto-teste.png",
-     unid: 1,
-     currency: "R$",
-     price: "583.00",
-     update: true,
-     href: "/product?category=1&subcategory=3",
-     title: "Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para"
-    },
-    {img: "assets/images/produto-teste.png",
-     unid: 1,
-     currency: "R$",
-     price: "583.00",
-     update: true,
-     href: "/product?category=1&subcategory=3",
-     title: "Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para"
-    },
-    {img: "assets/images/produto-teste.png",
-     unid: 1,
-     currency: "R$",
-     price: "583.00",
-     update: true,
-     href: "/product?category=1&subcategory=3",
-     title: "Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para"
-    }
-  ]
+  cartItems$!: Observable<any[]>;
+
+  getPriceSum(){
+    return this.cartForm.ItemsSum();
+  }
+
+  getPriceDelivery(){
+    return this.cartForm.ItemsSum();
+  }
+
+  getPriceSumPlusDelivery(){
+    return this.cartForm.ItemsSum();
+  }
+
+  ngOnInit(): void {
+    this.cartItems$ = this.cartForm.cartItems$;
+    this.cartForm.loadCart();
+  }
+
+  ThisEmptyCart(){
+    let thisEmptycart = false;
+
+    this.cartForm.cartItems$.subscribe((cart) => { thisEmptycart = cart.length == 0; });
+
+    return thisEmptycart;
+  }
 }

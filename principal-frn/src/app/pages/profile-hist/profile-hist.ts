@@ -27,7 +27,7 @@ export class ProfileHist {
   getUserHistory(){
     this.request.isLoggedIn().subscribe(isLogged =>{
       if(!isLogged) {
-        window.open('/insert/login', '_self');
+        window.open('http://localhost:4200/insert/login', '_self');
         return;
       }
 

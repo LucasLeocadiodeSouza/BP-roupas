@@ -1,6 +1,6 @@
 <div class="radio-input" *ngFor="let address of addresses">
   <label class="label">
-    <input type="radio" id="value-1" [checked]="address.active" name="value-radio">
+    <input type="radio" id="value-1" [checked]="address.active" name="value-radio" (click)="setActiveAddress(address.sequence)">
 
     <div class="information">
       <div class="text-username">

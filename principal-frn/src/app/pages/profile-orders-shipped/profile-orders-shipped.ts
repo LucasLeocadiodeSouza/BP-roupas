@@ -11,7 +11,6 @@ import { OrderItem } from "../../components/order-item/order-item";
 export class ProfileOrdersShipped {
   orderproducts = [
     {img: "assets/images/produto-teste.png",
-     unid: 1,
      currency: "R$",
      price: "583.00",
      update: false,
@@ -19,7 +18,6 @@ export class ProfileOrdersShipped {
      title: "Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para"
     },
     {img: "assets/images/produto-teste.png",
-     unid: 1,
      currency: "R$",
      price: "583.00",
      update: false,

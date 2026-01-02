@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.bphost.principal.model.userCartDTO;
 import com.bphost.principal.model.userDTO;
 import com.bphost.principal.model.user_account;
 import com.bphost.principal.model.user_address;
-import com.bphost.principal.model.user_history;
 import com.bphost.principal.service.userService;
 
 @RestController
@@ -35,6 +35,16 @@ public class accountController {
         return ResponseEntity.ok(Map.of(
             "status", "success",
             "message", "User registed successfully"
+        ));
+    }
+
+    @PostMapping(value = "/setUserAccount")
+    public ResponseEntity<?> setUserAccount(@RequestBody user_account userAccount, @AuthenticationPrincipal UserDetails userDetails) throws IOException{
+        user.setUserAccount(user.getUserAccountId(userDetails.getUsername()), userAccount.getUsername(), userAccount.getEmail(), userAccount.getTelephone());
+
+        return ResponseEntity.ok(Map.of(
+            "status", "success",
+            "message", "User updated successfully"
         ));
     }
 
@@ -83,8 +93,18 @@ public class accountController {
     }
 
     @PostMapping("/getUserAddress")
-    public user_address getUserAddress(@AuthenticationPrincipal UserDetails userAccount){
+    public List<user_address> getUserAddress(@AuthenticationPrincipal UserDetails userAccount){
         return user.getUserAddress(user.getUserAccountId(userAccount.getUsername()));
+    }
+
+    @PostMapping("/setActiveAddress")
+    public ResponseEntity<?> setActiveAddress(@RequestParam(value = "sequence", required = true) Integer sequence, @AuthenticationPrincipal UserDetails userAccount){
+        user.setActiveAddress(user.getUserAccountId(userAccount.getUsername()), sequence);
+
+        return ResponseEntity.ok(Map.of(
+            "status", "success",
+            "message", "Address updated successfully"
+        ));
     }
 
     @PostMapping("/getAllUserHistory")

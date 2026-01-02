@@ -4,7 +4,7 @@ import { StarRating } from "../star-rating/star-rating";
 
 @Component({
   selector: 'app-star-filter',
-  imports: [CommonModule, StarRating],
+  imports: [CommonModule],
   templateUrl: './star-filter.html',
   styleUrl: './star-filter.css'
 })

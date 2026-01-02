@@ -1,27 +1,46 @@
-<a [href]="href">
-  <main>
-      <div class="view-item">
-          <img [src]="view" width="100" height="100">
-      </div>
-      <div class="about-item">
-          <div class="description">
-            <div class="title"> {{ title }} </div>
+<main>
+  <div class="container-item">
+    <div class="view-item">
+        <img [src]="view" width="115" height="115">
+    </div>
+    <div class="about-item">
+        <div class="description">
+          <div class="title">
+            <a [href]="href">
+              {{ title }}
+            </a>
           </div>
-          <div class="quantity">
-            <div> Unid: {{ unid }} Peça </div>
-            <div>
-              <div class="container-input">
-                <div class="flex-box ai-c jc-between select-opt" [ngClass]="{'isDisabled': !update}">
-                  <div>Qtd:</div>
-                  <input type="number" class="input-quant" value="1" [disabled]="!update">
-                </div>
-              </div>
-            </div>
+        </div>
+        <div class="info">
+          <div class="flex-box ai-c jc-between select-opt">
+            <div>Tamanho:</div>&nbsp;&nbsp;
+            <div>{{ size }}</div>
           </div>
-          <div class="dprice">
-            <div class="currency"> {{ currency }}</div>
-            <div class="price"> {{ price }} </div>
+        </div>
+        <div class="info">
+          <div class="flex-box ai-c jc-between select-opt">
+            <div>Cor:</div>&nbsp;&nbsp;
+            <div>{{ color }}</div>
           </div>
-      </div>
-    </main>
-</a>
+        </div>
+        <div class="info">
+          <div class="flex-box ai-c jc-between select-opt">
+            <div>Qtd:</div>&nbsp;&nbsp;
+            <div>{{ quantity }}</div>
+          </div>
+        </div>
+        <div class="dprice">
+          <div class="currency"> {{ currency }}</div>
+          <div class="price"> {{ price }} </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="container-remove" (click)="removeFromCart()">
+    <div class="container-resume">
+      <img src="assets/images/remove-icon.png" alt="loading...">
+    </div>
+    <div class="container-complete">Remover</div>
+  </div>
+</main>
+

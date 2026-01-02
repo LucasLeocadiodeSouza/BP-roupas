@@ -29,12 +29,13 @@ export class NewAddress {
 
     if(element.value.length > 8){
        element.value = element.value.slice(0, -1);
+       if(element.value.length > 8) element.value = element.value.slice(0, 5) + "-" + element.value.slice(5)
        return;
     }
 
     this.cep = element.value;
 
-    if(element.value.length > 7) element.value = element.value.slice(0, 5) + "-" + element.value.slice(5);
+    if(element.value.length == 8) element.value = element.value.slice(0, 5) + "-" + element.value.slice(5);
   }
 
   registerAddress(){
@@ -42,7 +43,7 @@ export class NewAddress {
       street:       this.street,
       number:       this.number,
       neighborhood: this.neighborhood,
-      cep:          this.cep,
+      cep:          this.cep.replace('-', ''),
       city:         this.city,
       state:        this.state,
       country:      this.country

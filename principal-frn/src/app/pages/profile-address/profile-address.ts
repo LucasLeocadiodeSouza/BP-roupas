@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AddressOption } from "../../components/address-option/address-option";
 import { RequestForm } from '../../service/request-form';
+import { sequenceEqual } from 'rxjs';
 
 @Component({
   selector: 'app-profile-address',
@@ -21,17 +22,17 @@ export class ProfileAddress {
     active: boolean;
   }[];
 
-
   getUserAddress(){
     this.request.isLoggedIn().subscribe(isLogged =>{
       if(!isLogged) {
-        window.open('/insert/login', '_self');
+        window.open('http://localhost:4200/insert/login', '_self');
         return;
       }
 
       this.request.executeRequestPOST('account/getUserAddress', {}).subscribe({
         next: (response) => {
           var info: {
+            sequence:     number,
             street:       string,
             neighborhood: string,
             number:       string,
@@ -46,8 +47,9 @@ export class ProfileAddress {
           if(info == null) return;
 
           const addressFormat = info.map((address: any) => ({
+            sequence: address.id.seq,
             address1: address.street + " " + address.number,
-            address2: address.neighborhood + ", " + address.cep  + " " + address.city + ", " + address.state,
+            address2: address.neighborhood + ", " + address.cep.slice(0, 5) + "-" + address.cep.slice(5) + " " + address.city + ", " + address.state,
             country:  address.country,
             active:   address.active
           }));

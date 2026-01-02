@@ -25,18 +25,31 @@
         </div>
 
         <div class="container-itens">
-            <div class="itens">
-                <app-order-item *ngFor="let orderproduct of orderproducts; let i = index"
+            <div class="itens" [ngClass]="{'dnone': ThisEmptyCart() }">
+                <app-order-item *ngFor="let orderproduct of cartItems$ | async as cartItems"
                                  [href]="orderproduct.href"
-                                 [view]="orderproduct.img"
-                                 [unid]="orderproduct.unid"
+                                 [view]="orderproduct.src"
                                  [title]="orderproduct.title"
+                                 [quantity]="orderproduct.quantity"
                                  [currency]="orderproduct.currency"
                                  [price]="orderproduct.price"
-                                 [update]="orderproduct.update"></app-order-item>
+                                 [size]="orderproduct.size"
+                                 [color]="orderproduct.color"
+                                 [product]="{product_id: orderproduct.product_id, size_id: orderproduct.size_id, color_id: orderproduct.color_id}"></app-order-item>
             </div>
 
-            <div class="checkout">
+            <div class="container-explorer" [ngClass]="{'dnone': !ThisEmptyCart() }">
+              <div class="explorer">
+                Pelo visto você ainda não adicionou nenhum item ao seu carrinho! De uma olhada nas nossas recomendações pessoais
+              </div>
+              <div class="explorer-button">
+                <a href="http://localhost:4200/products-list?category_id=3">
+                  Explorar
+                </a>
+              </div>
+            </div>
+
+            <div class="checkout" [ngClass]="{'dnone': ThisEmptyCart() }">
                 <div class="title">
                     <h3>Resumo do pedido:</h3>
                 </div>
@@ -48,7 +61,7 @@
 
                     <div class="price">
                         <span>R$</span>
-                        <span>7894,90</span>
+                        <span>{{ getPriceSum() }}</span>
                     </div>
                 </div>
 
@@ -59,7 +72,7 @@
 
                     <div class="price">
                         <span>R$</span>
-                        <span>7894,90</span>
+                        <span>{{ getPriceDelivery() }}</span>
                     </div>
                 </div>
 
@@ -70,7 +83,7 @@
 
                     <div class="price">
                         <span>R$</span>
-                        <span>7894,90</span>
+                        <span>{{ getPriceSumPlusDelivery() }}</span>
                     </div>
                 </div>
 
