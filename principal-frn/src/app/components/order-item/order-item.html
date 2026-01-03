@@ -1,4 +1,4 @@
-<main>
+<main [ngClass]="{'border-bottom-radius mb-10' : !removeItem}">
   <div class="container-item">
     <div class="view-item">
         <img [src]="view" width="115" height="115">
@@ -36,7 +36,7 @@
     </div>
   </div>
 
-  <div class="container-remove" (click)="removeFromCart()">
+  <div class="container-remove" (click)="removeFromCart()" [ngClass]="{'dnone': !removeItem}">
     <div class="container-resume">
       <img src="assets/images/remove-icon.png" alt="loading...">
     </div>

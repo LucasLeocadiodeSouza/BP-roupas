@@ -14,7 +14,7 @@ public class userCartDTORepo {
         this.em = em;
     }
 
-    public List<userCartDTO> findAllActivesSubcategories(Integer useraccount_id){
+    public List<userCartDTO> findAllProductsCartByUser(Integer useraccount_id){
         String query = "SELECT new com.bphost.principal.model.userCartDTO( " +
                        "c.id.useraccount_id, " + 
                        "prod.id, " +

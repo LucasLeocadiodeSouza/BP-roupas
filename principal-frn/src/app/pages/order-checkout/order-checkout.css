@@ -38,7 +38,26 @@ a {text-decoration: none;}
 .explorer           { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 400; }
 .explorer-button    { margin-block: 40px; background: var(--color-primary, #292617);  border-radius: 20px; padding: 10px 15px; }
 .explorer-button a  {text-decoration: none;}
-.explorer-button a:-webkit-any-link {
-    color: var(--color-label-inv, #eaeaea);
-    cursor: pointer;
-}
+.explorer-button a:-webkit-any-link { color: var(--color-label-inv, #eaeaea); cursor: pointer;}
+
+.dflex {display: flex;}
+.ai-c  {align-items: center;}
+.w100  {width: 100%;}
+.jc-c  {justify-content: center;}
+
+.container-info  {width: 80%; display: flex; flex-direction: column; background-color: #FFF; margin-bottom: 20px; border-radius: 10px; padding: 5px 10px;}
+.top, .bottom    {display: flex; flex-direction: row; gap: 10px;}
+.top {align-items: center;}
+.bottom {position: relative;}
+
+.top .title, .bottom .message {font-family: 'Inter', sans-serif;}
+.top .title {font-weight: 600;}
+
+.bottom .message {font-size: 13px; margin-left: 100px; height: 80px;}
+
+.icon-ok img {width: 35px; height: 35px;}
+.itens-images img {width: 60px; height: 70px; position: absolute;}
+
+.itens-images .g-0  {transform: rotate(0deg);  z-index: 800;}
+.itens-images .g-45 {transform: rotate(45deg); z-index: 700; margin-left: 30px;}
+.itens-images .g-90 {transform: rotate(90deg); z-index: 600; margin-left: 40px; margin-top: 15px;}

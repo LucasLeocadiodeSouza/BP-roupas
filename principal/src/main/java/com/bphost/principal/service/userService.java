@@ -1,6 +1,7 @@
 package com.bphost.principal.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +18,8 @@ import com.bphost.principal.model.specification_prod;
 import com.bphost.principal.model.specification_size;
 import com.bphost.principal.model.userCartDTO;
 import com.bphost.principal.model.userDTO;
+import com.bphost.principal.model.userPurchases;
+import com.bphost.principal.model.userPurchasesId;
 import com.bphost.principal.model.user_account;
 import com.bphost.principal.model.user_address;
 import com.bphost.principal.model.user_addressId;
@@ -32,6 +35,7 @@ import com.bphost.principal.repository.specification_prodRepo;
 import com.bphost.principal.repository.specification_sizeRepo;
 import com.bphost.principal.repository.userCartDTORepo;
 import com.bphost.principal.repository.userDTORepo;
+import com.bphost.principal.repository.userPurchasesRepo;
 import com.bphost.principal.repository.user_accountRepo;
 import com.bphost.principal.repository.user_addressRepo;
 import com.bphost.principal.repository.user_cartRepo;
@@ -56,6 +60,9 @@ public class userService {
 
     @Autowired
     private user_cartRepo userCartRepo;
+
+    @Autowired
+    private userPurchasesRepo userPurcRepo;
 
     @Autowired
     private productRepo prodRepo;
@@ -244,8 +251,20 @@ public class userService {
     }
 
     public List<userCartDTO> getCartByUserAccount(Integer userId){
-        List<userCartDTO> usercart = userCartDTOrepo.findAllActivesSubcategories(userId);
+        List<userCartDTO> usercart = userCartDTOrepo.findAllProductsCartByUser(userId);
         return usercart;
+    }
+
+    public List<String> getAllImagesproductInCart(Integer userId){
+        List<userCartDTO> usercart = userCartDTOrepo.findAllProductsCartByUser(userId);
+        if(usercart == null) return null;
+
+        List<String> images = new ArrayList<>();
+        for(userCartDTO cart : usercart){
+            images.add("http://localhost:8080/api/product/" + cart.getImage());
+        }
+
+        return images;
     }
 
     public userDTO getUserInformation(Integer userId){
@@ -351,6 +370,128 @@ public class userService {
 
         user_address address = userAddressRepo.findAddressByUser(userId, sequence);
         userAddressRepo.delete(address);
+    }
+
+    @Transactional
+    private void registerUserPurchases(Integer useraccount_id, Integer product_id, Integer size_id, Integer color_id){
+        user_account user = userAccountRepo.findAccountById(useraccount_id);
+        if(user == null) throw new UserNotFoundException("Usuário não encontrado com o id '" + useraccount_id + "'");
+
+        product prod = prodRepo.findProductById(product_id);
+        if(prod == null) throw new ProductNotFoundException("Produto não encontrado com o id '" + product_id + "'");
+
+        specification_size size = specsizeRepo.findSizeById(size_id);
+        if(size == null) throw new SpecificationNotFoundException("Tamanho não encontrado com o id '" + size_id + "'");
+
+        specification_color color = speccolorRepo.findColorById(color_id);
+        if(color == null) throw new SpecificationNotFoundException("Cor não encontrado com o id '" + color_id + "'");
+
+        specification_prod specprod = specprodRepo.findSpecProdById(product_id, size_id, color_id);
+        if(specprod == null) throw new SpecificationNotFoundException("Especificação do produto não encontrada!");
+
+        user_cart cart = userCartRepo.findCardById(useraccount_id, product_id, size_id, color_id);
+        if(cart == null) throw new UserCartNotFoundException("Produto não foi encontrado no carrinho do usuário!");
+
+        Integer newSequence = userPurcRepo.findLastSequencePurchaseById(useraccount_id, product_id, size_id, color_id);
+        newSequence = newSequence == null? 1 : newSequence + 1;
+
+        userPurchasesId purchaseId = new userPurchasesId();
+        purchaseId.setUseraccount_id(useraccount_id);
+        purchaseId.setProduct_id(product_id);
+        purchaseId.setSpec_size_id(size_id);
+        purchaseId.setSpec_color_id(color_id);
+        purchaseId.setSequence(newSequence);
+
+        userPurchases newPurchase = new userPurchases();
+        newPurchase.setId(purchaseId);
+        newPurchase.setUserAccount(user);
+        newPurchase.setProduct(prod);
+        newPurchase.setSpec_size(size);
+        newPurchase.setSpec_color(color);
+        newPurchase.setQuantity(cart.getQuantity());
+        newPurchase.setStatus(1); // 1 - awaiting confirmation | 2 - awaiting delivery | 3 - delivered
+        newPurchase.setCreate_at(LocalDate.now());
+
+        userPurcRepo.save(newPurchase);
+
+        userCartRepo.delete(cart);
+    }
+
+    @Transactional
+    public void registerUserCartPurchases(Integer useraccount_id){
+        user_account user = userAccountRepo.findAccountById(useraccount_id);
+        if(user == null) throw new UserNotFoundException("Usuário não encontrado com o id '" + useraccount_id + "'");
+
+        List<user_cart> itensInCart = userCartRepo.findAllByUserAccount(useraccount_id);
+        for(user_cart cart : itensInCart){
+            registerUserPurchases(cart.getId().getUseraccount_id(), cart.getId().getProduct_id(), cart.getId().getSpec_size_id(), cart.getId().getSpec_color_id());
+        }
+    }
+
+    public void setStatusForWaitingUserPurchases(Integer useraccount_id, Integer product_id, Integer size_id, Integer color_id, Integer sequence){
+        user_account user = userAccountRepo.findAccountById(useraccount_id);
+        if(user == null) throw new UserNotFoundException("Usuário não encontrado com o id '" + useraccount_id + "'");
+
+        product prod = prodRepo.findProductById(product_id);
+        if(prod == null) throw new ProductNotFoundException("Produto não encontrado com o id '" + product_id + "'");
+
+        specification_size size = specsizeRepo.findSizeById(size_id);
+        if(size == null) throw new SpecificationNotFoundException("Tamanho não encontrado com o id '" + size_id + "'");
+
+        specification_color color = speccolorRepo.findColorById(color_id);
+        if(color == null) throw new SpecificationNotFoundException("Cor não encontrado com o id '" + color_id + "'");
+
+        specification_prod specprod = specprodRepo.findSpecProdById(product_id, size_id, color_id);
+        if(specprod == null) throw new SpecificationNotFoundException("Especificação do produto não encontrada!");
+
+        userPurchases purchase = userPurcRepo.findPurchaseById(useraccount_id, product_id, size_id, color_id, sequence);
+        purchase.setStatus(2);
+
+        userPurcRepo.save(purchase);
+    }
+
+    public void setStatusForDeliveredUserPurchases(Integer useraccount_id, Integer product_id, Integer size_id, Integer color_id, Integer sequence){
+        user_account user = userAccountRepo.findAccountById(useraccount_id);
+        if(user == null) throw new UserNotFoundException("Usuário não encontrado com o id '" + useraccount_id + "'");
+
+        product prod = prodRepo.findProductById(product_id);
+        if(prod == null) throw new ProductNotFoundException("Produto não encontrado com o id '" + product_id + "'");
+
+        specification_size size = specsizeRepo.findSizeById(size_id);
+        if(size == null) throw new SpecificationNotFoundException("Tamanho não encontrado com o id '" + size_id + "'");
+
+        specification_color color = speccolorRepo.findColorById(color_id);
+        if(color == null) throw new SpecificationNotFoundException("Cor não encontrado com o id '" + color_id + "'");
+
+        specification_prod specprod = specprodRepo.findSpecProdById(product_id, size_id, color_id);
+        if(specprod == null) throw new SpecificationNotFoundException("Especificação do produto não encontrada!");
+
+        userPurchases purchase = userPurcRepo.findPurchaseById(useraccount_id, product_id, size_id, color_id, sequence);
+        purchase.setStatus(3);
+        purchase.setDelivered_at(LocalDate.now());
+
+        userPurcRepo.save(purchase);
+    }
+
+    public List<userPurchases> getDeliveredPurchase(Integer userId){
+        List<userPurchases> purchase = userPurcRepo.findAllDeliveredPurchaseByUser(userId);
+        if(purchase == null) return null;
+
+        return purchase;
+    }
+
+    public List<userPurchases> getWaitingPurchase(Integer userId){
+        List<userPurchases> purchase = userPurcRepo.findAllWaitingPurchaseByUser(userId);
+        if(purchase == null) return null;
+
+        return purchase;
+    }
+
+    public List<userPurchases> getPreparingPurchase(Integer userId){
+        List<userPurchases> purchase = userPurcRepo.findAllPreparingPurchaseByUser(userId);
+        if(purchase == null) return null;
+
+        return purchase;
     }
 
     public static boolean isValidPhoneNumber(String telefone) {

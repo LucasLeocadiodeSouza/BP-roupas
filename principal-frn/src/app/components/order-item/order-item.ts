@@ -22,6 +22,7 @@ export class OrderItem {
   @Input() price: any;
   @Input() size: any;
   @Input() color: any;
+  @Input() removeItem: boolean = false;
 
   @Input() product: {
     product_id: number;

@@ -15,6 +15,27 @@
         <div class="divisior"></div>
     </div>
 
+    <div class="dflex ai-c w100 jc-c" [ngClass]="{'dnone' : !purchaseCompleted}">
+      <div class="container-info">
+        <div class="top">
+          <div class="icon-ok">
+            <img src="assets/images/icon ok purchases.png">
+          </div>
+          <div class="title">
+            <label>Obrigado por comprar conosco! Recebemos seu pedido e ele foi registrado com sucesso em nosso sistema.</label>
+          </div>
+        </div>
+        <div class="bottom">
+          <div class="itens-images">
+            <img *ngFor="let image of purchaseImage, let i = index" [ngClass]="{'g-0' : i == 0, 'g-45' : i == 1, 'g-90' : i == 2, 'dnone' : i > 2}" [src]="image">
+          </div>
+          <div class="message">
+            <label>No momento, o seu produto está aguardando a confirmação do fornecedor, etapa necessária para que possamos iniciar o preparo e a separação do pedido com toda a qualidade e cuidado que você merece. Assim que essa confirmação for concluída, daremos sequência ao processo de envio para o endereço informado.</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="main-container">
         <div class="title">
             <h1>Carrinho de Compras</h1>
@@ -35,6 +56,7 @@
                                  [price]="orderproduct.price"
                                  [size]="orderproduct.size"
                                  [color]="orderproduct.color"
+                                 [removeItem]="true"
                                  [product]="{product_id: orderproduct.product_id, size_id: orderproduct.size_id, color_id: orderproduct.color_id}"></app-order-item>
             </div>
 
@@ -94,11 +116,9 @@
                 <div class="divisior mb5"></div>
 
                 <div class="mb15">
-                    <a href="">
-                        <div class="control-button">
-                            <span>Finalizar Compra</span>
-                        </div>
-                    </a>
+                    <div class="control-button" (click)="registerUserCartPurchases()">
+                        <span>Finalizar Compra</span>
+                    </div>
                 </div>
             </div>
         </div>

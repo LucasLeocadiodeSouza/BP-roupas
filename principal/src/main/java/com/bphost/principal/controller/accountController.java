@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.bphost.principal.model.userCartDTO;
 import com.bphost.principal.model.userDTO;
+import com.bphost.principal.model.userPurchases;
 import com.bphost.principal.model.user_account;
 import com.bphost.principal.model.user_address;
 import com.bphost.principal.service.userService;
@@ -121,5 +122,35 @@ public class accountController {
             "status", "success",
             "message", "Address register successfully"
         ));
+    }
+
+    @PostMapping("/registerUserCartPurchases")
+    public ResponseEntity<?> registerUserCartPurchases(@AuthenticationPrincipal UserDetails userAccount){
+        user.registerUserCartPurchases(user.getUserAccountId(userAccount.getUsername()));
+
+        return ResponseEntity.ok(Map.of(
+            "status", "success",
+            "message", "Purchases register successfully"
+        ));
+    }
+
+    @GetMapping("/getDeliveredPurchase")
+    public List<userPurchases> getDeliveredPurchase(@AuthenticationPrincipal UserDetails userAccount){
+        return user.getDeliveredPurchase(user.getUserAccountId(userAccount.getUsername()));
+    }
+
+    @GetMapping("/getWaitingPurchase")
+    public List<userPurchases> getWaitingPurchase(@AuthenticationPrincipal UserDetails userAccount){
+        return user.getWaitingPurchase(user.getUserAccountId(userAccount.getUsername()));
+    }
+
+    @GetMapping("/getPreparingPurchase")
+    public List<userPurchases> getPreparingPurchase(@AuthenticationPrincipal UserDetails userAccount){
+        return user.getPreparingPurchase(user.getUserAccountId(userAccount.getUsername()));
+    }
+
+    @GetMapping("/getAllImagesproductInCart")
+    public List<String> getAllImagesproductInCart(@AuthenticationPrincipal UserDetails userAccount){
+        return user.getAllImagesproductInCart(user.getUserAccountId(userAccount.getUsername()));
     }
 }
