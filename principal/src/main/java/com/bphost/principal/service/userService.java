@@ -372,6 +372,11 @@ public class userService {
         userAddressRepo.delete(address);
     }
 
+    public user_address getActiveAddress(Integer userId){
+        user_address activeAddress = userAddressRepo.findAddressActiveByUser(userId);
+        return activeAddress;
+    }
+
     @Transactional
     private void registerUserPurchases(Integer useraccount_id, Integer product_id, Integer size_id, Integer color_id){
         user_account user = userAccountRepo.findAccountById(useraccount_id);

@@ -22,7 +22,7 @@ body {margin: 0; background: var(--primary-background, #e5e5e5); min-width: 1500
 .minicard-cartform {height: 125px !important;}
 .minicard-cartform .desc-prod-card {height: 30% !important; padding: 0 !important;}
 .minicard-cartform .s-desc-prod {font-size: 12px !important;}
-.minicard-cartform span {color: var(--color-label-card, #000) !important;}
+.minicard-cartform span {color: var(--color-label-card, #000) !important; max-width: 140px;}
 
 .product-list-minicard-height {height: 100px !important;}
 .product-list-minicard-height .desc-prod-card {height: 30% !important; padding: 0 !important;}

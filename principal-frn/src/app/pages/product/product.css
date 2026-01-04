@@ -42,7 +42,7 @@ a  {text-decoration: none;}
 .especifications .title {margin-bottom: 20px;}
 
 .especification  {display: flex;}
-.especification .control-button {padding: 3px 6px; font-size: 16px; user-select: none; background: #e9e9e9;}
+.especification .control-button {padding: 3px 6px; font-size: 16px; user-select: none; background: #f1f1f1;}
 .selected {border: 1px solid var(--color-primary, #292617) !important; background: #292617 !important; font-weight: 700; color: var(--color-label-inv, #eeeeee) !important;}
 
 .alert {opacity: 0; visibility: hidden; transition: opacity 0.3s;}

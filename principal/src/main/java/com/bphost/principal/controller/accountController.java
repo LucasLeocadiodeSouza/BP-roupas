@@ -98,6 +98,11 @@ public class accountController {
         return user.getUserAddress(user.getUserAccountId(userAccount.getUsername()));
     }
 
+    @PostMapping("/getActiveAddress")
+    public user_address getActiveAddress(@AuthenticationPrincipal UserDetails userAccount){
+        return user.getActiveAddress(user.getUserAccountId(userAccount.getUsername()));
+    }
+
     @PostMapping("/setActiveAddress")
     public ResponseEntity<?> setActiveAddress(@RequestParam(value = "sequence", required = true) Integer sequence, @AuthenticationPrincipal UserDetails userAccount){
         user.setActiveAddress(user.getUserAccountId(userAccount.getUsername()), sequence);

@@ -16,6 +16,10 @@ export class CartForm {
 
   cartItem: { product_id: number, size_id: number, color_id: number, quantity: number }[] = [];
 
+  clearCart(){
+    this.cartItemsSubject.next([]);
+  }
+
   loadCart() {
     this.request.isLoggedIn().subscribe(isLogged =>{
       if(!isLogged) return;
@@ -83,14 +87,6 @@ export class CartForm {
   }
 
   ItemsSum(){
-    let sum = 0;
-
-    this.cartItemsSubject.subscribe((items: { src: string, title: string, price: number, currency: string, extclass: string, href: string }[]) => {
-      items.forEach(item => {
-        sum += item.price;
-      });
-
-    });
-    return Number(sum.toFixed(2));
+    return this.cartItemsSubject.value.reduce((total, item) => total + item.price, 0).toFixed(2);
   }
 }

@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderItem } from '../../components/order-item/order-item';
 import { CartForm } from '../../service/cart-form';
-import { Observable } from 'rxjs';
+import { Observable, EMPTY, map } from 'rxjs';
 import { RequestForm } from '../../service/request-form';
 
 @Component({
@@ -18,8 +18,11 @@ export class OrderCheckout {
 
   cartItems$!: Observable<any[]>;
 
+  isEmptyCart$!: Observable<boolean>;
+
   purchaseImage: string[] = [];
   purchaseCompleted: boolean = false;
+  address: {street: string, neighborhood: string, number: string, cep: string, city: string, state: string } = {street: "", neighborhood: "", number: "", cep: "", city: "", state: ""};
 
   getPriceSum(){
     return this.cartForm.ItemsSum();
@@ -37,6 +40,8 @@ export class OrderCheckout {
     this.request.executeRequestPOST('account/registerUserCartPurchases', null).subscribe({
       next: (response) => {
         this.purchaseCompleted = true;
+
+        this.cartForm.clearCart();
 
         this.cdRef.detectChanges();
       },
@@ -61,17 +66,38 @@ export class OrderCheckout {
     });
   }
 
-  ngOnInit(): void {
-    this.cartItems$ = this.cartForm.cartItems$;
-    this.cartForm.loadCart();
-    this.addPurchaseImage();
+  getUserAddress(){
+    this.request.executeRequestPOST('account/getActiveAddress', null).subscribe({
+      next: (response: {street:       string,
+                        neighborhood: string,
+                        number:       string,
+                        cep:          string,
+                        city:         string,
+                        state:        string
+                      }) => {
+
+        this.address = {
+          street:       response.street,
+          neighborhood: response.neighborhood,
+          number:       response.number,
+          cep:          response.cep,
+          city:         response.city,
+          state:        response.state
+        }
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
   }
 
-  ThisEmptyCart(){
-    let thisEmptycart = false;
-
-    this.cartForm.cartItems$.subscribe((cart) => { thisEmptycart = cart.length == 0; });
-
-    return thisEmptycart;
+  ngOnInit(): void {
+    this.cartItems$   = this.cartForm.cartItems$;
+    this.isEmptyCart$ = this.cartItems$.pipe( map(cart => cart.length === 0) );
+    this.cartForm.loadCart();
+    this.addPurchaseImage();
+    this.getUserAddress();
   }
 }

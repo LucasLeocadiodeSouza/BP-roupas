@@ -25,11 +25,17 @@ a {text-decoration: none;}
 .itens      {width: 60%;}
 .checkout   {width: calc(40% - 50px); display: flex; flex-direction: column; align-items: center; gap: 10px; justify-content: flex-start; margin-inline: 25px; user-select: none;}
 
+.container-address {display: flex; justify-content: center; flex-direction: column; width: 90%;}
+.container-address .order     {width: 100%;}
+.container-address .address   {margin-top: 10px; font: 12px  'Inter', sans-serif;}
+.container-address .address .negrito  {font-weight: 600;}
+.container-address .address a {text-decoration: underline}
+
 .order {display: flex; justify-content: space-between; width: 90%;}
 .order .price {font-size: 15px; font-family: monospace, Arial, sans-serif;}
 .order {font-family: 'Inter', sans-serif;}
 
-.alertspan {font-size: 12px;}
+.alertspan {font: 12px 'Inter', sans-serif; display: flex; width: 90%;}
 
 .control-button  {border: 1px solid var(--color-border, #bdbdbd); background: var(--color-primary, #292617); color: var(--color-label-inv, #eaeaea); border-radius: 20px; padding: 10px 15px; cursor: pointer; transition: 0.2s ease-out; font-size: 21px;}
 .control-button:hover {border: 1px solid var(--color-primary, #292617);}

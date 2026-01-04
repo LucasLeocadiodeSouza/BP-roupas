@@ -46,7 +46,7 @@
         </div>
 
         <div class="container-itens">
-            <div class="itens" [ngClass]="{'dnone': ThisEmptyCart() }">
+            <div class="itens" [ngClass]="{'dnone': (isEmptyCart$ | async) }">
                 <app-order-item *ngFor="let orderproduct of cartItems$ | async as cartItems"
                                  [href]="orderproduct.href"
                                  [view]="orderproduct.src"
@@ -60,7 +60,7 @@
                                  [product]="{product_id: orderproduct.product_id, size_id: orderproduct.size_id, color_id: orderproduct.color_id}"></app-order-item>
             </div>
 
-            <div class="container-explorer" [ngClass]="{'dnone': !ThisEmptyCart() }">
+            <div class="container-explorer" [ngClass]="{'dnone': !(isEmptyCart$ | async) }">
               <div class="explorer">
                 Pelo visto você ainda não adicionou nenhum item ao seu carrinho! De uma olhada nas nossas recomendações pessoais
               </div>
@@ -71,7 +71,7 @@
               </div>
             </div>
 
-            <div class="checkout" [ngClass]="{'dnone': ThisEmptyCart() }">
+            <div class="checkout" [ngClass]="{'dnone': (isEmptyCart$ | async) }">
                 <div class="title">
                     <h3>Resumo do pedido:</h3>
                 </div>
@@ -89,13 +89,27 @@
 
                 <div class="divisior mb5"></div>
 
-                <div class="order">
-                    <span>Envio:</span>
+                <div class="container-address">
+                  <div class="order">
+                    <span>Envio (Frete):</span>
 
                     <div class="price">
                         <span>R$</span>
                         <span>{{ getPriceDelivery() }}</span>
                     </div>
+                  </div>
+
+                  <div class="address">
+                    <div class="description">
+                      <label>Endereço Atual:</label>&nbsp;
+                      <label class="negrito">{{ `${address.street}, ${address.neighborhood}, ${address.city}, ${address.state} - CEP: ${address.cep}` }}</label>
+                    </div>
+
+                    <div class="change-address">
+                      <label>Endereço errado?</label>
+                      <a href="http://localhost:4200/account/address">Trocar endereço</a>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="divisior mb5"></div>
@@ -109,8 +123,8 @@
                     </div>
                 </div>
 
-                <div class="order alertspan">
-                    <span>Ao solicitar seu pedido, você concorda com nossos Termos de Uso e Política de Privacidade.</span>
+                <div class="alertspan">
+                    <span>Ao finalizar seu pedido, você concorda com nossos <a href="/">Termos de Uso</a> e <a href="/">Política de Privacidade</a></span>
                 </div>
 
                 <div class="divisior mb5"></div>
