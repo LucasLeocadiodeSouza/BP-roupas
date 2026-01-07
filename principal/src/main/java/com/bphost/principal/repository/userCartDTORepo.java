@@ -38,4 +38,31 @@ public class userCartDTORepo {
 
         return q.getResultList();
     }
+
+    
+    public List<userCartDTO> findAllPurchaseByUserAndStatus(Integer useraccount_id, Integer status){
+        String query = "SELECT new com.bphost.principal.model.userCartDTO( " +
+                       "purchase.id.useraccount_id, " + 
+                       "prod.id, " +
+                       "prod.name, " +
+                       "prod.price, " +
+                       "purchase.id.spec_size_id, " +
+                       "specsize.size, " +
+                       "purchase.id.spec_color_id, " +
+                       "sc.color, " +
+                       "purchase.quantity, " +
+                       "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1)) " +
+                       "FROM userPurchases purchase " +
+                       "JOIN product prod ON purchase.id.product_id = product.id " + 
+                       "JOIN specification_color sc ON purchase.id.spec_color_id = sc.id " +
+                       "JOIN specification_size specsize ON purchase.id.spec_size_id = specsize.id " +
+                       "WHERE purchase.id.useraccount_id = :userAccountId AND purchase.status = :status";
+
+        var q = em.createQuery(query, userCartDTO.class);
+    
+        q.setParameter("userAccountId", useraccount_id);
+        q.setParameter("status", status);
+
+        return q.getResultList();
+    }
 }

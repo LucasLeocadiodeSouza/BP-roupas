@@ -14,8 +14,10 @@ import { ActivatedRoute } from '@angular/router';
 export class ProductMenu {
   private request = inject(RequestForm);
 
-  @Input() cards: any = [];
-  @Input() title: any;
+  @Input() cards:          any = [];
+  @Input() title:          any;
+  @Input() category_id:    number = 0;
+  @Input() subcategory_id: number = 0;
 
   constructor(private cdRef: ChangeDetectorRef, private route: ActivatedRoute) {}
 
@@ -38,10 +40,12 @@ export class ProductMenu {
 
     const params = {
       ...paramsurl,
-      page: this.pageNumber
+      page: this.pageNumber,
+      category_id: this.category_id,
+      subcategory_id: this.subcategory_id
     }
 
-    this.request.executeRequestGET('api/getProductCardByCategoryId', params).subscribe({
+    this.request.executeRequestGET('api/getProductCardForProductMenu', params).subscribe({
       next: (response) => {
         var cards: { product_id:      string;
                      name:            string;

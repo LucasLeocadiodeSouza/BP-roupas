@@ -222,17 +222,18 @@ public class genController {
 
     // ######### Endpoints for Dashboard Management #########
 
-    @GetMapping("/getProductCardByCategoryId")
-    public List<productCardDTO> getProductCardByCategoryId(@RequestParam(value = "category_id", required = false) Integer category_id,
+    @GetMapping("/getProductCardForProductMenu")
+    public List<productCardDTO> getProductCardForProductMenu(@RequestParam(value = "category_id", required = false)    Integer category_id,
                                                            @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id,
-                                                           @RequestParam(value = "page", required = false) Integer page){
-        return prodService.getProductCardByCategoryId(category_id, subcategory_id, page);
+                                                           @RequestParam(value = "search", required = false)         String search,
+                                                           @RequestParam(value = "page", required = false)           Integer page){
+        return prodService.getProductCardForProductMenu(category_id, subcategory_id, search, page);
     }
 
     @GetMapping("/getSimilarProductCard")
     public List<productCardDTO> getSimilarProductCard(@RequestParam(value = "category_id", required = false) Integer category_id,
                                                       @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
-        return prodService.getProductCardByCategoryId(category_id, subcategory_id, null);
+        return prodService.getProductCardForProductMenu(category_id, subcategory_id, null, null);
     }
 
     @GetMapping("/getBestSellingProducts")
@@ -254,5 +255,17 @@ public class genController {
     @GetMapping("/getHouseRecommendations")
     public List<productCardDTO> getHouseRecommendations(){
         return prodService.getHouseRecommendations();
+    }
+
+    // ######### Endpoints for Search Management #########
+
+    @GetMapping("/getParamsRequests")
+    public categoryCardDTO getParamsRequests(@RequestParam(value = "url", required = true) String url){
+        return prodService.getParamsRequests(url);
+    }
+
+    @GetMapping("/searchProductsSugestionsByTextInput")
+    public List<productCardDTO> searchProductsSugestionsByTextInput(@RequestParam(value = "text", required = false) String text){
+        return prodService.searchProductsSugestionsByTextInput(text);
     }
 }

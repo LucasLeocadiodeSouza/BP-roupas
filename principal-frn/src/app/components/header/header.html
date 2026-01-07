@@ -74,13 +74,17 @@
         </div>
 
         <div id="navheader8" class="disprow search-class jc-center ai-c">
-            <form class="form">
-                <input class="input" placeholder="Digite um produto" required="" type="text">
-                <a href="#" class="link-efect">
-                    <div class="button-search">
-                        <img src="assets/images/search-icon.png" width="17" height="16">
-                    </div>
-                </a>
+            <form class="form" (ngSubmit)="goToSearch()">
+                <input class="input" placeholder="Digite um produto" required="" type="text" (input)="changeTextinput($event)"
+                                                                                             (focus)="changeTextInputFocus(true)"
+                                                                                             (blur)="changeTextInputFocus(false)"
+                                                                                             (mouseenter)="textInputHovering = true"
+                                                                                             (mouseleave)="textInputHovering = false">
+                 <button type="submit" class="button-search">
+                  <img src="assets/images/search-icon.png" width="17" height="16">
+                </button>
+
+                <app-text-sugestion [show]="textInputFocus" [sugestions]="sugestions"></app-text-sugestion>
             </form>
         </div>
     </div>

@@ -1,0 +1,17 @@
+.container-main {position: absolute; width: 100%; background-color: #FFF; left: 0; top: 100%; transition: opacity 0.3s ease;}
+
+.dnone {display: none !important;}
+
+.hidden  {visibility: hidden; opacity: 0;}
+.visible {visibility: visible; opacity: 1;}
+
+.list-sugestions {margin: 0;
+                  padding: 0; padding-left: 5px;
+                  list-style-type: none;
+                  font: 15px "Inter";
+                  cursor: pointer;}
+
+.list-sugestions a   { display: flex; flex-direction: row; align-items: center; gap: 10px; margin-block: 10px; text-decoration: none; color: #000;}
+.list-sugestions li:hover {background-color: #f0f0f0;}
+.list-sugestions img {width: 30px; height: 30px;}
+.list-sugestions label {cursor: pointer;}

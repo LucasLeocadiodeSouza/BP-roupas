@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CategoriesList } from "../../components/categories-list/categories-list";
 import { ProductMenu } from "../../components/product-menu/product-menu";
 import { RequestForm } from './../../service/request-form';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-products-list',
@@ -14,10 +14,13 @@ import { ActivatedRoute } from '@angular/router';
 export class ProductsList {
   private request = inject(RequestForm);
 
-  constructor(private cdRef: ChangeDetectorRef, private route: ActivatedRoute) {}
+  constructor(private cdRef: ChangeDetectorRef, private route: Router, private activatedRoute: ActivatedRoute) {}
 
-  barContainer: any;
-  titlemenu: string = "";
+  barContainer:   any;
+  titlemenu:      string = "";
+  category_id:    number = 0;
+  subcategory_id: number = 0;
+
 
   cards: {title?: string,
           extclass: string,
@@ -25,11 +28,34 @@ export class ProductsList {
           miniCard: {src: string, title?: string, price?: string, currency?: string, extclass: string, href: string }[]
         }[] = [];
 
-  loadActivesSubcategories(){
-    const paramsurl = this.route.snapshot.root.queryParams;
 
-    if(!paramsurl['subcategory_id']){
-      this.request.executeRequestGET('api/findAllActivesSubcategories', paramsurl).subscribe({
+  getParamsRequests(){
+    const url = this.route.url;
+
+    this.request.executeRequestGET('api/getParamsRequests', { url: url }).subscribe({
+      next: (response : { category_id: number; category_name: string; subcategory_seq: number; subcategory_name: string; }) => {
+
+        this.category_id    = response.category_id == null? 0 : response.category_id;
+        this.subcategory_id = response.subcategory_seq == null? 0 : response.subcategory_seq;
+
+        if(this.activatedRoute.snapshot.root.queryParams['search']) this.titlemenu = this.activatedRoute.snapshot.root.queryParams['search'];
+        else{
+          this.titlemenu = response.category_name;
+
+          if(response.subcategory_name) this.titlemenu = this.titlemenu + " - " + response.subcategory_name;
+        }
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
+
+  loadActivesSubcategories(){
+    if(this.subcategory_id == 0){
+      this.request.executeRequestGET('api/findAllActivesSubcategories', { category_id: this.category_id }).subscribe({
         next: (response) => {
           var subcategories: { category_id:      number;
                                subcategory_seq:  number;
@@ -51,19 +77,19 @@ export class ProductsList {
 
           this.cards = [...this.cards, {extclass: "container-subcategory", title:"", src: "", miniCard: subcategformat }];
 
+          this.LoadCardRowProducts("Em oferta!", "getBestSellingProducts");
+
           this.cdRef.detectChanges();
         },
         error: (error) => {
           console.error('Erro:', error);
         }
       });
-    }
+    }else this.LoadCardRowProducts("Em oferta!", "getBestSellingProducts");
   }
 
   LoadCardRowProducts(titlerow: string, path: string){
-    const paramsurl = this.route.snapshot.root.queryParams;
-
-    this.request.executeRequestGET(`api/${path}`, paramsurl).subscribe({
+    this.request.executeRequestGET(`api/${path}`, { category_id: this.category_id, subcategory_id: this.subcategory_id }).subscribe({
       next: (response) => {
         var cards: { product_id:      string;
                      name:            string;
@@ -126,27 +152,9 @@ export class ProductsList {
     });
   }
 
-  getTitleSearch(){
-    const paramsurl = this.route.snapshot.root.queryParams;
-
-    this.request.executeRequestGET('api/getSubCategoryById', paramsurl).subscribe({
-      next: (response) => {
-        this.titlemenu = response.category_name;
-
-        if(response.subcategory_name) this.titlemenu = this.titlemenu + " - " + response.subcategory_name;
-
-        this.cdRef.detectChanges();
-      },
-      error: (error) => {
-        console.error('Erro:', error);
-      }
-    });
-  }
-
   ngOnInit() {
-    this.getTitleSearch();
+    this.getParamsRequests();
     this.loadActiveCategories();
     this.loadActivesSubcategories();
-    this.LoadCardRowProducts("Em oferta!", "getBestSellingProducts");
   }
 }

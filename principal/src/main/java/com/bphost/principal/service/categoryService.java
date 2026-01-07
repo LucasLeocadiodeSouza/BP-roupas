@@ -4,7 +4,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.bphost.principal.exception.CategoryException;
-import com.bphost.principal.exception.ProductException;
 import com.bphost.principal.exception.ProductNotFoundException;
 import com.bphost.principal.exception.SpecificationNotFoundException;
 import com.bphost.principal.exception.SubCategoryException;
@@ -86,6 +85,20 @@ public class categoryService {
         if(subcategories == null || subcategories.isEmpty()) return null;
 
         return subcategories;
+    }
+
+    public category findCategoryById(Integer categ){
+        category category = categRepo.findCategById(categ);
+        if(category == null) return null;
+
+        return category;
+    }
+
+    public subcategory findSubCategoryById(Integer categ, Integer subcateg){
+        subcategory subcategory = subcategRepo.findSubCategById(categ, subcateg);
+        if(subcategory == null) return null;
+
+        return subcategory;
     }
 
     public categoryCardDTO getSubCategoryById(Integer categ, Integer subcateg){

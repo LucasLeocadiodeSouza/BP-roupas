@@ -140,17 +140,17 @@ public class accountController {
     }
 
     @GetMapping("/getDeliveredPurchase")
-    public List<userPurchases> getDeliveredPurchase(@AuthenticationPrincipal UserDetails userAccount){
+    public List<userCartDTO> getDeliveredPurchase(@AuthenticationPrincipal UserDetails userAccount){
         return user.getDeliveredPurchase(user.getUserAccountId(userAccount.getUsername()));
     }
 
     @GetMapping("/getWaitingPurchase")
-    public List<userPurchases> getWaitingPurchase(@AuthenticationPrincipal UserDetails userAccount){
+    public List<userCartDTO> getWaitingPurchase(@AuthenticationPrincipal UserDetails userAccount){
         return user.getWaitingPurchase(user.getUserAccountId(userAccount.getUsername()));
     }
 
     @GetMapping("/getPreparingPurchase")
-    public List<userPurchases> getPreparingPurchase(@AuthenticationPrincipal UserDetails userAccount){
+    public List<userCartDTO> getPreparingPurchase(@AuthenticationPrincipal UserDetails userAccount){
         return user.getPreparingPurchase(user.getUserAccountId(userAccount.getUsername()));
     }
 

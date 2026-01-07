@@ -478,22 +478,22 @@ public class userService {
         userPurcRepo.save(purchase);
     }
 
-    public List<userPurchases> getDeliveredPurchase(Integer userId){
-        List<userPurchases> purchase = userPurcRepo.findAllDeliveredPurchaseByUser(userId);
+    public List<userCartDTO> getPreparingPurchase(Integer userId){
+        List<userCartDTO> purchase = userCartDTOrepo.findAllPurchaseByUserAndStatus(userId, 1);
+        if(purchase == null) return null;
+
+        return purchase;
+    }
+    
+    public List<userCartDTO> getWaitingPurchase(Integer userId){
+        List<userCartDTO> purchase = userCartDTOrepo.findAllPurchaseByUserAndStatus(userId, 2);
         if(purchase == null) return null;
 
         return purchase;
     }
 
-    public List<userPurchases> getWaitingPurchase(Integer userId){
-        List<userPurchases> purchase = userPurcRepo.findAllWaitingPurchaseByUser(userId);
-        if(purchase == null) return null;
-
-        return purchase;
-    }
-
-    public List<userPurchases> getPreparingPurchase(Integer userId){
-        List<userPurchases> purchase = userPurcRepo.findAllPreparingPurchaseByUser(userId);
+    public List<userCartDTO> getDeliveredPurchase(Integer userId){
+        List<userCartDTO> purchase = userCartDTOrepo.findAllPurchaseByUserAndStatus(userId, 3);
         if(purchase == null) return null;
 
         return purchase;

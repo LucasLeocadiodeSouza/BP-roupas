@@ -2,11 +2,16 @@ package com.bphost.principal.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.bphost.principal.exception.CommentException;
 import com.bphost.principal.exception.ProductException;
 import com.bphost.principal.exception.ProductNotFoundException;
+import com.bphost.principal.model.categoryCardDTO;
 import com.bphost.principal.model.comments;
 import com.bphost.principal.model.commentsDTO;
 import com.bphost.principal.model.comments_prod;
@@ -161,6 +167,61 @@ public class productService {
         }
     }
 
+
+    public categoryCardDTO getParamsRequests(String url){
+        String params = url.substring(url.indexOf("?") + 1);
+
+        categoryCardDTO paramrequests = new categoryCardDTO();
+
+        if(params.contains("category_id")) {
+            String category = params.substring(params.indexOf("category_id=") + 12);
+
+            paramrequests.setCategory_id(Integer.parseInt(
+                category.indexOf("&") == -1 ? category : category.split("&")[0]
+            ));
+
+            paramrequests.setCategory_name(categservice.findCategoryById(paramrequests.getCategory_id()).getName());
+
+            if(params.contains("subcategory_id")){
+                String subcategory = params.substring(params.indexOf("subcategory_id=") + 15);
+
+                paramrequests.setSubcategory_seq(Integer.parseInt(
+                    subcategory.indexOf("&") == -1 ? subcategory : subcategory.split("&")[0]
+                ));
+
+                paramrequests.setSubcategory_name(categservice.getSubCategoryById(paramrequests.getCategory_id(), paramrequests.getSubcategory_seq()).getSubcategory_name());
+            }
+
+            return  paramrequests;
+        }
+
+        if(!params.contains("search")) return null;
+
+        if(params.contains("&")){
+            for(String key : params.split("&")){
+                if(paramrequests.getCategory_id() != null) return paramrequests;
+    
+                String[] param = key.split("=");
+                if(param[0] == "search"){
+                    List<productCardDTO> prodSearchs = prodcardrepo.searchProducts(URLDecoder.decode(param[1], StandardCharsets.UTF_8), null, 7);
+                    if(!prodSearchs.isEmpty()) {
+                        paramrequests.setCategory_id(prodSearchs.get(0).getCategory_id());
+                        paramrequests.setCategory_name(categservice.findCategoryById(paramrequests.getCategory_id()).getName());
+                    }
+                } 
+            }
+        }else{
+            if(paramrequests.getCategory_id() != null) return paramrequests;
+
+            List<productCardDTO> prodSearchs = prodcardrepo.searchProducts(URLDecoder.decode(params.substring(params.indexOf("search=") + 7), StandardCharsets.UTF_8), null, 7);
+            if(!prodSearchs.isEmpty()) {
+                paramrequests.setCategory_id(prodSearchs.get(0).getCategory_id());
+                paramrequests.setCategory_name(categservice.findCategoryById(paramrequests.getCategory_id()).getName());
+            }
+        }
+        return paramrequests;
+    }
+
     // ########### PRODUCT METHODS ###########
 
     public List<productCardDTO> getProductInformation(Integer product_id){
@@ -173,27 +234,39 @@ public class productService {
         return specifications;
     }
 
-    public List<productCardDTO> getProductCardByCategoryId(Integer category_id, Integer subcategory_id, Integer page){
-        List<productCardDTO> prodCards = prodcardrepo.findAllProductDTOByCategoryId(category_id, subcategory_id, page);
-        
-        prodCards.forEach(prodCard -> {
+    public List<productCardDTO> getProductCardForProductMenu(Integer category_id, Integer subcategory_id, String search, Integer page){
+        Map<Integer, productCardDTO> prodCardsMap = new LinkedHashMap<>();
+
+        if (search != null && !search.isBlank()) {
+            List<productCardDTO> prodCardsSearch = prodcardrepo.searchProducts(search, page, 30);
+
+            for (productCardDTO dto : prodCardsSearch) { prodCardsMap.put(dto.getProduct_id(), dto);}
+        }
+
+        List<productCardDTO> prodCardsCategory = prodcardrepo.findAllProductDTOByCategoryId(category_id, subcategory_id, page);
+
+        for(productCardDTO dto : prodCardsCategory) {
+            prodCardsMap.put(dto.getProduct_id(), dto);
+        }
+
+        for (productCardDTO prodCard : prodCardsMap.values()) {
             Integer total_comments = commentsprodrepo.countCommentsByProductId(prodCard.getProduct_id());
 
             Double avarage_rating;
             if(total_comments != 0){
                 avarage_rating = ((commentsprodrepo.countCommentsWithRating1ByProductId(prodCard.getProduct_id()) * 1.0) +
-                                 (commentsprodrepo.countCommentsWithRating2ByProductId(prodCard.getProduct_id()) * 2.0)  + 
-                                 (commentsprodrepo.countCommentsWithRating3ByProductId(prodCard.getProduct_id()) * 3.0)  + 
-                                 (commentsprodrepo.countCommentsWithRating4ByProductId(prodCard.getProduct_id()) * 4.0)  + 
-                                 (commentsprodrepo.countCommentsWithRating5ByProductId(prodCard.getProduct_id()) * 5.0)) /
-                                 total_comments;
+                                  (commentsprodrepo.countCommentsWithRating2ByProductId(prodCard.getProduct_id()) * 2.0)  + 
+                                  (commentsprodrepo.countCommentsWithRating3ByProductId(prodCard.getProduct_id()) * 3.0)  + 
+                                  (commentsprodrepo.countCommentsWithRating4ByProductId(prodCard.getProduct_id()) * 4.0)  + 
+                                  (commentsprodrepo.countCommentsWithRating5ByProductId(prodCard.getProduct_id()) * 5.0)) /
+                                  total_comments;
             } else avarage_rating = 5.0;
 
             prodCard.setAvarage_rating(avarage_rating);
             prodCard.setTotal_comments(total_comments);
-        });
+        };
 
-        return prodCards;
+        return new ArrayList<>(prodCardsMap.values());
     }
 
     public List<commentsDTO> getCommentsByProductId(Integer product_id, Integer rating, Integer page){
@@ -221,6 +294,13 @@ public class productService {
 
     public List<productCardDTO> getHouseRecommendations(){
         List<productCardDTO> prodCards = prodcardrepo.getHouseRecommendations();
+        return prodCards;
+    }
+
+    // ########### SEARCH METHODS ###########
+    
+    public List<productCardDTO> searchProductsSugestionsByTextInput(String text){
+        List<productCardDTO> prodCards = prodcardrepo.searchProducts(text, null, 7);
         return prodCards;
     }
 }

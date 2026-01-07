@@ -228,4 +228,30 @@ public class productCardDTORepo {
 
         return q.getResultList();
     }
+
+    public List<productCardDTO> searchProducts(String text, Integer page, Integer size){
+        String query = "SELECT new com.bphost.principal.model.productCardDTO( " +
+                       "prod.id, " +
+                       "prod.name, " +
+                       "prod.price, " +
+                       "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
+                       "subcat.id.category_id, " +
+                       "subcat.id.subcategory_seq) " +
+                       "FROM product prod " +
+                       "JOIN subcat_product subcat ON prod.id = subcat.id.product_id " +
+                       "WHERE LOWER(prod.name) LIKE LOWER(:searchText) " +
+                       "OR LOWER(prod.description) LIKE LOWER(:searchText) ";
+
+        var q = em.createQuery(query, productCardDTO.class);
+        
+        q.setParameter("searchText", "%" + text + "%");
+        
+        if(page != null) {
+            int offset = page * size;
+            q.setFirstResult(offset);
+            q.setMaxResults(size);
+        } else q.setMaxResults(size);
+        
+        return q.getResultList();
+    }
 }

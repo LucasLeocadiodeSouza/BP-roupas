@@ -23,6 +23,15 @@ public class productCardDTO {
     private Double     avarage_rating;
     private Integer    total_comments;
 
+    public productCardDTO(Integer product_id,
+                          String  name, 
+                          String  srcimage,
+                          Integer category_id) {
+        this.product_id = product_id;
+        this.name       = name;
+        this.srcimage   = srcimage;
+        this.category_id = category_id;
+    }
 
     public productCardDTO(Integer    product_id, 
                           String     name, 

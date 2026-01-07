@@ -14,13 +14,13 @@ a:-webkit-any-link {
               background-clip: text;
               transition: background-position 0.5s ease, font-size 0.3s ease;
               display: inline-block;
-              font-family: "Inter"; 
-              font-size: 16px; 
+              font-family: "Inter";
+              font-size: 16px;
               margin: 1px 10px;
               color: #fff;
 }
 
-.text-effect:hover { 
+.text-effect:hover {
     font-size: 17px;
     background-position: 0%;
 }
@@ -42,7 +42,7 @@ a:-webkit-any-link {
 #navheader5  {width: 13%;}
 #navheader6  {width: 10%;}
 #navheader7  {width: 10%;}
-#navheader8  {width: 30%;}
+#navheader8  {width: 30%; position: relative;}
 
 .container-button {position: relative;}
 .container-button img {margin-right: 3px;}
@@ -51,7 +51,7 @@ a:-webkit-any-link {
 .button-descrition p {display: inline-block; font-family: "Inter"; white-space: nowrap; font-size: 12px; margin: 1px; color: #fff;}
 
 .button-descrition:hover {background-color: #383627; }
-            
+
 .link-efect { display: inline-block;  text-decoration: none;}
 
 #navcateg {z-index: 1002;}
@@ -61,7 +61,7 @@ a:-webkit-any-link {
 .header-categories {
   position: fixed;
   opacity: 0;
-  visibility: hidden; 
+  visibility: hidden;
   top: 280px;
   left: 700px;
   transform: translate(-50%, -50%);
@@ -84,7 +84,7 @@ a:-webkit-any-link {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.7);
-  z-index: 1001; 
+  z-index: 1001;
   transition: opacity 0.4s;
 }
 
@@ -99,7 +99,7 @@ a:-webkit-any-link {
       background: none;
       color: #8b8ba7;
     }
-    
+
     & .form {
       position: relative;
       width: 80%;
@@ -122,7 +122,7 @@ a:-webkit-any-link {
       padding-block: 0.7em;
       border: none;
     }
-    
+
     & .form:before {
       content: "";
       position: absolute;
@@ -136,31 +136,31 @@ a:-webkit-any-link {
       border-radius: 1px;
       transition: transform 0.3s ease;
     }
-    
+
     & .form:focus-within {
       border-radius: 1px;
     }
-    
+
     & input:focus {
       outline: none;
     }
-    
+
     & .form:focus-within:before {
       transform: scale(1);
     }
-    
+
     & .reset {
       border: none;
       background: none;
       opacity: 0;
       visibility: hidden;
     }
-    
+
     & input:not(:placeholder-shown) ~ .reset {
       opacity: 1;
       visibility: visible;
     }
-    
+
     & .form img {
       width: 17px;
       margin-top: 3px;

@@ -15,31 +15,50 @@ export class ProfileOrder {
   constructor(private cdRef: ChangeDetectorRef) {}
 
   orderproducts: {
-    img:      string;
-    currency: string;
-    price:    string;
-    update:   boolean;
-    href:     string;
-    title:    string;
+    href:       string;
+    src:        string;
+    title:      string;
+    currency:   string;
+    quantity:   number;
+    price:      number;
+    size:       string;
+    color:      string;
+    product_id: number;
+    size_id:    number;
+    color_id:   number;
   }[] = [];
-
-//[href]="orderproduct.href"
-//[view]="orderproduct.src"
-//[title]="orderproduct.title"
-//[quantity]="orderproduct.quantity"
-//[currency]="orderproduct.currency"
-//[price]="orderproduct.price"
-//[size]="orderproduct.size"
-//[color]="orderproduct.color"
-//[removeItem]="true"
-//[product]="{product_id: orderproduct.product_id, size_id: orderproduct.size_id, color_id: orderproduct.color_id}"
 
   getPreparingPurchase(){
     this.request.executeRequestGET('account/getPreparingPurchase').subscribe({
-      next: (response) => {
-        if (!response) return;
+      next: (response: any) => {
 
-        console.log(response);
+        const purchase : {
+          useraccount_id: number;
+          product_id:     number;
+          name:           string;
+          price:          number;
+          size_id:        number;
+          size:           string;
+          color_id:       number;
+          color:          string;
+          quantity:       number;
+          image:          string;
+        }[] = response;
+
+        this.orderproducts = purchase.map(info => ({
+            ...this.orderproducts,
+            href       : "/product?id=" + info.product_id,
+            src        : "http://localhost:8080/api/product/" + info.image,
+            title      : info.name,
+            currency   : "R$",
+            quantity   : info.quantity,
+            price      : info.price,
+            size       : info.size,
+            color      : info.color,
+            product_id : info.product_id,
+            size_id    : info.size_id,
+            color_id   : info.color_id
+        }));
 
         this.cdRef.detectChanges();
       },

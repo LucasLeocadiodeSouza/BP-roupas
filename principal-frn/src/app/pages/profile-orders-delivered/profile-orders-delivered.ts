@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderItem } from "../../components/order-item/order-item";
+import { RequestForm } from '../../service/request-form';
 
 @Component({
   selector: 'app-profile-orders-delivered',
@@ -9,54 +10,65 @@ import { OrderItem } from "../../components/order-item/order-item";
   styleUrl: './profile-orders-delivered.css'
 })
 export class ProfileOrdersDelivered {
-  orderproducts = [
-    {img: "assets/images/produto-teste.png",
-     unid: 1,
-     currency: "R$",
-     price: "583.00",
-     update: false,
-     href: "/product?category=1&subcategory=3",
-     title: "Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para"
-    },
-    {img: "assets/images/produto-teste.png",
-     unid: 1,
-     currency: "R$",
-     price: "583.00",
-     update: false,
-     href: "/product?category=1&subcategory=3",
-     title: "Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para"
-    },
-    {img: "assets/images/produto-teste.png",
-     unid: 1,
-     currency: "R$",
-     price: "583.00",
-     update: false,
-     href: "/product?category=1&subcategory=3",
-     title: "Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para"
-    },
-    {img: "assets/images/produto-teste.png",
-     unid: 1,
-     currency: "R$",
-     price: "583.00",
-     update: false,
-     href: "/product?category=1&subcategory=3",
-     title: "Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para"
-    },
-    {img: "assets/images/produto-teste.png",
-     unid: 1,
-     currency: "R$",
-     price: "583.00",
-     update: false,
-     href: "/product?category=1&subcategory=3",
-     title: "Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para"
-    },
-    {img: "assets/images/produto-teste.png",
-     unid: 1,
-     currency: "R$",
-     price: "583.00",
-     update: false,
-     href: "/product?category=1&subcategory=3",
-     title: "Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para Capas de pega de freio manual em plástico ABS esportivo - Acabamento suave, acessórios interiores duráveis para"
-    }
-  ]
+  private request = inject(RequestForm);
+
+  constructor(private cdRef: ChangeDetectorRef){}
+
+  orderproducts: {
+    href:       string;
+    src:        string;
+    title:      string;
+    currency:   string;
+    quantity:   number;
+    price:      number;
+    size:       string;
+    color:      string;
+    product_id: number;
+    size_id:    number;
+    color_id:   number;
+  }[] = [];
+
+  getDeliveredPurchase(){
+    this.request.executeRequestGET('account/getDeliveredPurchase').subscribe({
+      next: (response: any) => {
+
+        const purchase : {
+          useraccount_id: number;
+          product_id:     number;
+          name:           string;
+          price:          number;
+          size_id:        number;
+          size:           string;
+          color_id:       number;
+          color:          string;
+          quantity:       number;
+          image:          string;
+        }[] = response;
+
+        this.orderproducts = purchase.map(info => ({
+            ...this.orderproducts,
+            href       : "/product?id=" + info.product_id,
+            src        : "http://localhost:8080/api/product/" + info.image,
+            title      : info.name,
+            currency   : "R$",
+            quantity   : info.quantity,
+            price      : info.price,
+            size       : info.size,
+            color      : info.color,
+            product_id : info.product_id,
+            size_id    : info.size_id,
+            color_id   : info.color_id
+        }));
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
+
+  ngOnInit(){
+    this.getDeliveredPurchase();
+  }
 }

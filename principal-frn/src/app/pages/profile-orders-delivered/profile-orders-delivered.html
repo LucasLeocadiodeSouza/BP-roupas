@@ -13,10 +13,14 @@
   <div class="container-itenslist">
     <app-order-item *ngFor="let orderproduct of orderproducts; let i = index"
                       [href]="orderproduct.href"
-                      [view]="orderproduct.img"
+                      [view]="orderproduct.src"
                       [title]="orderproduct.title"
+                      [quantity]="orderproduct.quantity"
                       [currency]="orderproduct.currency"
+                      [price]="orderproduct.price"
+                      [size]="orderproduct.size"
+                      [color]="orderproduct.color"
                       [removeItem]="false"
-                      [price]="orderproduct.price"></app-order-item>
+                      [product]="{product_id: orderproduct.product_id, size_id: orderproduct.size_id, color_id: orderproduct.color_id}"></app-order-item>
   </div>
 </div>

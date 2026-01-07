@@ -1,0 +1,14 @@
+<div class="container-main" [ngClass]="{'hidden' : !show, 'visible': show}">
+  <ol class="list-sugestions">
+    <li *ngFor="let sugestion of sugestions, let i = index">
+      <a [href]="sugestion.href">
+        <div class="image" [ngClass]="{'dnone': sugestion.image == ''}">
+          <img [src]="sugestion.image">
+        </div>
+        <div class="description">
+          <label>{{sugestion.title}}</label>
+        </div>
+      </a>
+    </li>
+  </ol>
+</div>

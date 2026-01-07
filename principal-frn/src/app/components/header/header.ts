@@ -1,11 +1,14 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { RequestForm } from './../../service/request-form';
 import { ActivatedRoute } from '@angular/router';
 import { HeaderCategories } from '../header-categories/header-categories';
+import { TextSugestion } from "../text-sugestion/text-sugestion";
 
 @Component({
   selector: 'app-header',
-  imports: [HeaderCategories],
+  imports: [HeaderCategories, TextSugestion, CommonModule, FormsModule],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
@@ -18,8 +21,56 @@ export class Header {
 
   categories: {id: number, name: string, href: string, subcateg: {name: string, href: string, src: string}[]}[] = [];
 
+  textInput: string = "";
+  textInputFocus: boolean = false;
+  textInputHovering: boolean = false;
+
+  sugestions: {
+    href:  string;
+    image: string,
+    title: string,
+  }[] = [];
+
   ngOnInit() {
     this.loadActiveSubcategories();
+  }
+
+  changeTextInputFocus(focus: boolean){
+    if(!focus){
+      setTimeout(() => {
+        this.textInputFocus = false;
+        this.cdRef.detectChanges();
+      }, 100);
+    }else this.textInputFocus = focus;
+  }
+
+  changeTextinput(event: any) {
+    this.textInput = event.target.value;
+    this.searchProductsByTextInput();
+  }
+
+
+  searchProductsByTextInput(){
+   this.request.executeRequestGET('api/searchProductsSugestionsByTextInput', {text: this.textInput}).subscribe({
+     next: (response: {product_id: number; name: string; srcimage: string;}[]) => {
+
+      this.sugestions = response.map(info => ({
+        ...this.sugestions,
+        href:   "/product?id=" + info.product_id,
+        image: "http://localhost:8080/api/product/" + info.srcimage,
+        title: info.name
+      }));
+
+      this.cdRef.detectChanges();
+     },
+     error: (error) => {
+       console.error('Erro:', error);
+     }
+   });
+  }
+
+  goToSearch() {
+    window.location.href = `http://localhost:4200/products-list?search=${this.textInput}`;
   }
 
   loadActiveSubcategories(){
