@@ -192,14 +192,17 @@ public class productService {
                 paramrequests.setSubcategory_name(categservice.getSubCategoryById(paramrequests.getCategory_id(), paramrequests.getSubcategory_seq()).getSubcategory_name());
             }
 
-            return  paramrequests;
+            return paramrequests;
+        }else{
+            paramrequests.setCategory_id(0);
+            paramrequests.setSubcategory_seq(0);
         }
 
-        if(!params.contains("search")) return null;
+        if(!params.contains("search")) return paramrequests;
 
         if(params.contains("&")){
             for(String key : params.split("&")){
-                if(paramrequests.getCategory_id() != null) return paramrequests;
+                if(paramrequests.getCategory_id() != null && paramrequests.getCategory_id() != 0) return paramrequests;
     
                 String[] param = key.split("=");
                 if(param[0] == "search"){
@@ -211,7 +214,7 @@ public class productService {
                 } 
             }
         }else{
-            if(paramrequests.getCategory_id() != null) return paramrequests;
+            if(paramrequests.getCategory_id() != null && paramrequests.getCategory_id() != 0) return paramrequests;
 
             List<productCardDTO> prodSearchs = prodcardrepo.searchProducts(URLDecoder.decode(params.substring(params.indexOf("search=") + 7), StandardCharsets.UTF_8), null, 7);
             if(!prodSearchs.isEmpty()) {
@@ -287,9 +290,6 @@ public class productService {
     public List<productCardDTO> getBestSellingProductsCart(Integer category_id, Integer subcategory_id, Integer size, Integer page){
         List<productCardDTO> prodCards = prodcardrepo.getBestSellingProducts(category_id, subcategory_id, size, page);
         prodCards = setCommentsForTheProductCard(prodCards);
-
-        System.out.println(category_id + " - " + subcategory_id);
-
         return prodCards;
     }
 

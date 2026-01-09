@@ -35,8 +35,8 @@ export class ProductsList {
     this.request.executeRequestGET('api/getParamsRequests', { url: url }).subscribe({
       next: (response : { category_id: number; category_name: string; subcategory_seq: number; subcategory_name: string; }) => {
 
-        this.category_id    = response.category_id == null? 0 : response.category_id;
-        this.subcategory_id = response.subcategory_seq == null? 0 : response.subcategory_seq;
+        this.category_id    = !response.category_id? 0 : response.category_id;
+        this.subcategory_id = !response.subcategory_seq? 0 : response.subcategory_seq;
 
         if(this.activatedRoute.snapshot.root.queryParams['search']) this.titlemenu = this.activatedRoute.snapshot.root.queryParams['search'];
         else{

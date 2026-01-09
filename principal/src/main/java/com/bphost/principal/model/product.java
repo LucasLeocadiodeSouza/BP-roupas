@@ -29,6 +29,7 @@ public class product {
 
     private String     description;
     private BigDecimal price;
+    private BigDecimal discount;
 
     @Column(columnDefinition = "TINYINT(1)")
     private Boolean active;

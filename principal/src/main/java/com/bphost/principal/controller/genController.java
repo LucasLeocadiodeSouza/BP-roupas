@@ -246,7 +246,7 @@ public class genController {
     @GetMapping("/getBestSellingProductsCartForProdRow")
     public List<productCardDTO> getBestSellingProductsCartForProdRow(@RequestParam(value = "category_id", required = false) Integer category_id,
                                                                      @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
-        return prodService.getBestSellingProductsCart(category_id, subcategory_id, 12, 1);
+        return prodService.getBestSellingProductsCart(category_id, subcategory_id, 12, null);
     }
 
     @GetMapping("/getStartingFromAPrice")
@@ -267,7 +267,20 @@ public class genController {
     @GetMapping("/getProductsWithMostCommentsForProdRow")
     public List<productCardDTO> getProductsWithMostCommentsForProdRow(@RequestParam(value = "category_id", required = false) Integer category_id,
                                                                       @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
-        return prodService.getProductsWithMostComments(category_id, subcategory_id, 12, 1);
+        return prodService.getProductsWithMostComments(category_id, subcategory_id, 12, null);
+    }
+
+    @GetMapping("/getProductsWithDiscountForProdRow")
+    public List<productCardDTO> getProductsWithDiscountForProdRow(@RequestParam(value = "category_id", required = false) Integer category_id,
+                                                                  @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
+        return prodService.getProductsWithDiscount(category_id, subcategory_id, 12, null);
+    }
+
+    @GetMapping("/getProductsWithDiscountForProdPage")
+    public List<productCardDTO> getProductsWithDiscountForProdpage(@RequestParam(value = "category_id", required = false) Integer category_id,
+                                                                   @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id,
+                                                                   @RequestParam(value = "page", required = false) Integer page){
+        return prodService.getProductsWithDiscount(category_id, subcategory_id, 30, page);
     }
 
     @GetMapping("/getNewDiscovery")
