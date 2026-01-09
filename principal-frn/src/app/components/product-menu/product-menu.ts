@@ -17,8 +17,9 @@ export class ProductMenu {
   @Input() cards:          any = [];
   @Input() title:          any;
   @Input() path:           string = "getProductCardForProductMenu"
-  @Input() category_id:    number = 0;
-  @Input() subcategory_id: number = 0;
+
+  private _category_id:   number = 0;
+  private subcategory_id: number = 0;
 
   constructor(private cdRef: ChangeDetectorRef, private route: ActivatedRoute) {}
 
@@ -35,6 +36,22 @@ export class ProductMenu {
   endPage:    boolean = false;
   pageNumber: number  = -1;
 
+  @Input()
+  set category_id(value: { categ: number; subcateg: number }) {
+    this._category_id   = value.categ;
+    this.subcategory_id = value.subcateg;
+
+    this.productCardList = [];
+    this.endPage         = false;
+    this.pageNumber      = -1;
+
+    this.loadProductsList();
+  }
+
+  get category_id(){
+    return { categ: this._category_id, subcateg: this.subcategory_id };
+  }
+
   loadProductsList(){
     var paramsurl   = this.route.snapshot.root.queryParams;
     this.pageNumber = this.pageNumber + 1;
@@ -42,7 +59,7 @@ export class ProductMenu {
     const params = {
       ...paramsurl,
       page: this.pageNumber,
-      category_id: this.category_id,
+      category_id: this._category_id,
       subcategory_id: this.subcategory_id
     }
 
