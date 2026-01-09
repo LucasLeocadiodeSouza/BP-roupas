@@ -77,7 +77,7 @@ export class ProductsList {
 
           this.cards = [...this.cards, {extclass: "container-subcategory", title:"", src: "", miniCard: subcategformat }];
 
-          this.LoadCardRowProducts("Em oferta!", "getBestSellingProducts");
+          this.LoadCardRowProducts("Em oferta!", "getBestRatedDeals");
 
           this.cdRef.detectChanges();
         },
@@ -85,7 +85,7 @@ export class ProductsList {
           console.error('Erro:', error);
         }
       });
-    }else this.LoadCardRowProducts("Em oferta!", "getBestSellingProducts");
+    }else this.LoadCardRowProducts("Em oferta!", "getBestRatedDeals");
   }
 
   LoadCardRowProducts(titlerow: string, path: string){

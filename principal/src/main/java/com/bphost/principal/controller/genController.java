@@ -224,9 +224,9 @@ public class genController {
 
     @GetMapping("/getProductCardForProductMenu")
     public List<productCardDTO> getProductCardForProductMenu(@RequestParam(value = "category_id", required = false)    Integer category_id,
-                                                           @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id,
-                                                           @RequestParam(value = "search", required = false)         String search,
-                                                           @RequestParam(value = "page", required = false)           Integer page){
+                                                             @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id,
+                                                             @RequestParam(value = "search", required = false)         String search,
+                                                             @RequestParam(value = "page", required = false)           Integer page){
         return prodService.getProductCardForProductMenu(category_id, subcategory_id, search, page);
     }
 
@@ -236,10 +236,38 @@ public class genController {
         return prodService.getProductCardForProductMenu(category_id, subcategory_id, null, null);
     }
 
-    @GetMapping("/getBestSellingProducts")
-    public List<productCardDTO> getBestSellingProducts(@RequestParam(value = "category_id", required = false) Integer category_id,
-                                                       @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
-        return prodService.getBestSellingProducts(category_id, subcategory_id);
+    @GetMapping("/getBestSellingProductsCartForProdPage")
+    public List<productCardDTO> getBestSellingProductsCartForProdPage(@RequestParam(value = "category_id", required = false) Integer category_id,
+                                                                      @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id,
+                                                                      @RequestParam(value = "page", required = false) Integer page){
+        return prodService.getBestSellingProductsCart(category_id, subcategory_id, 30, page);
+    }
+
+    @GetMapping("/getBestSellingProductsCartForProdRow")
+    public List<productCardDTO> getBestSellingProductsCartForProdRow(@RequestParam(value = "category_id", required = false) Integer category_id,
+                                                                     @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
+        return prodService.getBestSellingProductsCart(category_id, subcategory_id, 12, 1);
+    }
+
+    @GetMapping("/getStartingFromAPrice")
+    public List<productCardDTO> getStartingFromAPrice(@RequestParam(value = "price", required = false) Double price,
+                                                      @RequestParam(value = "category_id", required = false) Integer category_id,
+                                                      @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id,
+                                                      @RequestParam(value = "page", required = false) Integer page){
+        return prodService.getStartingFromAPrice(BigDecimal.valueOf(price), category_id, subcategory_id, 30, page);
+    }
+
+    @GetMapping("/getProductsWithMostCommentsForProdPage")
+    public List<productCardDTO> getProductsWithMostCommentsForProdPage(@RequestParam(value = "category_id", required = false) Integer category_id,
+                                                                       @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id,
+                                                                       @RequestParam(value = "page", required = false) Integer page){
+        return prodService.getProductsWithMostComments(category_id, subcategory_id, 30, page);
+    }
+
+    @GetMapping("/getProductsWithMostCommentsForProdRow")
+    public List<productCardDTO> getProductsWithMostCommentsForProdRow(@RequestParam(value = "category_id", required = false) Integer category_id,
+                                                                      @RequestParam(value = "subcategory_id", required = false) Integer subcategory_id){
+        return prodService.getProductsWithMostComments(category_id, subcategory_id, 12, 1);
     }
 
     @GetMapping("/getNewDiscovery")

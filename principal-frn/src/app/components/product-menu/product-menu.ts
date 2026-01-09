@@ -16,6 +16,7 @@ export class ProductMenu {
 
   @Input() cards:          any = [];
   @Input() title:          any;
+  @Input() path:           string = "getProductCardForProductMenu"
   @Input() category_id:    number = 0;
   @Input() subcategory_id: number = 0;
 
@@ -45,7 +46,7 @@ export class ProductMenu {
       subcategory_id: this.subcategory_id
     }
 
-    this.request.executeRequestGET('api/getProductCardForProductMenu', params).subscribe({
+    this.request.executeRequestGET(`api/${this.path}`, params).subscribe({
       next: (response) => {
         var cards: { product_id:      string;
                      name:            string;

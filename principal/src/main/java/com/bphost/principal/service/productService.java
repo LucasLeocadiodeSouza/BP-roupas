@@ -249,24 +249,9 @@ public class productService {
             prodCardsMap.put(dto.getProduct_id(), dto);
         }
 
-        for (productCardDTO prodCard : prodCardsMap.values()) {
-            Integer total_comments = commentsprodrepo.countCommentsByProductId(prodCard.getProduct_id());
+        List<productCardDTO> updatedCards = setCommentsForTheProductCard(new ArrayList<>(prodCardsMap.values()));
 
-            Double avarage_rating;
-            if(total_comments != 0){
-                avarage_rating = ((commentsprodrepo.countCommentsWithRating1ByProductId(prodCard.getProduct_id()) * 1.0) +
-                                  (commentsprodrepo.countCommentsWithRating2ByProductId(prodCard.getProduct_id()) * 2.0)  + 
-                                  (commentsprodrepo.countCommentsWithRating3ByProductId(prodCard.getProduct_id()) * 3.0)  + 
-                                  (commentsprodrepo.countCommentsWithRating4ByProductId(prodCard.getProduct_id()) * 4.0)  + 
-                                  (commentsprodrepo.countCommentsWithRating5ByProductId(prodCard.getProduct_id()) * 5.0)) /
-                                  total_comments;
-            } else avarage_rating = 5.0;
-
-            prodCard.setAvarage_rating(avarage_rating);
-            prodCard.setTotal_comments(total_comments);
-        };
-
-        return new ArrayList<>(prodCardsMap.values());
+        return updatedCards;
     }
 
     public List<commentsDTO> getCommentsByProductId(Integer product_id, Integer rating, Integer page){
@@ -277,8 +262,34 @@ public class productService {
 
     // ########### DASHBOARD METHODS ###########
 
-    public List<productCardDTO> getBestSellingProducts(Integer category_id, Integer subcategory_id){
-        List<productCardDTO> prodCards = prodcardrepo.getBestSellingProducts(category_id, subcategory_id);
+    public List<productCardDTO> setCommentsForTheProductCard(List<productCardDTO> prodCards){
+        for (productCardDTO card : prodCards) {
+            Integer total_comments = commentsprodrepo.countCommentsByProductId(card.getProduct_id());
+
+            Double avarage_rating;
+            if(total_comments != 0){
+                avarage_rating = ((commentsprodrepo.countCommentsWithRating1ByProductId(card.getProduct_id()) * 1.0) +
+                                  (commentsprodrepo.countCommentsWithRating2ByProductId(card.getProduct_id()) * 2.0)  + 
+                                  (commentsprodrepo.countCommentsWithRating3ByProductId(card.getProduct_id()) * 3.0)  + 
+                                  (commentsprodrepo.countCommentsWithRating4ByProductId(card.getProduct_id()) * 4.0)  + 
+                                  (commentsprodrepo.countCommentsWithRating5ByProductId(card.getProduct_id()) * 5.0)) /
+                                  total_comments;
+            } else avarage_rating = 5.0;
+
+            card.setAvarage_rating(avarage_rating);
+            card.setTotal_comments(total_comments);
+        };
+
+        return prodCards;
+    }
+
+
+    public List<productCardDTO> getBestSellingProductsCart(Integer category_id, Integer subcategory_id, Integer size, Integer page){
+        List<productCardDTO> prodCards = prodcardrepo.getBestSellingProducts(category_id, subcategory_id, size, page);
+        prodCards = setCommentsForTheProductCard(prodCards);
+
+        System.out.println(category_id + " - " + subcategory_id);
+
         return prodCards;
     }
 
@@ -295,6 +306,28 @@ public class productService {
     public List<productCardDTO> getHouseRecommendations(){
         List<productCardDTO> prodCards = prodcardrepo.getHouseRecommendations();
         return prodCards;
+    }
+
+
+    public List<productCardDTO> getProductsWithMostComments(Integer category_id, Integer subcategory_id, Integer size, Integer page){
+        List<productCardDTO> prodCard = prodcardrepo.getProductsWithMostComments(category_id, subcategory_id, size, page);
+        prodCard = setCommentsForTheProductCard(prodCard);
+
+        return prodCard;
+    }
+
+    public List<productCardDTO> getStartingFromAPrice(BigDecimal price, Integer category_id, Integer subcategory_id, Integer size, Integer page){
+        List<productCardDTO> prodCard = prodcardrepo.getStartingFromAPrice(price, category_id, subcategory_id, size, page);
+        prodCard = setCommentsForTheProductCard(prodCard);
+
+        return prodCard;
+    }
+
+    public List<productCardDTO> getProductsWithDiscount(Integer category_id, Integer subcategory_id, Integer size, Integer page){
+        List<productCardDTO> prodCard = prodcardrepo.getProductsWithDiscount(category_id, subcategory_id, size, page);
+        prodCard = setCommentsForTheProductCard(prodCard);
+
+        return prodCard;
     }
 
     // ########### SEARCH METHODS ###########

@@ -143,8 +143,8 @@ export class Home {
 
   ngOnInit() {
     this.loadActivesCategories();
-    this.LoadCardRowProducts("Em Oferta!", "getBestSellingProducts");
-    this.LoadCardRowProducts("Ultimos lançamentos!", "getBestSellingProducts");
+    this.LoadCardRowProducts("Produtos mais vendidos!", "getBestSellingProductsCartForProdRow");
+    this.LoadCardRowProducts("Ultimos lançamentos!", "getNewDiscovery");
     this.LoadHighlightCardsProducts("Novas descobertas","getNewDiscovery");
     this.LoadHighlightCardsProducts("Melhores ofertas avaliadas","getBestRatedDeals");
     this.LoadHighlightCardsProducts("Recomendações da casa","getHouseRecommendations");

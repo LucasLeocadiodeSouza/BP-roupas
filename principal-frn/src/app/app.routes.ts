@@ -19,6 +19,9 @@ import { InsertProduct } from './pages/insert-product/insert-product';
 import { InsertComment } from './pages/insert-comment/insert-comment';
 import { CreateUser } from './pages/create-user/create-user';
 import { Login } from './pages/login/login';
+import { ProductsFilterPrice } from './pages/products-filter-price/products-filter-price';
+import { ProductsBestSellings } from './pages/products-best-sellings/products-best-sellings';
+import { ProductsDiscount } from './pages/products-discount/products-discount';
 
 export const routes: Routes = [
     {
@@ -36,6 +39,18 @@ export const routes: Routes = [
           {
               path: "products-list",
               component: ProductsList
+          },
+          {
+              path: "products-filterPrice",
+              component: ProductsFilterPrice
+          },
+          {
+              path: "products-best-selling",
+              component: ProductsBestSellings
+          },
+          {
+              path: "products-discount",
+              component: ProductsDiscount
           },
           {
               path: "product",

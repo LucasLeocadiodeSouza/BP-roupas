@@ -22,6 +22,8 @@ public class productCardDTO {
     private Integer    subcategory_seq;
     private Double     avarage_rating;
     private Integer    total_comments;
+    private Long       countTotal_comments;
+    private Long       countTotal_sales;
 
     public productCardDTO(Integer product_id,
                           String  name, 
@@ -46,6 +48,23 @@ public class productCardDTO {
         this.srcimage        = srcimage;
         this.category_id     = category_id;
         this.subcategory_seq = subcategory_seq;
+    }
+
+    public productCardDTO(Integer    product_id, 
+                          String     name, 
+                          BigDecimal price, 
+                          String     srcimage, 
+                          Integer    category_id,
+                          Integer    subcategory_seq,
+                          Long       countTotal_comments) {
+
+        this.product_id          = product_id;
+        this.name                = name;
+        this.price               = price;
+        this.srcimage            = srcimage;
+        this.category_id         = category_id;
+        this.subcategory_seq     = subcategory_seq;
+        this.countTotal_comments = countTotal_comments;
     }
 
 
