@@ -1,3 +1,3 @@
 <div class="container-categories">
-    <app-bar-division *ngFor="let division of divisions; let i = index" [title]="division.title" [buttons]="division.buttons"></app-bar-division>
+    <app-bar-division *ngFor="let division of divisions; let i = index" [title]="division.title" [buttons]="division.buttons" [separete]="i !== ((divisions?.length || 0) - 1)"></app-bar-division>
 </div>

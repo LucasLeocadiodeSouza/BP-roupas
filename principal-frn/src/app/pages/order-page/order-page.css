@@ -1,0 +1,17 @@
+.container-princ {display: block; padding: 15px 10px;}
+
+a  {text-decoration: none; color: #636363;}
+
+.title h3 {margin-block: 10px 15px; font-family: "Inter"; font-weight: 400;}
+.subtitle {font-family: "Inter"; font-size: 13px;}
+
+.divisior {border: 1px solid var(--color-border, #bdbdbd); width: 90%; margin-block: 15px 30px;}
+
+.container-itenslist {display: flex; flex-direction: column;  gap: 5px;}
+
+.order-opt {display: flex;  gap: 10px; margin-bottom: 15px;}
+.order-opt .opt {padding: 5px 10px; font-family: "Inter"; font-size: 14px; display: flex; flex-direction: column; justify-content: center;}
+.active-opt a { color: #000 !important; }
+
+.show-after::after    {visibility: visible !important; opacity: 1 !important;}
+.underline-opt::after { content: ""; width: 15px; height: 4px; background: #222; border-radius: 2px; margin: 0 auto; visibility: hidden; opacity: 0;}

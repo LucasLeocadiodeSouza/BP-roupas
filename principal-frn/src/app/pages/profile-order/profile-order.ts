@@ -2,10 +2,11 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { OrderItem } from "../../components/order-item/order-item";
 import { CommonModule } from '@angular/common';
 import { RequestForm } from '../../service/request-form';
+import { OrderPage } from "../order-page/order-page";
 
 @Component({
   selector: 'app-profile-order',
-  imports: [OrderItem, CommonModule],
+  imports: [OrderItem, CommonModule, OrderPage],
   templateUrl: './profile-order.html',
   styleUrl: './profile-order.css'
 })

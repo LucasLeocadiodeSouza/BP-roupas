@@ -1,0 +1,39 @@
+<div class="container-princ">
+  <div>
+    <div class="title">
+      <h3>Seus Pedidos</h3>
+    </div>
+
+    <div class="order-opt">
+      <div class="opt underline-opt" [ngClass]="{'show-after': status == 0}">
+        <a href="/account/orders">Pendentes</a>
+      </div>
+      <div class="opt underline-opt" [ngClass]="{'show-after': status == 1}">
+        <a href="/account/orders-shipped">Enviados</a>
+      </div>
+      <div class="opt underline-opt" [ngClass]="{'show-after': status == 2}">
+        <a href="/account/orders-delivered">Entregues</a>
+      </div>
+    </div>
+
+    <div class="subtitle">
+      <span>{{subtitle}}</span>
+    </div>
+  </div>
+
+  <div class="divisior"></div>
+
+  <div class="container-itenslist">
+    <app-order-item *ngFor="let orderproduct of orderproducts; let i = index"
+                      [href]="orderproduct.href"
+                      [view]="orderproduct.src"
+                      [title]="orderproduct.title"
+                      [quantity]="orderproduct.quantity"
+                      [currency]="orderproduct.currency"
+                      [price]="orderproduct.price"
+                      [size]="orderproduct.size"
+                      [color]="orderproduct.color"
+                      [removeItem]="false"
+                      [product]="{product_id: orderproduct.product_id, size_id: orderproduct.size_id, color_id: orderproduct.color_id}"></app-order-item>
+  </div>
+</div>

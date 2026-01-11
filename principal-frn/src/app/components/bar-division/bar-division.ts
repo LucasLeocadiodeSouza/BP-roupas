@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 export class BarDivision {
   @Input() title?: any[] = [];
   @Input() buttons?: any;
+  @Input() separete: boolean = true;
 
   listSubCategories?: any[] = [];
   featuredSubcategory?: string;

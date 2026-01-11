@@ -6,6 +6,8 @@ ol {max-height: 550px;
 
 li {list-style-type: none; width: 100%;}
 
+.dnone {display: none !important;}
+
 .title-component h3 {margin-block: 10px 15px; font-family: "Inter"; font-weight: 400;}
 
 .link {display: inline-block;  text-decoration: none; width: 100%;}
