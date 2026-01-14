@@ -31,4 +31,24 @@ public class userDTORepo{
 
         return q.getResultList();
     }
+
+    public List<userCartDTO> findListById(Integer useraccount_id, Integer seqList){
+        String query = "SELECT new com.bphost.principal.model.userCartDTO( " +
+                       "list.id.useraccount_id, " + 
+                       "prod.id, " +
+                       "prod.name, " +
+                       "prod.price, " +
+                       "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
+                       "0.0)" +
+                       "FROM userList list " +
+                       "JOIN product prod ON list.id.product_id = product.id " + 
+                       "WHERE list.id.useraccount_id = :userAccountId AND list.id.seq = :seqList ORDER BY list.create_at DESC";
+
+        var q = em.createQuery(query, userCartDTO.class);
+
+        q.setParameter("userAccountId", useraccount_id);
+        q.setParameter("seqList", seqList);
+
+        return q.getResultList();
+    }
 }

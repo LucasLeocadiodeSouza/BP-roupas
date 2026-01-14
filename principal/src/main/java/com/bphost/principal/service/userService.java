@@ -18,6 +18,8 @@ import com.bphost.principal.model.specification_prod;
 import com.bphost.principal.model.specification_size;
 import com.bphost.principal.model.userCartDTO;
 import com.bphost.principal.model.userDTO;
+import com.bphost.principal.model.userList;
+import com.bphost.principal.model.userListId;
 import com.bphost.principal.model.userPurchases;
 import com.bphost.principal.model.userPurchasesId;
 import com.bphost.principal.model.user_account;
@@ -35,6 +37,7 @@ import com.bphost.principal.repository.specification_prodRepo;
 import com.bphost.principal.repository.specification_sizeRepo;
 import com.bphost.principal.repository.userCartDTORepo;
 import com.bphost.principal.repository.userDTORepo;
+import com.bphost.principal.repository.userListRepo;
 import com.bphost.principal.repository.userPurchasesRepo;
 import com.bphost.principal.repository.user_accountRepo;
 import com.bphost.principal.repository.user_addressRepo;
@@ -85,6 +88,8 @@ public class userService {
     @Autowired
     private userDTORepo userDTORepo;
 
+    @Autowired
+    private userListRepo listRepo;
 
     public Integer getUserAccountId(String username) {
         user_account user = userAccountRepo.findAccountByUsername(username);
@@ -105,6 +110,20 @@ public class userService {
             }
         }
         return "";
+    }
+
+    // ########### USER ACCOUNT METHODS ###########
+
+    public userDTO getUserInformation(Integer userId){
+        user_account account = userAccountRepo.findAccountById(userId);
+        if(account == null) throw new UserNotFoundException("Usuário não encontrado!");
+
+        userDTO user = new userDTO();
+        user.setUsername(account.getUsername());
+        user.setEmail(account.getEmail());
+        user.setTelephone(account.getTelephone());
+
+        return user;
     }
 
     @Transactional
@@ -157,30 +176,7 @@ public class userService {
         userAccountRepo.save(account);
     }
 
-    @Transactional
-    public void registerUserHistory(Integer useraccount_id, Integer product_id){
-        user_account user = userAccountRepo.findAccountById(useraccount_id);
-        product prod      = prodRepo.findProductById(product_id);
-
-        if(user == null) throw new UserNotFoundException("Usuário não encontrado com o id '" + useraccount_id + "'");
-        if(prod == null) throw new ProductNotFoundException("Produto não encontrado com o id '" + product_id + "'");
-
-        user_history history = userHistoryRepo.findHistoryById(useraccount_id, product_id);
-        if(history == null){
-            history = new user_history();
-
-            user_historyId histId = new user_historyId();
-            histId.setUseraccount_id(useraccount_id);
-            histId.setProduct_id(product_id);
-
-            history.setId(histId);
-            history.setUserAccount(user);
-            history.setProduct(prod);
-        }
-
-        history.setUpdate_at(LocalDate.now());
-        userHistoryRepo.save(history);
-    }
+    // ########### USER CART METHODS ###########
 
     @Transactional
     public void registerUserCart(Integer useraccount_id, Integer product_id, Integer size_id, Integer color_id, Integer quantity){
@@ -267,24 +263,7 @@ public class userService {
         return images;
     }
 
-    public userDTO getUserInformation(Integer userId){
-        user_account account = userAccountRepo.findAccountById(userId);
-        if(account == null) throw new UserNotFoundException("Usuário não encontrado!");
-
-        userDTO user = new userDTO();
-        user.setUsername(account.getUsername());
-        user.setEmail(account.getEmail());
-        user.setTelephone(account.getTelephone());
-
-        return user;
-    }
-
-    public List<user_address> getUserAddress(Integer userId){
-        List<user_address> address = userAddressRepo.findAllAddressByUser(userId);
-        if(address == null) return null;
-
-        return address;
-    }
+    // ########### USER HISTORY METHODS ###########
 
     public List<userCartDTO> getAllUserHistory(Integer userId){
         List<userCartDTO> hist = userDTORepo.findAllHistortyByUser(userId);
@@ -307,6 +286,40 @@ public class userService {
         });
 
         return hist;
+    }
+
+    @Transactional
+    public void registerUserHistory(Integer useraccount_id, Integer product_id){
+        user_account user = userAccountRepo.findAccountById(useraccount_id);
+        product prod      = prodRepo.findProductById(product_id);
+
+        if(user == null) throw new UserNotFoundException("Usuário não encontrado com o id '" + useraccount_id + "'");
+        if(prod == null) throw new ProductNotFoundException("Produto não encontrado com o id '" + product_id + "'");
+
+        user_history history = userHistoryRepo.findHistoryById(useraccount_id, product_id);
+        if(history == null){
+            history = new user_history();
+
+            user_historyId histId = new user_historyId();
+            histId.setUseraccount_id(useraccount_id);
+            histId.setProduct_id(product_id);
+
+            history.setId(histId);
+            history.setUserAccount(user);
+            history.setProduct(prod);
+        }
+
+        history.setUpdate_at(LocalDate.now());
+        userHistoryRepo.save(history);
+    }
+
+    // ########### USER ADDRESS METHODS ###########
+
+    public List<user_address> getUserAddress(Integer userId){
+        List<user_address> address = userAddressRepo.findAllAddressByUser(userId);
+        if(address == null) return null;
+
+        return address;
     }
 
     public void registerUserAddress(Integer userId, String street, String number, String neighborhood, String cep, String city, String state, String country){
@@ -376,6 +389,8 @@ public class userService {
         user_address activeAddress = userAddressRepo.findAddressActiveByUser(userId);
         return activeAddress;
     }
+
+    // ########### USER PURCHASE METHODS ###########
 
     @Transactional
     private void registerUserPurchases(Integer useraccount_id, Integer product_id, Integer size_id, Integer color_id){
@@ -498,6 +513,37 @@ public class userService {
 
         return purchase;
     }
+
+    // ########### LIST METHODS ###########
+
+    public void setUserList(Integer userId, Integer seqList, Integer productId, String name){
+        if(name == null || name.isBlank()) throw new UserException("É necessario informar o nome da lista para salva-lá");
+
+        product product = prodRepo.findProductById(productId);
+        if(product == null) throw new ProductNotFoundException("Não encontrado o produto com o Código '" + productId + "'!");
+
+        user_account user = userAccountRepo.findAccountById(userId);
+        if(user == null) throw new UserNotFoundException("Usuário não encontrado com o id '" + userId + "'");
+        
+        userList list = listRepo.findUserListById(userId, seqList, productId);
+        if(list != null) return; // Product found in the list
+
+        userListId listId = new userListId();
+        listId.setProduct_id(productId);
+        listId.setSeq(seqList);
+        listId.setUseraccount_id(userId);
+
+        list = new userList();
+        list.setUserAccount(user);
+        list.setProduct(product);
+        list.setName(name);
+        list.setCreate_at(LocalDate.now());
+        list.setId(listId);
+
+        listRepo.save(list);
+    }
+
+    // ########### USEFULL METHODS ###########
 
     public static boolean isValidPhoneNumber(String telefone) {
         if (telefone == null || telefone.trim().isEmpty()) return false;

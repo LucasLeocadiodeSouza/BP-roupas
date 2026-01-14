@@ -36,7 +36,7 @@ import com.bphost.principal.repository.productCardDTORepo;
 import com.bphost.principal.repository.productRepo;
 import com.bphost.principal.repository.product_imgRepo;
 import com.bphost.principal.repository.specificationDTORepo;
-
+import com.bphost.principal.repository.userListRepo;
 import jakarta.transaction.Transactional;
 
 @Service
