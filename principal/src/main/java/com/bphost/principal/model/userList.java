@@ -18,7 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user_history")
+@Table(name = "user_list")
 public class userList {
     @EmbeddedId
     private userListId id;
