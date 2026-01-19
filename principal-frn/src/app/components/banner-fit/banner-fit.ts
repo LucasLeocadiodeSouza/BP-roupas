@@ -10,6 +10,7 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 export class Banner {
 
   @Input() banners: any[] = [];
+  @Input() classext: string = "";
 
   @ViewChild('slider', { static: true }) slider!: ElementRef<HTMLDivElement>;
 

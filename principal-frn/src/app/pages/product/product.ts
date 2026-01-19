@@ -1,17 +1,18 @@
 import { ChangeDetectorRef, Component, inject, ViewChild, ViewContainerRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Banner } from "../../components/banner/banner";
 import { MiniCard } from "../../components/mini-card/mini-card";
 import { ActivatedRoute } from '@angular/router';
 import { RequestForm } from '../../service/request-form';
 import { Comments } from "../../components/comments/comments";
 import { StarRating } from "../../components/star-rating/star-rating";
 import { CartForm } from '../../service/cart-form';
+import { Banner } from "../../components/banner-fit/banner-fit";
+
 
 @Component({
   selector: 'app-product',
-  imports: [Banner, CommonModule, MiniCard, Comments, StarRating],
-  templateUrl: './product.html', 
+  imports: [CommonModule, MiniCard, Comments, StarRating, Banner],
+  templateUrl: './product.html',
   styleUrl: './product.css'
 })
 export class Product {
@@ -340,7 +341,7 @@ export class Product {
 
   openContainerLists(){
     this.request.isLoggedIn().subscribe(isLogged =>{
-      if(!isLogged) return;
+      if(!isLogged) window.open('/insert/login', '_self');
 
       this.openContainerList = true;
       this.addedInTheList    = false;

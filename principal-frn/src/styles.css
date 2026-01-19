@@ -33,6 +33,8 @@ body {margin: 0; background: var(--primary-background, #e5e5e5); min-width: 1500
 .product-list-category-class {height: 100% !important;}
 .product-list-category-class .desc-prod-card {display: none !important;}
 
+.productpage-aspect-image {aspect-ratio: 4 / 4 !important;}
+
 .itens-class    {width: 150px; padding: 15px; border-radius: 14px;}
 .itens-class a  {color: #2162a1 !important;}
 

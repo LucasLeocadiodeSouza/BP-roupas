@@ -1,6 +1,6 @@
 <section class="container">
   <div class="slider-wrapper">
-    <div class="slider" #slider>
+    <div [className]="classext + ' slider'"  #slider>
         <img *ngFor="let banner of banners; let i = index" [src]="banner.src" [id]="'slide-' + i">
     </div>
     <div class="prev-button mov-button" style="top: 40%;" (click)="prev()">
