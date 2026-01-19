@@ -22,6 +22,7 @@ export class OrderCheckout {
 
   purchaseImage: string[] = [];
   purchaseCompleted: boolean = false;
+  initAnimation: boolean = false;
   address: {street: string, neighborhood: string, number: string, cep: string, city: string, state: string } = {street: "", neighborhood: "", number: "", cep: "", city: "", state: ""};
 
   getPriceSum(){
@@ -37,18 +38,24 @@ export class OrderCheckout {
   }
 
   registerUserCartPurchases(){
-    this.request.executeRequestPOST('account/registerUserCartPurchases', null).subscribe({
-      next: (response) => {
-        this.purchaseCompleted = true;
+    if(this.initAnimation) return;
 
-        this.cartForm.clearCart();
+    this.initAnimation = true;
 
-        this.cdRef.detectChanges();
-      },
-      error: (error) => {
-        console.error('Erro:', error);
-      }
-    });
+    setTimeout(() => {
+      this.request.executeRequestPOST('account/registerUserCartPurchases', null).subscribe({
+        next: (response) => {
+          this.purchaseCompleted = true;
+
+          this.cartForm.clearCart();
+
+          this.cdRef.detectChanges();
+        },
+        error: (error) => {
+          console.error('Erro:', error);
+        }
+      });
+    }, 2000);
   }
 
   addPurchaseImage(){

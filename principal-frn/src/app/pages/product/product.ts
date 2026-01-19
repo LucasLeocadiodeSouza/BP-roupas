@@ -11,7 +11,7 @@ import { CartForm } from '../../service/cart-form';
 @Component({
   selector: 'app-product',
   imports: [Banner, CommonModule, MiniCard, Comments, StarRating],
-  templateUrl: './product.html',
+  templateUrl: './product.html', 
   styleUrl: './product.css'
 })
 export class Product {
