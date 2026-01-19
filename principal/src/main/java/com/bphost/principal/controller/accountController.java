@@ -175,7 +175,7 @@ public class accountController {
     }
 
     @PostMapping("/adapterCreateUserList")
-    public ResponseEntity<?> adapterCreateUserList(@RequestParam(value = "listName", required = true) String listName, 
+    public ResponseEntity<?> adapterCreateUserList(@RequestParam(value = "listName", required = false) String listName, 
                                                    @RequestParam(value = "prodId", required = false) Integer prodId, 
                                                    @AuthenticationPrincipal UserDetails userAccount){
         user.adapterCreateUserList(user.getUserAccountId(userAccount.getUsername()), prodId, listName);

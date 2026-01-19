@@ -293,18 +293,24 @@ public class productService {
         return prodCards;
     }
 
-    public List<productCardDTO> getNewDiscovery(){
+    public List<productCardDTO> getNewDiscovery(Boolean showReviews){
         List<productCardDTO> prodCards = prodcardrepo.getNewDiscovery();
+        if(showReviews) prodCards = setCommentsForTheProductCard(prodCards);
+
         return prodCards;
     }
 
-    public List<productCardDTO> getBestRatedDeals(){
+    public List<productCardDTO> getBestRatedDeals(Boolean showReviews){
         List<productCardDTO> prodCards = prodcardrepo.getBestRatedDeals();
+        if(showReviews) prodCards = setCommentsForTheProductCard(prodCards);
+
         return prodCards;
     }
 
-    public List<productCardDTO> getHouseRecommendations(){
+    public List<productCardDTO> getHouseRecommendations(Boolean showReviews){
         List<productCardDTO> prodCards = prodcardrepo.getHouseRecommendations();
+        if(showReviews) prodCards = setCommentsForTheProductCard(prodCards);
+
         return prodCards;
     }
 

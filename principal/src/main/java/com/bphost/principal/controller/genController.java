@@ -283,18 +283,21 @@ public class genController {
     }
 
     @GetMapping("/getNewDiscovery")
-    public List<productCardDTO> getNewDiscovery(){
-        return prodService.getNewDiscovery();
+    public List<productCardDTO> getNewDiscovery(@RequestParam(value = "showReviewNumber", required = false) Boolean showReviewNumber){
+        if(showReviewNumber == null) showReviewNumber = false;
+        return prodService.getNewDiscovery(showReviewNumber);
     }
 
     @GetMapping("/getBestRatedDeals")
-    public List<productCardDTO> getBestRatedDeals(){
-        return prodService.getBestRatedDeals();
+    public List<productCardDTO> getBestRatedDeals(@RequestParam(value = "showReviewNumber", required = false) Boolean showReviewNumber){
+        if(showReviewNumber == null) showReviewNumber = false;
+        return prodService.getBestRatedDeals(showReviewNumber);
     }
 
     @GetMapping("/getHouseRecommendations")
-    public List<productCardDTO> getHouseRecommendations(){
-        return prodService.getHouseRecommendations();
+    public List<productCardDTO> getHouseRecommendations(@RequestParam(value = "showReviewNumber", required = false) Boolean showReviewNumber){
+        if(showReviewNumber == null) showReviewNumber = false;
+        return prodService.getHouseRecommendations(showReviewNumber);
     }
 
     // ######### Endpoints for Search Management #########

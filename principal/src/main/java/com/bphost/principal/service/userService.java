@@ -551,7 +551,15 @@ public class userService {
 
     @Transactional
     public void adapterCreateUserList(Integer userId, Integer prodId, String name){
-        userList userlist = createUserList(userId, name);
+        userList userlist = new userList();
+
+        if(name == null || name.isBlank()){
+            name = "Favoritos";
+            userlist = listRepo.findUserListByName(userId, name);
+        }else userlist = listRepo.findUserListByName(userId, name);
+        
+        if(userlist == null) userlist = createUserList(userId, name);
+
         createUserListProd(userlist.getId().getUseraccount_id(), userlist.getId().getSeq(), prodId);
     }
 

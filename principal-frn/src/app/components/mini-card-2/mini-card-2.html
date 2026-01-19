@@ -1,0 +1,27 @@
+<div class="col hp">
+  <div class="card h-100 shadow-sm">
+    <a target="_blank" [href]="href">
+      <img [src]="srcImages" class="card-img-top" alt="Loading..."/>
+    </a>
+
+    <div class="card-body">
+      <div class="clearfix mb-3 spacebetween mi-15">
+        <span class="float-start badge rounded-pill bg-success">{{ currency }} {{ price }}</span>
+
+        <span class="float-end">
+          <a [href]="href" class="small text-muted text-uppercase aff-link ff-heebo">{{ comments }} Avaliações</a>
+        </span>
+      </div>
+
+      <h5 class="card-title">{{ title }}</h5>
+
+      <div class="d-grid gap-2 my-4 spacebetween">
+        <a [href]="href" class="btn btn-warning bold-btn">Ver produto</a>
+
+        <div class="include-list" title="Adicionar item a Sua Lista de Favoritos" (click)="createListProduct()">
+          <img [src]="addedInFavoList?'assets/images/include-in-list-icon-ok.png':'assets/images/include-in-list-icon.png'" alt="loading..." width="24" height="24">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

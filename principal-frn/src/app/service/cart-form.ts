@@ -77,7 +77,10 @@ export class CartForm {
 
   removeFromCart(item: { product_id: number, size_id: number, color_id: number, quantity: number }) {
     this.request.isLoggedIn().subscribe(isLogged =>{
-      if(!isLogged) window.open('/insert/login', '_self');
+      if(!isLogged) {
+        window.open('/insert/login', '_self');
+        return;
+      }
 
       this.request.executeRequestPOST(`account/removeProductFromCart`, item).subscribe(() => {
         this.loadCart();

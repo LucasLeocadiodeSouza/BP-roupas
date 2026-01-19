@@ -341,7 +341,10 @@ export class Product {
 
   openContainerLists(){
     this.request.isLoggedIn().subscribe(isLogged =>{
-      if(!isLogged) window.open('/insert/login', '_self');
+      if(!isLogged) {
+        window.open('/insert/login', '_self');
+        return;
+      }
 
       this.openContainerList = true;
       this.addedInTheList    = false;

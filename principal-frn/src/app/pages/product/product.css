@@ -24,7 +24,7 @@ a  {text-decoration: none;}
 .list-image img {height: 65px; cursor: pointer;}
 
 .p10 {padding: 10px;}
-.main-image {width: 580px; height: 600px; position: relative; overflow: hidden;}
+.main-image {width: 530px; height: 600px; position: relative; overflow: hidden;}
 
 .product {display: flex; flex-direction: column; width: calc(50% - 30px); gap: 10px;}
 .product label {color: var(--color-label, #313131); font-family: "Inter"; font-size: 15px;}

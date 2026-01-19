@@ -5,10 +5,11 @@ import { ProductList } from '../../components/product-list/product-list';
 import { CommonModule } from '@angular/common';
 import { ProductCardRow } from "../../components/product-card-row/product-card-row";
 import { Banner } from "../../components/banner-fit/banner-fit";
+import { ProductCardRow2 } from "../../components/product-card-row-2/product-card-row-2";
 
 @Component({
   selector: 'app-home',
-  imports: [ProductList, CommonModule, ProductCardRow, Banner],
+  imports: [ProductList, CommonModule, ProductCardRow, Banner, ProductCardRow2],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
@@ -20,8 +21,14 @@ export class Home {
   cards: {title?: string,
           extclass: string,
           src?: string,
-          miniCard: {src: string, title?: string, price?: string, currency?: string, extclass: string, href: string }[]
+          miniCard: {src: string, prodId: string, title?: string, price?: string, currency?: string, extclass: string, href: string; total_comments: string; }[]
         }[] = [];
+
+  cardscateg: {title?: string,
+                extclass: string,
+                src?: string,
+                miniCard: {src: string, title?: string, price?: string, currency?: string, extclass: string, href: string }[]
+              }[] = [];
 
   highlightCards: { title: string, src: string, miniCard: {src: string, title: string, price: string, currency: string, extclass: string, href: string }[] }[] = [];
 
@@ -86,6 +93,7 @@ export class Home {
                      description:     string;
                      price:           string;
                      srcimage:        string;
+                     total_comments:  string;
                      category_id:     string;
                      subcategory_seq: string }[] = [];
 
@@ -93,13 +101,14 @@ export class Home {
 
         if(cards.length != 0){
           const cardsFormat = cards.map(card => ({
-              src:      "http://localhost:8080/api/product/product_" + card.product_id + "_1" + card.srcimage.substring(card.srcimage.lastIndexOf(".")),
-              title:    card.name,
-              price:    card.price,
-              fullinfo: false,
-              currency: "R$",
-              extclass: "product-class",
-              href:     `/product?id=${card.product_id}`
+              prodId:         card.product_id,
+              src:            "http://localhost:8080/api/product/product_" + card.product_id + "_1" + card.srcimage.substring(card.srcimage.lastIndexOf(".")),
+              title:          card.name,
+              price:          card.price,
+              total_comments: card.total_comments,
+              currency:       "R$",
+              extclass:       "product-class",
+              href:           `/product?id=${card.product_id}`
           }));
 
           this.cards = [...this.cards, {extclass: "m10", title: titlerow, miniCard: cardsFormat }];
@@ -130,7 +139,7 @@ export class Home {
               href: `/products-list?category_id=${category.id}`
           }));
 
-          this.cards = [...this.cards, {extclass: "container-category", title: "Categorias", miniCard: categformat }];
+          this.cardscateg = [...this.cardscateg, {extclass: "container-category", title: "Categorias", miniCard: categformat }];
         }
 
         this.cdRef.detectChanges();

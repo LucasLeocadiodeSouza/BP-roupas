@@ -9,14 +9,15 @@
 
     <div class="container-cardrow">
         <div id="containerMinicard" class="container-minicard" #containerProduct>
-            <app-mini-card *ngFor="let miniCard of miniCards; let i = index"
+            <app-mini-card-2 *ngFor="let miniCard of miniCards; let i = index"
+                                 [prodId]="miniCard.prodId",
                                  [title]="miniCard.title"
                                  [srcImages]="miniCard.src"
                                  [price]="miniCard.price"
                                  [currency]="miniCard.currency"
                                  [extclass]="miniCard.extclass"
                                  [href]="miniCard.href"
-                                 [ngClass]="{'carr-on': i === 0, 'carr-off': i !== 0}"></app-mini-card>
+                                 [comments]="miniCard.total_comments"></app-mini-card-2>
         </div>
     </div>
 
