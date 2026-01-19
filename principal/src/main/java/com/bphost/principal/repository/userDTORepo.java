@@ -34,20 +34,60 @@ public class userDTORepo{
 
     public List<userCartDTO> findListById(Integer useraccount_id, Integer seqList){
         String query = "SELECT new com.bphost.principal.model.userCartDTO( " +
-                       "list.id.useraccount_id, " + 
+                       "listProd.id.useraccount_id, " + 
                        "prod.id, " +
                        "prod.name, " +
                        "prod.price, " +
                        "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
-                       "0.0)" +
-                       "FROM userList list " +
-                       "JOIN product prod ON list.id.product_id = product.id " + 
-                       "WHERE list.id.useraccount_id = :userAccountId AND list.id.seq = :seqList ORDER BY list.create_at DESC";
+                       "0.0, " +
+                       "prod.name) " + 
+                       "FROM userListProd listProd " +
+                       "JOIN product prod ON listProd.id.product_id = product.id " + 
+                       "WHERE listProd.id.useraccount_id = :userAccountId AND listProd.id.seqlist = :seqList ORDER BY listProd.create_at DESC";
 
         var q = em.createQuery(query, userCartDTO.class);
 
         q.setParameter("userAccountId", useraccount_id);
         q.setParameter("seqList", seqList);
+
+        return q.getResultList();
+    }
+
+    public List<userCartDTO> findAllListByUser(Integer useraccount_id){
+        String query = "SELECT new com.bphost.principal.model.userCartDTO( " +
+                       "list.id.useraccount_id, " + 
+                       "list.name, " +
+                       "list.id.seq)" +
+                       "FROM userList list " +
+                       "WHERE list.id.useraccount_id = :userAccountId ORDER BY list.create_at DESC";
+
+        var q = em.createQuery(query, userCartDTO.class);
+
+        q.setParameter("userAccountId", useraccount_id);
+
+        return q.getResultList();
+    }
+
+    public List<userCartDTO> findSomeProductByList(Integer useraccount_id, Integer seqList, Integer quantity){
+        String query = "SELECT new com.bphost.principal.model.userCartDTO( " +
+                       "listProd.id.useraccount_id, " + 
+                       "prod.id, " +
+                       "prod.name, " +
+                       "prod.price, " +
+                       "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
+                       "0.0, " +
+                       "prod.name, " +
+                       "listProd.id.seqlist)" +
+                       "FROM userListProd listProd " +
+                       "JOIN product prod ON listProd.id.product_id = product.id " + 
+                       "WHERE listProd.id.useraccount_id = :userAccountId AND listProd.id.seqlist = :seqList ORDER BY listProd.create_at DESC";
+
+        var q = em.createQuery(query, userCartDTO.class);
+
+        q.setParameter("userAccountId", useraccount_id);
+        q.setParameter("seqList", seqList);
+
+        q.setMaxResults(quantity);
 
         return q.getResultList();
     }

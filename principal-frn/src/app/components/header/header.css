@@ -166,3 +166,5 @@ a:-webkit-any-link {
       margin-top: 3px;
     }
 }
+
+.button-search {cursor: pointer;}

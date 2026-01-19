@@ -10,6 +10,7 @@ import com.bphost.principal.exception.ProductNotFoundException;
 import com.bphost.principal.exception.SpecificationNotFoundException;
 import com.bphost.principal.exception.UserCartNotFoundException;
 import com.bphost.principal.exception.UserException;
+import com.bphost.principal.exception.UserListNotFoundException;
 import com.bphost.principal.exception.UserNotFoundException;
 import com.bphost.principal.infra.security.tokenService;
 import com.bphost.principal.model.product;
@@ -20,6 +21,8 @@ import com.bphost.principal.model.userCartDTO;
 import com.bphost.principal.model.userDTO;
 import com.bphost.principal.model.userList;
 import com.bphost.principal.model.userListId;
+import com.bphost.principal.model.userListProd;
+import com.bphost.principal.model.userListProdId;
 import com.bphost.principal.model.userPurchases;
 import com.bphost.principal.model.userPurchasesId;
 import com.bphost.principal.model.user_account;
@@ -37,6 +40,7 @@ import com.bphost.principal.repository.specification_prodRepo;
 import com.bphost.principal.repository.specification_sizeRepo;
 import com.bphost.principal.repository.userCartDTORepo;
 import com.bphost.principal.repository.userDTORepo;
+import com.bphost.principal.repository.userListProdRepo;
 import com.bphost.principal.repository.userListRepo;
 import com.bphost.principal.repository.userPurchasesRepo;
 import com.bphost.principal.repository.user_accountRepo;
@@ -90,6 +94,10 @@ public class userService {
 
     @Autowired
     private userListRepo listRepo;
+
+    @Autowired
+    private userListProdRepo listProdRepo;
+
 
     public Integer getUserAccountId(String username) {
         user_account user = userAccountRepo.findAccountByUsername(username);
@@ -516,31 +524,110 @@ public class userService {
 
     // ########### LIST METHODS ###########
 
-    public void setUserList(Integer userId, Integer seqList, Integer productId, String name){
+    @Transactional
+    public userList createUserList(Integer userId, String name){
         if(name == null || name.isBlank()) throw new UserException("É necessario informar o nome da lista para salva-lá");
-
-        product product = prodRepo.findProductById(productId);
-        if(product == null) throw new ProductNotFoundException("Não encontrado o produto com o Código '" + productId + "'!");
 
         user_account user = userAccountRepo.findAccountById(userId);
         if(user == null) throw new UserNotFoundException("Usuário não encontrado com o id '" + userId + "'");
-        
-        userList list = listRepo.findUserListById(userId, seqList, productId);
-        if(list != null) return; // Product found in the list
+
+        Integer newSequence = listRepo.findLastSeqListById(userId);
+        newSequence = newSequence == null? 1 : newSequence + 1;
 
         userListId listId = new userListId();
-        listId.setProduct_id(productId);
-        listId.setSeq(seqList);
+        listId.setSeq(newSequence);
         listId.setUseraccount_id(userId);
 
-        list = new userList();
+        userList list = new userList();
         list.setUserAccount(user);
-        list.setProduct(product);
         list.setName(name);
         list.setCreate_at(LocalDate.now());
         list.setId(listId);
 
         listRepo.save(list);
+
+        return list;
+    }
+
+    @Transactional
+    public void adapterCreateUserList(Integer userId, Integer prodId, String name){
+        userList userlist = createUserList(userId, name);
+        createUserListProd(userlist.getId().getUseraccount_id(), userlist.getId().getSeq(), prodId);
+    }
+
+    @Transactional
+    public void createUserListProd(Integer userId, Integer seqList, Integer productId){
+        user_account user = userAccountRepo.findAccountById(userId);
+        if(user == null) throw new UserNotFoundException("Usuário não encontrado com o id '" + userId + "'");
+
+        product product = prodRepo.findProductById(productId);
+        if(product == null) throw new ProductNotFoundException("Não encontrado o produto com o Código '" + productId + "'!");
+
+        userListProd listProd = listProdRepo.findUserListProdById(userId, seqList, productId);
+        if(listProd != null) return;
+
+        userListProdId listProdId = new userListProdId();
+        listProdId.setProduct_id(productId);
+        listProdId.setSeqlist(seqList);
+        listProdId.setUseraccount_id(userId);
+
+        listProd = new userListProd();
+        listProd.setId(listProdId);
+        listProd.setProduct(product);
+        listProd.setUserAccount(user);
+        listProd.setCreate_at(LocalDate.now());
+
+        listProdRepo.save(listProd);
+    }
+
+    public void removeUserListProd(Integer userId, Integer seqList, Integer productId){
+        user_account user = userAccountRepo.findAccountById(userId);
+        if(user == null) throw new UserNotFoundException("Usuário não encontrado com o id '" + userId + "'");
+
+        product product = prodRepo.findProductById(productId);
+        if(product == null) throw new ProductNotFoundException("Não encontrado o produto com o Código '" + productId + "'!");
+
+        userListProd listProd = listProdRepo.findUserListProdById(userId, seqList, productId);
+        if(listProd == null) throw new UserListNotFoundException("Não encontrado o produto na lista informada!");
+
+        listProdRepo.delete(listProd);
+    }
+
+    public List<userCartDTO> getUserListById(Integer userId, Integer seq){
+        List<userCartDTO> cart = userDTORepo.findListById(userId, seq);
+        if(cart == null) return null;
+
+        cart.forEach(prodItem -> {
+            Integer total_comments = commentsprodrepo.countCommentsByProductId(prodItem.getProduct_id());
+
+            Double avarage_rating;
+            if(total_comments != 0){
+                avarage_rating = ((commentsprodrepo.countCommentsWithRating1ByProductId(prodItem.getProduct_id()) * 1.0) +
+                                 (commentsprodrepo.countCommentsWithRating2ByProductId(prodItem.getProduct_id()) * 2.0)  + 
+                                 (commentsprodrepo.countCommentsWithRating3ByProductId(prodItem.getProduct_id()) * 3.0)  + 
+                                 (commentsprodrepo.countCommentsWithRating4ByProductId(prodItem.getProduct_id()) * 4.0)  + 
+                                 (commentsprodrepo.countCommentsWithRating5ByProductId(prodItem.getProduct_id()) * 5.0)) /
+                                 total_comments;
+            } else avarage_rating = 5.0;
+
+            prodItem.setAvarage_rating(avarage_rating);
+        });
+
+        return cart;
+    }
+
+    public List<userCartDTO> getAllUserListByUser(Integer userId){
+        List<userCartDTO> cart = userDTORepo.findAllListByUser(userId);
+        if(cart == null) return null;
+
+        return cart;
+    }
+
+    public List<userCartDTO> findSomeProductByList(Integer userId, Integer seq){
+        List<userCartDTO> cart = userDTORepo.findSomeProductByList(userId, seq, 4);
+        if(cart == null) return null;
+
+        return cart;
     }
 
     // ########### USEFULL METHODS ###########

@@ -22,6 +22,7 @@ import { Login } from './pages/login/login';
 import { ProductsFilterPrice } from './pages/products-filter-price/products-filter-price';
 import { ProductsBestSellings } from './pages/products-best-sellings/products-best-sellings';
 import { ProductsDiscount } from './pages/products-discount/products-discount';
+import { ProfileListProd } from './pages/profile-list-prod/profile-list-prod';
 
 export const routes: Routes = [
     {
@@ -101,6 +102,10 @@ export const routes: Routes = [
            {
             path: 'your-list',
             component: ProfileList
+           },
+           {
+            path: 'your-list/list',
+            component: ProfileListProd
            },
            {
             path: 'history',

@@ -1,7 +1,6 @@
 package com.bphost.principal.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.bphost.principal.model.userCartDTO;
 import com.bphost.principal.model.userDTO;
-import com.bphost.principal.model.userPurchases;
 import com.bphost.principal.model.user_account;
 import com.bphost.principal.model.user_address;
 import com.bphost.principal.service.userService;
@@ -157,5 +155,46 @@ public class accountController {
     @GetMapping("/getAllImagesproductInCart")
     public List<String> getAllImagesproductInCart(@AuthenticationPrincipal UserDetails userAccount){
         return user.getAllImagesproductInCart(user.getUserAccountId(userAccount.getUsername()));
+    }
+
+    @GetMapping("/getAllUserListByUser")
+    public List<userCartDTO> getAllUserListByUser(@AuthenticationPrincipal UserDetails userAccount){
+        return user.getAllUserListByUser(user.getUserAccountId(userAccount.getUsername()));
+    }
+
+    @GetMapping("/getUserListById")
+    public List<userCartDTO> getUserListById(@RequestParam(value =  "seqlist", required = true) Integer seqlist,
+                                             @AuthenticationPrincipal UserDetails userAccount){
+        return user.getUserListById(user.getUserAccountId(userAccount.getUsername()), seqlist);
+    }
+
+    @GetMapping("/findSomeProductByList")
+    public List<userCartDTO> findSomeProductByList(@RequestParam(value = "seqlist", required = true) Integer seqlist,
+                                                   @AuthenticationPrincipal UserDetails userAccount){
+        return user.findSomeProductByList(user.getUserAccountId(userAccount.getUsername()), seqlist);
+    }
+
+    @PostMapping("/adapterCreateUserList")
+    public ResponseEntity<?> adapterCreateUserList(@RequestParam(value = "listName", required = true) String listName, 
+                                                   @RequestParam(value = "prodId", required = false) Integer prodId, 
+                                                   @AuthenticationPrincipal UserDetails userAccount){
+        user.adapterCreateUserList(user.getUserAccountId(userAccount.getUsername()), prodId, listName);
+
+        return ResponseEntity.ok(Map.of(
+            "status", "success",
+            "message", "Created list successfully"
+        ));
+    }
+
+    @PostMapping("/createUserListProd")
+    public ResponseEntity<?> createUserListProd(@RequestParam(value = "sequence", required = true) Integer sequence, 
+                                                @RequestParam(value = "prodId", required = true) Integer prodId, 
+                                                @AuthenticationPrincipal UserDetails userAccount){
+        user.createUserListProd(user.getUserAccountId(userAccount.getUsername()), sequence, prodId);
+
+        return ResponseEntity.ok(Map.of(
+            "status", "success",
+            "message", "Added product in the list successfully"
+        ));
     }
 }

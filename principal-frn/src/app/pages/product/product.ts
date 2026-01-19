@@ -7,10 +7,11 @@ import { RequestForm } from '../../service/request-form';
 import { Comments } from "../../components/comments/comments";
 import { StarRating } from "../../components/star-rating/star-rating";
 import { CartForm } from '../../service/cart-form';
+import { ItemList } from "../item-list/item-list";
 
 @Component({
   selector: 'app-product',
-  imports: [Banner, CommonModule, MiniCard, Comments, StarRating],
+  imports: [Banner, CommonModule, MiniCard, Comments, StarRating, ItemList],
   templateUrl: './product.html',
   styleUrl: './product.css'
 })
@@ -20,6 +21,7 @@ export class Product {
   constructor(private cdRef: ChangeDetectorRef, private route: ActivatedRoute, private cartForm: CartForm) {}
 
   @ViewChild('buttcolor', { read: ViewContainerRef }) buttcolor!: ViewContainerRef;
+  @ViewChild('divcomments', { read: ViewContainerRef }) divcomments!: ViewContainerRef;
 
   category:    {id: number, name: string} = {id: 0, name: ""};
   subcategory: {id: number, name: string} = {id: 0, name: ""};
@@ -49,6 +51,21 @@ export class Product {
                     }[] = [];
 
   banners: { src: string; height: string; width: string }[] = [];
+
+  openMoreOptions: boolean = false;
+  openContainerList: boolean = false;
+  openContainerCreateList: boolean = false;
+
+  listName: string = "";
+
+  itens: {title:   string,
+          images:  {view: string}[],
+          seqList: number
+        }[] = [];
+
+  changeOpenMoreOptions(){
+    this.openMoreOptions = !this.openMoreOptions;
+  }
 
   changeQuantity(event: any) {
     this.quantity = event.target.value;
@@ -88,6 +105,13 @@ export class Product {
     this.specificationColorSelected = element.id;
 
     this.textColorErro = false;
+  }
+
+  rollForTheComments(){
+    this.divcomments.element.nativeElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
   }
 
   loadProductsInformation(){
@@ -314,6 +338,126 @@ export class Product {
     this.addToCart();
   }
 
+  openContainerLists(){
+    this.request.isLoggedIn().subscribe(isLogged =>{
+      if(!isLogged) return;
+
+      this.openContainerList = true;
+      this.loadAllListByUser();
+
+      this.cdRef.detectChanges();
+    });
+  }
+
+  closeContainerLists(){
+    this.openContainerList = false;
+  }
+
+  openContainerCreateLists(){
+    this.openContainerList       = false;
+    this.openContainerCreateList = true;
+  }
+
+  closeContainerCreateList(){
+    this.openContainerCreateList = false;
+    this.openContainerList       = true;
+
+    this.listName = "";
+    this.loadAllListByUser();
+  }
+
+  changeListName(event: any){
+    this.listName = event.target.value;
+  }
+
+  loadAllListByUser(){
+    this.request.executeRequestGET(`account/getAllUserListByUser`).subscribe({
+      next: (response) => {
+        var cards: {
+                    useraccount_id: number,
+                    nameList:       string,
+                    seqList:        number,
+                   }[] = [];
+
+        cards = response;
+
+        const newCards = cards.map(card => ({
+            title:    card.nameList,
+            images:   [],
+            seqList: card.seqList
+        }));
+
+        this.itens = newCards;
+
+        this.itens.forEach((item: any) => {
+          this.setImagesLists(item.seqList);
+        });
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
+
+  setImagesLists(sequence: number){
+    this.request.executeRequestGET(`account/findSomeProductByList`, {seqlist: sequence}).subscribe({
+      next: (response) => {
+        var cards: {
+                    useraccount_id: number,
+                    product_id:     number,
+                    name:           string,
+                    price:          number,
+                    image:          string,
+                    avarage_rating: number,
+                    nameList:       string,
+                    seqList:        number,
+                   }[] = [];
+
+        cards = response;
+
+        const images = cards.map(card => ({
+          view: "http://localhost:8080/api/product/" + card.image
+        }));
+
+        this.itens.forEach((item: any) => {
+          if(item.seqList == sequence) item.images = images;
+        });
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
+
+  createListUser(){
+    this.request.executeRequestPOST('account/adapterCreateUserList', null, {listName: this.listName, prodId: this.product.id}).subscribe({
+      next: (response) => {
+        this.closeContainerCreateList();
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
+
+  createListProduct(sequence: number){
+    this.request.executeRequestPOST('account/createUserListProd', null, {sequence: sequence, prodId: this.product.id}).subscribe({
+      next: (response) => {
+        this.closeContainerLists();
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
 
   ngOnInit() {
     this.loadProductsInformation();

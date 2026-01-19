@@ -43,13 +43,23 @@
                         <label>{{ sales }} Vendidos</label>
                     </div>
 
-                    <div class="row">
-                        <div class="stars-rating">
+                    <div class="row prelative">
+                        <div class="stars-rating" (click)="rollForTheComments()">
                             <app-star-rating [enable]="false" [starHeight]="'13px'" [rating]="product.score" [name]="'product-rating'"></app-star-rating>
                         </div>
                         <div class="desc-score">
                             <span>{{ product.score }} </span>
                             <span> &#40;{{ product.total_comments }}&#41;</span>
+                        </div>
+
+                        <div class="more-option-button" (click)="changeOpenMoreOptions()" [ngClass]="{'more-option-color-active': openMoreOptions}">
+                          <img src="assets/images/more-options.png" alt="loading..." width="15px" height="22px" title="Mais Opções">
+                        </div>
+
+                        <div [ngClass]="{'hiddenContainerOption': !openMoreOptions, 'showContainerOption': openMoreOptions}" class="container-more-option">
+                          <ol>
+                            <li class="link" (click)="openContainerLists()">Adicionar item a lista</li>
+                          </ol>
                         </div>
                     </div>
                 </div>
@@ -112,13 +122,20 @@
                 </div>
 
                 <div class="finish-buttons">
-                    <div class="control-button buy-now" [ngClass]="{'inactive': !product.active}" (click)="buyNow()">
-                        <span>Comprar agora</span>
-                    </div>
+                  <div class="control-button buy-now" [ngClass]="{'inactive': !product.active}" (click)="buyNow()">
+                      <span>Comprar agora</span>
+                  </div>
 
                   <div class="control-button" [ngClass]="{'inactive': !product.active}" (click)="addToCart()">
                       <span>Adicionar ao Carrinho</span>
                   </div>
+
+                  <!-- <div class="container-list">
+                    <div class="container-resume">
+                      <img src="assets/images/include-in-list-icon.png" alt="loading...">
+                    </div>
+                    <div class="container-complete">Adicionar item na Lista</div>
+                  </div> -->
                 </div>
             </div>
         </div>
@@ -127,7 +144,7 @@
             <div class="divisior"></div>
         </div>
 
-        <div>
+        <div #divcomments>
           <app-comments [product_id]="product.id"></app-comments>
         </div>
 
@@ -152,5 +169,59 @@
                                     [score]="item.score"></app-mini-card>
             </div>
         </div>
+    </div>
+
+    <div [ngClass]="{'blackout': openContainerList || openContainerCreateList}"></div>
+
+    <div class="container-list" [ngClass]="{'dnone': !openContainerList}">
+      <div class="header">
+        <div class="close-button" (click)="closeContainerLists()">
+          <img src="assets/images/close-icon.png" alt="loading..." width="15px" height="15px">
+        </div>
+      </div>
+      <div class="title">
+        <label>Selecione a lista que você deseja adicionar o produto</label>
+      </div>
+      <div class="itenslist">
+
+        <div class="item" (click)="openContainerCreateLists()">
+          <div class="container-item">
+            <div class="about-item">
+              <div class="title">Criar Lista</div>
+            </div>
+            <div class="view-item">
+                <img src="assets/images/plus-icon.png" width="70" height="70">
+            </div>
+          </div>
+        </div>
+
+        <div *ngFor="let item of itens; let i = index" class="item" (click)="createListProduct(item.seqList)">
+          <div class="container-item">
+            <div class="about-item">
+              <div class="title">
+                  {{ item.title }}
+              </div>
+            </div>
+            <div class="view-item">
+                <img *ngFor="let image of item.images" [src]="image.view" width="70" height="70">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-list" [ngClass]="{'dnone': !openContainerCreateList}">
+      <div class="header">
+        <div class="close-button" (click)="closeContainerCreateList()">
+          <img src="assets/images/close-icon.png" alt="loading..." width="15px" height="15px">
+        </div>
+      </div>
+      <div class="title">
+        <label>Digite um nome para a sua nova lista</label>
+      </div>
+      <div class="container-input">
+        <input type="text" id="listname" name="listname" [value]="listName" (input)="changeListName($event)">
+      </div>
+      <div class="button" (click)="createListUser()">Criar</div>
     </div>
 </main>

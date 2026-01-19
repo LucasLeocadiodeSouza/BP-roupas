@@ -1,7 +1,7 @@
 <div class="container-princ">
   <div>
     <div class="title">
-      <h3>Sua Lista</h3>
+      <h3>Suas Listas</h3>
     </div>
     <div class="subtitle">
       <span>Gerenciar sua lista de desejos</span>
@@ -11,13 +11,9 @@
   <div class="divisior"></div>
 
   <div class="container-itenslist">
-      <app-mini-card *ngFor="let item of itens; let i = index"
+      <app-item-list *ngFor="let item of itens; let i = index"
                           [title]="item.title"
-                          [srcImages]="item.src"
-                          [price]="item.price"
-                          [currency]="item.currency"
-                          [extclass]="item.extclass"
-                          [href]="item.href"
-                          [fullinfo]="item.fullinfo"></app-mini-card>
+                          [images]="item.images"
+                          [href]="item.href"></app-item-list>
   </div>
 </div>

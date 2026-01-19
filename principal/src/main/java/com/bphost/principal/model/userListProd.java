@@ -18,18 +18,20 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user_list")
-public class userList {
+@Table(name = "user_list_prod")
+public class userListProd {
     @EmbeddedId
-    private userListId id;
+    private userListProdId id;
 
     @ManyToOne
     @MapsId("useraccount_id")
     @JoinColumn(name = "useraccount_id")
     private user_account userAccount;
 
-    @Column(length = 50)
-    private String name;
+    @ManyToOne
+    @MapsId("product_id")
+    @JoinColumn(name = "product_id")
+    private product product;
 
     private LocalDate create_at;
 }

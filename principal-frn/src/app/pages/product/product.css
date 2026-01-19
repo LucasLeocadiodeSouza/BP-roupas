@@ -8,6 +8,8 @@ a  {text-decoration: none;}
 
 .row {display: flex; flex-direction: row; gap: 5px;}
 
+.dnone {display: none !important;}
+
 .path {margin-left: 10px; display: flex; gap: 5px;}
 .path ol {flex-wrap: wrap; margin: 0; padding: 0; list-style: none; display: flex; gap: 5px;}
 .path li {list-style-type: none;}
@@ -15,7 +17,7 @@ a  {text-decoration: none;}
 
 .path .overcolor:hover {color: #000000; text-decoration: underline}
 
-.container-desc {display: flex; flex-direction: row; width: 100%; gap: 30px; padding: 15px 5px;}
+.container-desc {display: flex; flex-direction: row; width: 100%; gap: 30px; padding: 10px 5px;}
 
 .images {display: flex; flex-direction: row; width: calc(50% - 10px);}
 .list-image {width: 65px ; display: flex; flex-direction: column; gap: 15px; max-height: 550px; overflow-x: hidden; overflow-y: auto; border-radius: 15px; padding: 10px 5px; user-select: none;}
@@ -52,19 +54,20 @@ a  {text-decoration: none;}
 .inactive {opacity: 0.3; background: transparent !important;}
 .active   {background: #e9e9e9;}
 
-#inpquant {width: 80px;
-           border: 0px;
-           border-bottom: 1px solid #000;
-           font-family: "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-           font-weight: 180;
-           font-size: var(--font-size-label, 15px);
-           color: #000;
-           background-color: #0000000d;
-           padding: 2.5px;
-           transition: .2s;}
+#inpquant, #listname {width: 80px;
+                      border: 0px;
+                      border-bottom: 1px solid #000;
+                      font-family: "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+                      font-weight: 180;
+                      font-size: var(--font-size-label, 15px);
+                      color: #000;
+                      background-color: #0000000d;
+                      padding: 2.5px;
+                      transition: .2s;}
 
-#inpquant:focus-visible  {outline: 0px; border: 0px; border-bottom: 0.6mm solid #000;}
+#listname {width: 100%; padding: 4px;}
 
+#inpquant:focus-visible, #listname:focus-visible  {outline: 0px; border: 0px; border-bottom: 0.6mm solid #000;}
 #inpquant:disabled {border-color: rgba(118, 118, 118, 0.3); color: var(--color-input-disab, #6b6b6b); background-color: #a1a1a170;}
 
 input[type=number]::-webkit-inner-spin-button,
@@ -81,7 +84,7 @@ input[type=number] {
 .price, .currency {font-family: monospace, Arial, sans-serif; font-size: 23px;}
 .currency {font-size: 14px;}
 
-.finish-buttons  {display: flex; align-items: center; gap: 10px; flex-direction: row-reverse;  user-select: none;}
+.finish-buttons  {display: flex; align-items: center; gap: 10px; flex-direction: row-reverse;  user-select: none; position: relative;}
 .control-buttons {display: grid; align-items: start; gap: 10px; margin-inline: 20px; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;}
 .control-button  {border: 1px solid var(--color-border, #bdbdbd); color: var(--color-label, #313131); border-radius: 20px; padding: 10px 15px; cursor: pointer; transition: 0.2s ease-out; font-size: 21px; display: flex; justify-content: center;}
 
@@ -90,3 +93,91 @@ input[type=number] {
 
 .container-itens {padding: 30px 10px; gap: 23px; display: flex; flex-direction: column;}
 .container-itenslist {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; gap: 10px;}
+
+.more-option-button       {margin-left: 15px; user-select: none; cursor: pointer; padding: 2px 3px; border-radius: 7px; display: flex; justify-content: center;}
+.more-option-button:hover {background-color: #d3d3d3;}
+.more-option-color-active {background-color: #d3d3d3;}
+
+.hiddenContainerOption {max-height: 0;}
+.showContainerOption   {max-height: 600px;}
+
+.container-more-option    {position: absolute;
+                           background-color: #b6b6b6;
+                           border-radius: 10px;
+                           right: 0; top: 100%;
+                           overflow: hidden;
+                           transition: 0.3s max-height;}
+
+.container-more-option ol {max-height: 550px;
+                           overflow-y: auto;
+                           padding: 0;
+                           margin-block: 3px;}
+
+.container-more-option li {list-style-type: none; cursor: pointer; padding: 4px 5px; margin-bottom: 5px;}
+.container-more-option li:hover {background-color: #afafaf;}
+.container-more-option .link {display: inline-block; color: var(--color-label, #313131); font-family: "Inter"; font-size: 13px;}
+
+
+.blackout {background-color: #0000002d;
+           position: fixed; top: 0; left: 0;
+           width: 100%; height: 100%;
+           z-index: 201;}
+
+.container-list {width: 75%; height: 65%;
+                 border-radius: 10px;
+                 display: flex; align-items: center; flex-direction: column;
+                 position: fixed;
+                 top: 50%; left: 50%;
+                 transform: translate(-50%, -50%);
+                 padding: 20px;
+                 background-color: #FFF;
+                 z-index: 202;
+                 overflow-y: auto;}
+
+.container-list .itenslist {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 10px;}
+
+.container-list .header {display: flex; flex-direction: row-reverse; width: 100%;}
+.container-list .header .close-button {border-radius: 5px; border: 1px solid #0000002c; padding: 4px; display: flex; cursor: pointer;}
+
+.container-list .title {color: var(--color-label, #313131); font-family: "Inter";}
+
+.container-list .container-input {margin-top: 50px;}
+
+.container-list .button {
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 17px;
+  padding: 0.5em 2em;
+  border: transparent;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+  background: dodgerblue;
+  color: white;
+  border-radius: 4px;
+}
+
+.container-list .button:hover {
+ background: rgb(2,0,36);
+ background: linear-gradient(90deg, rgba(30,144,255,1) 0%, rgba(0,212,255,1) 100%);
+}
+
+.container-list .button:active {
+ transform: translate(0em, 0.2em);
+}
+
+.itenslist .item {
+  display: flex; flex-direction: column;
+  border: 1px solid #e0e0e0; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom: 0px;
+  margin-block: 10px 30px;
+  position: relative;
+  background-color: #FFF;
+  cursor: pointer;
+  height: 200px; width: 200px;
+}
+
+.itenslist .container-item { display: flex; flex-direction: column; }
+
+.itenslist .container-item .view-item     {display: grid; grid-template-columns: 1fr 1fr; justify-items: center;}
+.itenslist .container-item .view-item img {user-select: none;}
+.itenslist .container-item .about-item    {margin-left: 3px; width: 100%; padding: 10px;}
+.itenslist .container-item .title         {display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 14px; font-family: system-ui, Helvetica, Arial, sans-serif;}
+

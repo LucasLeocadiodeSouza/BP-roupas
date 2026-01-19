@@ -1,0 +1,16 @@
+<main>
+  <a [href]="href">
+    <div class="container-item">
+      <div class="about-item">
+        <div class="title">
+            {{ title }}
+        </div>
+      </div>
+    
+      <div class="view-item">
+          <img *ngFor="let image of images" [src]="image.view" width="70" height="70">
+      </div>
+    </div>
+  </a>
+</main>
+
