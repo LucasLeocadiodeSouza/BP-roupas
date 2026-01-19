@@ -11,6 +11,7 @@
     --color-label-inv: #eaeaea;
     --color-label-card: #000;
     --width-inputsett-gen: 325px;
+    --width-scrollbar: 12px;
 }
 
 body {margin: 0; background: var(--primary-background, #e5e5e5); min-width: 1500px;}
@@ -75,7 +76,7 @@ body {margin: 0; background: var(--primary-background, #e5e5e5); min-width: 1500
 
 
 ::-webkit-scrollbar {
-  width: 12px;
+  width: var(--width-scrollbar, 12px);
   height: 8px;
 }
 

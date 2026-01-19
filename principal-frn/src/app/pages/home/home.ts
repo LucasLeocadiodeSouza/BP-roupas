@@ -1,14 +1,14 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { Banner } from '../../components/banner/banner';
 import { RequestForm } from './../../service/request-form';
 import { ActivatedRoute } from '@angular/router';
 import { ProductList } from '../../components/product-list/product-list';
 import { CommonModule } from '@angular/common';
 import { ProductCardRow } from "../../components/product-card-row/product-card-row";
+import { Banner } from "../../components/banner-fit/banner-fit";
 
 @Component({
   selector: 'app-home',
-  imports: [Banner, ProductList, CommonModule, ProductCardRow],
+  imports: [ProductList, CommonModule, ProductCardRow, Banner],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })

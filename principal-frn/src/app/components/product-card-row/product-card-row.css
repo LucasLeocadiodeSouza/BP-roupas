@@ -1,4 +1,4 @@
-.container-principal {height: 360px; width: calc(100% - 20px); display: flex; flex-direction: column; position: relative; background-color: var(--secondary-background, #f1f1f1); overflow: hidden; margin: 35px 10px;}
+.container-principal {height: 360px; width: calc(100% - 20px); display: flex; flex-direction: column; position: relative; background-color: var(--secondary-background, #f1f1f1); overflow: hidden; margin: 35px 10px; z-index: 100;}
 
 .dlegenda {max-height: 22%; width: calc(100% - 70px); font: 24px "Poppins", sans-serif; font-weight: bold; padding: 17px 35px 10px;}
 

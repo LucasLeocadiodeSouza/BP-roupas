@@ -1,0 +1,13 @@
+<section class="container">
+  <div class="slider-wrapper">
+    <div class="slider" #slider>
+        <img *ngFor="let banner of banners; let i = index" [src]="banner.src" [id]="'slide-' + i">
+    </div>
+    <div class="prev-button mov-button" style="top: 40%;" (click)="prev()">
+        <img src="assets/icons/arrow-left.png" alt="Carregando">
+    </div>
+    <div class="next-button mov-button" style="top: 40%;" (click)="next()">
+        <img src="assets/icons/arrow-right.png" alt="Carregando">
+    </div>
+  </div>
+</section>

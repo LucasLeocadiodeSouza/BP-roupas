@@ -4,8 +4,13 @@ main  {width: 83%;}
 .w-17 {width: 17%;}
 
 /* style used in banners */
-.banner {display: flex; flex-direction: column; height: 600px; width: 1190px; position: absolute; z-index: 10;}
-.transparent-filter { height: 300px; width: 1190px; position: absolute; bottom: 0; background: linear-gradient(to bottom, transparent, var(--primary-background, #e5e5e5));}
+.banner {display: flex; flex-direction: column; position: absolute; z-index: 10;}
+.transparent-filter { height: 300px; width: 100%;
+                      position: absolute; bottom: 0;
+                      background: var(--primary-background, #e5e5e5);
+                      background: -webkit-linear-gradient(0deg, var(--primary-background, #e5e5e5) 0%, rgba(255, 255, 255, 0) 100%);
+                      background: linear-gradient(0deg, var(--primary-background, #e5e5e5) 0%, rgba(255, 255, 255, 0) 100%);
+}
 
 .mt330 { margin-top: 330px;}
 
