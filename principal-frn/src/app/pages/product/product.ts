@@ -7,11 +7,10 @@ import { RequestForm } from '../../service/request-form';
 import { Comments } from "../../components/comments/comments";
 import { StarRating } from "../../components/star-rating/star-rating";
 import { CartForm } from '../../service/cart-form';
-import { ItemList } from "../item-list/item-list";
 
 @Component({
   selector: 'app-product',
-  imports: [Banner, CommonModule, MiniCard, Comments, StarRating, ItemList],
+  imports: [Banner, CommonModule, MiniCard, Comments, StarRating],
   templateUrl: './product.html',
   styleUrl: './product.css'
 })
@@ -55,6 +54,7 @@ export class Product {
   openMoreOptions: boolean = false;
   openContainerList: boolean = false;
   openContainerCreateList: boolean = false;
+  addedInTheList: boolean = false;
 
   listName: string = "";
 
@@ -343,6 +343,7 @@ export class Product {
       if(!isLogged) return;
 
       this.openContainerList = true;
+      this.addedInTheList    = false;
       this.loadAllListByUser();
 
       this.cdRef.detectChanges();
@@ -438,6 +439,8 @@ export class Product {
       next: (response) => {
         this.closeContainerCreateList();
 
+        this.addedInTheList = true;
+
         this.cdRef.detectChanges();
       },
       error: (error) => {
@@ -449,7 +452,8 @@ export class Product {
   createListProduct(sequence: number){
     this.request.executeRequestPOST('account/createUserListProd', null, {sequence: sequence, prodId: this.product.id}).subscribe({
       next: (response) => {
-        this.closeContainerLists();
+        this.loadAllListByUser();
+        this.addedInTheList = true;
 
         this.cdRef.detectChanges();
       },

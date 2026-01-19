@@ -179,6 +179,25 @@
           <img src="assets/images/close-icon.png" alt="loading..." width="15px" height="15px">
         </div>
       </div>
+
+      <div class="congratulations" [ngClass]="{'out-of-sight' : !addedInTheList}">
+        <div class="container-info" [ngClass]="{'explosive-text' : addedInTheList}">
+          <div class="top">
+            <div class="icon-ok">
+              <img src="assets/images/icon ok purchases.png">
+            </div>
+            <div class="title">
+              <label>Item adicionado com sucesso a sua Lista!</label>
+            </div>
+          </div>
+          <div class="bottom">
+            <div class="message">
+              <label>Para Acessar sua lista acesse a página da sua conta (em "Acessar Conta") depois clique em "Suas Listas".</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="title">
         <label>Selecione a lista que você deseja adicionar o produto</label>
       </div>

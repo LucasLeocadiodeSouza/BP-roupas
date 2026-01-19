@@ -17,7 +17,7 @@ export class AccountAccess {
       title: "Sua conta",
       buttons: [
                 {id: 1, name: "Seu Perfil",  href: "http://localhost:4200/account"},
-                {id: 2, name: "Sua Lista",   href: "http://localhost:4200/account/your-list"},
+                {id: 2, name: "Suas Listas", href: "http://localhost:4200/account/your-list"},
                 {id: 2, name: "Histórico",   href: "http://localhost:4200/account/history"},
                 {id: 3, name: "Endereços",   href: "http://localhost:4200/account/address"}
               ]
