@@ -107,6 +107,7 @@ export class ProductsList {
 
         if(cards.length != 0){
           const cardsFormat = cards.map(card => ({
+              prodId:         card.product_id,
               src:            "http://localhost:8080/api/product/product_" + card.product_id + "_1" + card.srcimage.substring(card.srcimage.lastIndexOf(".")),
               title:          card.name,
               price:          card.price,

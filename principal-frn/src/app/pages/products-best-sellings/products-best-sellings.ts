@@ -23,7 +23,7 @@ export class ProductsBestSellings {
   cards: {title?: string,
           extclass: string,
           src?: string,
-          miniCard: {src: string, title?: string, price?: number, currency?: string, extclass: string, href: string; total_comments: string; discount: number; }[]
+          miniCard: {prodId:number, src: string, title?: string, price?: number, currency?: string, extclass: string, href: string; total_comments: string; discount: number; }[]
         }[] = [];
 
   cardcateg: {title?: string,
@@ -83,7 +83,7 @@ export class ProductsBestSellings {
   LoadCardRowProducts(titlerow: string, path: string){
     this.request.executeRequestGET(`api/${path}`, { category_id: this.category_id, subcategory_id: this.subcategory_id }).subscribe({
       next: (response) => {
-        var cards: { product_id:      string;
+        var cards: { product_id:      number;
                      name:            string;
                      description:     string;
                      price:           number;
@@ -97,6 +97,7 @@ export class ProductsBestSellings {
 
         if(cards.length != 0){
           const cardsFormat = cards.map(card => ({
+              prodId:         card.product_id,
               src:            "http://localhost:8080/api/product/product_" + card.product_id + "_1" + card.srcimage.substring(card.srcimage.lastIndexOf(".")),
               title:          card.name,
               price:          card.price,

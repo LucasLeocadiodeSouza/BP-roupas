@@ -24,8 +24,14 @@ export class ProductsDiscount {
   cards: {title?: string,
           extclass: string,
           src?: string,
-          miniCard: {src: string, title?: string, price?: string, currency?: string, extclass: string, href: string }[]
+          miniCard: {prodId:number, src: string, title?: string, price?: number, currency?: string, extclass: string, href: string; total_comments: string; discount: number; }[]
         }[] = [];
+
+  cardcateg: {title?: string,
+               extclass: string,
+               src?: string,
+               miniCard: {src: string, title?: string, extclass: string, href: string }[]
+             }[] = [];
 
 
   getParamsRequests(){
@@ -79,25 +85,30 @@ export class ProductsDiscount {
   LoadCardRowProducts(titlerow: string, path: string){
     this.request.executeRequestGET(`api/${path}`, { category_id: this.category_id, subcategory_id: this.subcategory_id }).subscribe({
       next: (response) => {
-        var cards: { product_id:      string;
+        var cards: { product_id:      number;
                      name:            string;
                      description:     string;
-                     price:           string;
+                     price:           number;
                      srcimage:        string;
                      category_id:     string;
-                     subcategory_seq: string }[] = [];
+                     subcategory_seq: string;
+                     total_comments:  string;
+                     discount:        number; }[] = [];
 
         cards = response;
 
         if(cards.length != 0){
           const cardsFormat = cards.map(card => ({
-              src:      "http://localhost:8080/api/product/product_" + card.product_id + "_1" + card.srcimage.substring(card.srcimage.lastIndexOf(".")),
-              title:    card.name,
-              price:    card.price,
-              fullinfo: false,
-              currency: "R$",
-              extclass: "product-class",
-              href:     `/product?id=${card.product_id}`
+              prodId:         card.product_id,
+              src:            "http://localhost:8080/api/product/product_" + card.product_id + "_1" + card.srcimage.substring(card.srcimage.lastIndexOf(".")),
+              title:          card.name,
+              price:          card.price,
+              discount:       card.discount,
+              total_comments: card.total_comments,
+              fullinfo:       false,
+              currency:       "R$",
+              extclass:       "product-class",
+              href:           `/product?id=${card.product_id}`
           }));
 
           this.cards = [...this.cards, {extclass: "m10", title: titlerow, miniCard: cardsFormat }];
@@ -128,7 +139,7 @@ export class ProductsDiscount {
               href: `/products-discount?category_id=${category.id}`
           }));
 
-          this.cards = [...this.cards, {extclass: "container-category", title: "Procurar por Categorias", miniCard: categformat }];
+          this.cardcateg = [...this.cardcateg, {extclass: "container-category", title: "Procurar por Categorias", miniCard: categformat }];
         }
 
         this.cdRef.detectChanges();
