@@ -17,13 +17,23 @@ export class MiniCard2 {
   @Input() srcImages: any;
   @Input() prodId: any;
   @Input() title: any;
-  @Input() price: any;
+  @Input() price: number = 0;
   @Input() currency: any;
   @Input() extclass: any;
   @Input() href: any;
   @Input() comments: any;
+  @Input() discount: number = 0;
 
   addedInFavoList: boolean = false;
+
+  getNetPrice(){
+    const result = this.price - this.discount;
+    return result.toFixed(2);
+  }
+
+  productHasDiscount(){
+    return this.discount != 0 && this.discount != null;
+  }
 
   createListProduct(){
     this.request.isLoggedIn().subscribe(isLogged =>{

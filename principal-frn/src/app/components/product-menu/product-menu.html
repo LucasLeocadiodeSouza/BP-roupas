@@ -1,6 +1,7 @@
 <main>
     <div class="container-list">
-        <app-product-card-row *ngFor="let card of cards" [extclass]="card.extclass" [title]="card.title" [miniCards]="card.miniCard"></app-product-card-row>
+      <app-product-card-row *ngFor="let card of cardcateg" [extclass]="card.extclass" [title]="card.title" [miniCards]="card.miniCard"></app-product-card-row>
+      <app-product-card-row-2 *ngFor="let card of cards" [extclass]="card.extclass" [title]="card.title" [miniCards]="card.miniCard"></app-product-card-row-2>
     </div>
 
     <div class="container-itens">

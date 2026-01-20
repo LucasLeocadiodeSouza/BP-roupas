@@ -4,10 +4,11 @@ import { ProductCardRow } from "../product-card-row/product-card-row";
 import { MiniCard } from "../mini-card/mini-card";
 import { RequestForm } from './../../service/request-form';
 import { ActivatedRoute } from '@angular/router';
+import { ProductCardRow2 } from "../product-card-row-2/product-card-row-2";
 
 @Component({
   selector: 'app-product-menu',
-  imports: [ProductCardRow, CommonModule, MiniCard],
+  imports: [ProductCardRow, CommonModule, MiniCard, ProductCardRow2],
   templateUrl: './product-menu.html',
   styleUrl: './product-menu.css'
 })
@@ -15,6 +16,7 @@ export class ProductMenu {
   private request = inject(RequestForm);
 
   @Input() cards:          any = [];
+  @Input() cardcateg:      any = [];
   @Input() title:          any;
   @Input() path:           string = "getProductCardForProductMenu"
 

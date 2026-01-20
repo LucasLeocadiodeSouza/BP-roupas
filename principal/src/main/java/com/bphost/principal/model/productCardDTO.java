@@ -24,6 +24,7 @@ public class productCardDTO {
     private Integer    total_comments;
     private Long       countTotal_comments;
     private Long       countTotal_sales;
+    private BigDecimal discount;
 
     public productCardDTO(Integer product_id,
                           String  name, 
@@ -56,7 +57,25 @@ public class productCardDTO {
                           String     srcimage, 
                           Integer    category_id,
                           Integer    subcategory_seq,
-                          Long       countTotal_comments) {
+                          BigDecimal discount) {
+
+        this.product_id      = product_id;
+        this.name            = name;
+        this.price           = price;
+        this.srcimage        = srcimage;
+        this.category_id     = category_id;
+        this.subcategory_seq = subcategory_seq;
+        this.discount        = discount;
+    }
+
+    public productCardDTO(Integer    product_id, 
+                          String     name, 
+                          BigDecimal price, 
+                          String     srcimage, 
+                          Integer    category_id,
+                          Integer    subcategory_seq,
+                          Long       countTotal_comments,
+                          BigDecimal discount) {
 
         this.product_id          = product_id;
         this.name                = name;
@@ -65,6 +84,7 @@ public class productCardDTO {
         this.category_id         = category_id;
         this.subcategory_seq     = subcategory_seq;
         this.countTotal_comments = countTotal_comments;
+        this.discount            = discount;
     }
 
 
@@ -90,6 +110,7 @@ public class productCardDTO {
                           String     name, 
                           String     description, 
                           BigDecimal price, 
+                          BigDecimal discount,
                           String     srcimage,
                           Boolean    active, 
                           Integer    category_id, 
@@ -100,6 +121,7 @@ public class productCardDTO {
         this.name            = name;
         this.description     = description;
         this.price           = price;
+        this.discount        = discount;
         this.srcimage        = srcimage;
         this.active          = active;
         this.category_id     = category_id;

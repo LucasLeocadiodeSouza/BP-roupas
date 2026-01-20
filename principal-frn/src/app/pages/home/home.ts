@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ProductCardRow } from "../../components/product-card-row/product-card-row";
 import { Banner } from "../../components/banner-fit/banner-fit";
 import { ProductCardRow2 } from "../../components/product-card-row-2/product-card-row-2";
+import { constrainedMemory } from 'process';
 
 @Component({
   selector: 'app-home',
@@ -21,16 +22,16 @@ export class Home {
   cards: {title?: string,
           extclass: string,
           src?: string,
-          miniCard: {src: string, prodId: string, title?: string, price?: string, currency?: string, extclass: string, href: string; total_comments: string; }[]
+          miniCard: {src: string, prodId: string, title?: string, price?: number, currency?: string, extclass: string, href: string; total_comments: string; discount: number; }[]
         }[] = [];
 
   cardscateg: {title?: string,
                 extclass: string,
                 src?: string,
-                miniCard: {src: string, title?: string, price?: string, currency?: string, extclass: string, href: string }[]
+                miniCard: {src: string, title?: string, price?: number, currency?: string, extclass: string, href: string }[]
               }[] = [];
 
-  highlightCards: { title: string, src: string, miniCard: {src: string, title: string, price: string, currency: string, extclass: string, href: string }[] }[] = [];
+  highlightCards: { title: string, src: string, miniCard: {src: string, title: string, price: number, currency: string, extclass: string, href: string; discount: number; }[] }[] = [];
 
   banners = [
     { src: "assets/banners/Novo site de vendas.png",
@@ -55,10 +56,11 @@ export class Home {
         var cards: { product_id:      string;
                      name:            string;
                      description:     string;
-                     price:           string;
+                     price:           number;
                      srcimage:        string;
                      category_id:     string;
-                     subcategory_seq: string }[] = [];
+                     subcategory_seq: string;
+                     discount:        number; }[] = [];
 
         cards = response;
 
@@ -67,6 +69,7 @@ export class Home {
               src:      "http://localhost:8080/api/product/product_" + card.product_id + "_1" + card.srcimage.substring(card.srcimage.lastIndexOf(".")),
               title:    card.name,
               price:    card.price,
+              discount: card.discount,
               currency: "R$",
               extclass: "product-list-minicard-height",
               href:     `/product?id=${card.product_id}`
@@ -91,11 +94,12 @@ export class Home {
         var cards: { product_id:      string;
                      name:            string;
                      description:     string;
-                     price:           string;
+                     price:           number;
                      srcimage:        string;
                      total_comments:  string;
                      category_id:     string;
-                     subcategory_seq: string }[] = [];
+                     subcategory_seq: string;
+                     discount:        number; }[] = [];
 
         cards = response;
 
@@ -105,11 +109,14 @@ export class Home {
               src:            "http://localhost:8080/api/product/product_" + card.product_id + "_1" + card.srcimage.substring(card.srcimage.lastIndexOf(".")),
               title:          card.name,
               price:          card.price,
+              discount:       card.discount,
               total_comments: card.total_comments,
               currency:       "R$",
               extclass:       "product-class",
               href:           `/product?id=${card.product_id}`
           }));
+
+          console.log(cardsFormat)
 
           this.cards = [...this.cards, {extclass: "m10", title: titlerow, miniCard: cardsFormat }];
         }

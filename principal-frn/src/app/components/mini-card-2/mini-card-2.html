@@ -5,8 +5,16 @@
     </a>
 
     <div class="card-body">
+      <span class="discount" [class.dnone]="!productHasDiscount()">{{ currency }} {{ price }}</span>
+
       <div class="clearfix mb-3 spacebetween mi-15">
-        <span class="float-start badge rounded-pill bg-success">{{ currency }} {{ price }}</span>
+        <span class="float-start badge rounded-pill bg-success prelative">
+          {{ currency }} {{ getNetPrice() }}
+
+          <div class="effect-discount" [class.dnone]="!productHasDiscount()">
+            <i class="loader loader--9"></i>
+          </div>
+        </span>
 
         <span class="float-end">
           <a [href]="href" class="small text-muted text-uppercase aff-link ff-heebo">{{ comments }} Avaliações</a>

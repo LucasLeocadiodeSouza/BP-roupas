@@ -26,7 +26,8 @@ public class productCardDTORepo {
                        "prod.price, " +
                        "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
                        "subcat.id.category_id, " +
-                       "subcat.id.subcategory_seq) " +
+                       "subcat.id.subcategory_seq, " +
+                       "prod.discount) " +
                        "FROM product prod " +
                        "JOIN subcat_product subcat ON prod.id = subcat.id.product_id ";
 
@@ -65,7 +66,8 @@ public class productCardDTORepo {
                        "prod.price, " +
                        "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
                        "subcat.id.category_id, " +
-                       "subcat.id.subcategory_seq) " +
+                       "subcat.id.subcategory_seq, " +
+                       "prod.discount) " +
                        "FROM product prod " +
                        "JOIN subcat_product subcat ON prod.id = subcat.id.product_id ";
 
@@ -112,6 +114,7 @@ public class productCardDTORepo {
                        "prod.name, " +
                        "prod.description, " +
                        "prod.price, " +
+                       "prod.discount, " +
                        "img.src, " +
                        "prod.active, " +
                        "subcat.id.category_id, " +
@@ -144,7 +147,8 @@ public class productCardDTORepo {
                        "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
                        "subcat.id.category_id, " +
                        "subcat.id.subcategory_seq, " +
-                       "COUNT(comments)) " + 
+                       "COUNT(comments), " + 
+                       "prod.discount) " +
                        "FROM product prod " +
                        "JOIN subcat_product subcat ON prod.id = subcat.id.product_id " +
                        "JOIN comments_prod comments ON prod.id = comments.id.product_id ";
@@ -185,7 +189,8 @@ public class productCardDTORepo {
                        "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
                        "subcat.id.category_id, " +
                        "subcat.id.subcategory_seq, " +
-                       "COUNT(purchases)) " + 
+                       "COUNT(purchases), " + 
+                       "prod.discount) " +
                        "FROM product prod " +
                        "JOIN subcat_product subcat ON prod.id = subcat.id.product_id " +
                        "JOIN userPurchases purchases ON prod.id = purchases.id.product_id ";
@@ -225,7 +230,8 @@ public class productCardDTORepo {
                        "prod.price, " +
                        "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
                        "subcat.id.category_id, " +
-                       "subcat.id.subcategory_seq) " +
+                       "subcat.id.subcategory_seq, " +
+                       "prod.discount) " +
                        "FROM product prod " +
                        "JOIN subcat_product subcat ON prod.id = subcat.id.product_id " + 
                        "WHERE prod.price <= " + price;
@@ -257,21 +263,15 @@ public class productCardDTORepo {
                        "prod.price, " +
                        "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
                        "subcat.id.category_id, " +
-                       "subcat.id.subcategory_seq) " +
+                       "subcat.id.subcategory_seq, " +
+                       "prod.discount) " + 
                        "FROM product prod " +
-                       "JOIN subcat_product subcat ON prod.id = subcat.id.product_id ";
+                       "JOIN subcat_product subcat ON prod.id = subcat.id.product_id " + 
+                       "WHERE prod.discount > 0";
 
-        boolean hasand = false;
+        if(category_id != null && category_id != 0) query += " AND  subcat.id.category_id = :category_id";
 
-        if(category_id != null && category_id != 0){
-            query += (hasand?" AND ":" WHERE ") + " subcat.id.category_id = :category_id";
-            hasand = true;
-        }
-
-        if(subcategory_id != null && subcategory_id != 0){
-            query += (hasand?" AND ":" WHERE ") + " subcat.id.subcategory_seq = :subcategory_id";
-            hasand = true;
-        }
+        if(subcategory_id != null && subcategory_id != 0) query += " AND subcat.id.subcategory_seq = :subcategory_id";
 
         query += " ORDER BY prod.price ASC";
 
@@ -296,7 +296,8 @@ public class productCardDTORepo {
                        "prod.price, " +
                        "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
                        "subcat.id.category_id, " +
-                       "subcat.id.subcategory_seq) " +
+                       "subcat.id.subcategory_seq, " +
+                       "prod.discount) " + 
                        "FROM product prod " +
                        "JOIN subcat_product subcat ON prod.id = subcat.id.product_id " +
                        "ORDER BY prod.id DESC";
@@ -317,7 +318,8 @@ public class productCardDTORepo {
                        "prod.price, " +
                        "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
                        "subcat.id.category_id, " +
-                       "subcat.id.subcategory_seq) " +
+                       "subcat.id.subcategory_seq, " +
+                       "prod.discount) " + 
                        "FROM product prod " +
                        "JOIN subcat_product subcat ON prod.id = subcat.id.product_id ";
                        
@@ -337,7 +339,8 @@ public class productCardDTORepo {
                        "prod.price, " +
                        "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
                        "subcat.id.category_id, " +
-                       "subcat.id.subcategory_seq) " +
+                       "subcat.id.subcategory_seq, " +
+                       "prod.discount) " + 
                        "FROM product prod " +
                        "JOIN subcat_product subcat ON prod.id = subcat.id.product_id ";
                        
@@ -357,7 +360,8 @@ public class productCardDTORepo {
                        "prod.price, " +
                        "(SELECT img.src FROM product_img img WHERE img.id.product_id = prod.id ORDER BY img.id.seq ASC LIMIT 1), " +
                        "subcat.id.category_id, " +
-                       "subcat.id.subcategory_seq) " +
+                       "subcat.id.subcategory_seq, " +
+                       "prod.discount) " +
                        "FROM product prod " +
                        "JOIN subcat_product subcat ON prod.id = subcat.id.product_id " +
                        "WHERE LOWER(prod.name) LIKE LOWER(:searchText) " +

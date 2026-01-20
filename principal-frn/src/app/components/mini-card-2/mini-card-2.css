@@ -9,6 +9,8 @@
 .ff-firaSans {font-family: 'Fira Sans Extra Condensed', sans-serif;}
 .ff-roboto {font-family: 'Roboto', sans-serif;}
 
+.dnone {display: none !important;}
+
 .card {
   background: #ffffff;
   background: -webkit-linear-gradient(0deg, #ffffff 0%, var() 100%);
@@ -47,6 +49,7 @@
 .card-body {
     flex: 1 1 auto;
     padding: 1rem 1rem;
+    position: relative;
 }
 
 .rounded-pill {
@@ -217,7 +220,7 @@
 }
 
 .float-start {
-    float: left !important;
+  float: left !important;
 }
 
 .float-end {
@@ -251,4 +254,101 @@
 }
 .fa-chevron-circle-right:before {
     color: darkgray;
+}
+
+
+.discount {
+  color: #313131;
+  position: absolute;
+  top: -3%;
+  opacity: 0.6;
+  transform: rotate(339deg);
+  display: flex;
+  flex-direction: column;
+}
+
+.discount::after {
+  content: "";
+  width: 100%;
+  height: 2px;
+  background: #ffcc00;
+  border-radius: 2px;
+  margin: 0 auto;
+  transform: translateY(-10px);
+}
+
+.effect-discount {position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);}
+
+.loader {
+	display: block;
+	position: relative;
+	color: #ffcc00;
+}
+
+.loader::before,
+.loader::after {
+	content: '';
+	position: absolute;
+}
+
+.loader--9 {
+	aspect-ratio: 1 / 1;
+	border-radius: 50%;
+	background-color: currentColor;
+	box-shadow: 0 0 calc(10vmin / 6) rgba(255, 255, 255, 0.3);
+	animation: loader-9 calc(0.6s * 6) linear infinite;
+}
+
+.loader--9::before,
+.loader--9::after {
+	width: 5px;
+	aspect-ratio: 1 / 1;
+	background: currentColor;
+	border-radius: 50%;
+	animation: loader-9-1 0.6s cubic-bezier(0.27, 0.08, 0.26, 0.7) infinite;
+}
+
+.loader--9::before {
+	--x-dist: 0;
+	--y-dist: calc(calc(10vmin / 6) / 2);
+	bottom: calc(100% + calc(10vmin / 6));
+	left: calc(50% - calc(5px / 2));
+	transform-origin: center calc(10vmin / 6);
+}
+
+.loader--9::after {
+	--x-dist: calc(calc(10vmin / 6) / 2);
+	--y-dist: 0;
+	top: calc(50% - calc(5px / 2));
+	right: calc(100% + calc(10vmin / 6));
+	transform-origin: calc(10vmin / 6) center;
+	animation-delay: calc(0.6s / 2 * -1);
+}
+
+@keyframes loader-9 {
+	100% {
+		transform: rotate(1turn);
+	}
+}
+
+@keyframes loader-9-1 {
+	0%, 100% {
+		opacity: 0;
+	}
+
+  66% {
+		opacity: 0.5;
+	}
+
+	33% {
+		opacity: 0.7;
+	}
+
+	0% {
+		transform: scale(1.1);
+	}
+
+	88% {
+		transform: rotate(180deg) translate(var(--x-dist), var(--y-dist));
+	}
 }

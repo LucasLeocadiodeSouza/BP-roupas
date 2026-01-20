@@ -21,11 +21,16 @@ export class ProductsList {
   category_id:    number = 0;
   subcategory_id: number = 0;
 
+  cardcateg: {title?: string,
+               extclass: string,
+               src?: string,
+               miniCard: {src: string, title?: string, extclass: string, href: string; }[]
+             }[] = [];
 
   cards: {title?: string,
           extclass: string,
           src?: string,
-          miniCard: {src: string, title?: string, price?: string, currency?: string, extclass: string, href: string }[]
+          miniCard: {src: string, title?: string, price?: number, currency?: string, extclass: string, href: string; total_comments: string; discount: number; }[]
         }[] = [];
 
 
@@ -70,14 +75,11 @@ export class ProductsList {
               src: "http://localhost:8080/api/subcategoryImg/" + subcategory.subcategory_img,
               extclass: "subcategory-class",
               href: `/products-list?category_id=${subcategory.category_id}&subcategory_id=${subcategory.subcategory_seq}`,
-              title: "",
-              price: "",
-              currency: ""
           }));
 
-          this.cards = [...this.cards, {extclass: "container-subcategory", title:"", src: "", miniCard: subcategformat }];
+          this.cardcateg = [...this.cardcateg, {extclass: "container-subcategory", title:"", src: "", miniCard: subcategformat }];
 
-          this.LoadCardRowProducts("Em oferta!", "getBestRatedDeals");
+          this.LoadCardRowProducts("Em oferta!", "getProductsWithDiscountForProdRow");
 
           this.cdRef.detectChanges();
         },
@@ -85,7 +87,7 @@ export class ProductsList {
           console.error('Erro:', error);
         }
       });
-    }else this.LoadCardRowProducts("Em oferta!", "getBestRatedDeals");
+    }else this.LoadCardRowProducts("Em oferta!", "getProductsWithDiscountForProdRow");
   }
 
   LoadCardRowProducts(titlerow: string, path: string){
@@ -94,22 +96,26 @@ export class ProductsList {
         var cards: { product_id:      string;
                      name:            string;
                      description:     string;
-                     price:           string;
+                     price:           number;
                      srcimage:        string;
                      category_id:     string;
-                     subcategory_seq: string }[] = [];
+                     subcategory_seq: string;
+                     total_comments:  string;
+                     discount:        number; }[] = [];
 
         cards = response;
 
         if(cards.length != 0){
           const cardsFormat = cards.map(card => ({
-              src:      "http://localhost:8080/api/product/product_" + card.product_id + "_1" + card.srcimage.substring(card.srcimage.lastIndexOf(".")),
-              title:    card.name,
-              price:    card.price,
-              fullinfo: false,
-              currency: "R$",
-              extclass: "product-class",
-              href:     `/product?id=${card.product_id}`
+              src:            "http://localhost:8080/api/product/product_" + card.product_id + "_1" + card.srcimage.substring(card.srcimage.lastIndexOf(".")),
+              title:          card.name,
+              price:          card.price,
+              discount:       card.discount,
+              total_comments: card.total_comments,
+              fullinfo:       false,
+              currency:       "R$",
+              extclass:       "product-class",
+              href:           `/product?id=${card.product_id}`
           }));
 
           this.cards = [...this.cards, {extclass: "m10", title: titlerow, miniCard: cardsFormat }];
