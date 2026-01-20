@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, HostBinding, inject, ViewChild, ViewContainerRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MiniCard } from "../../components/mini-card/mini-card";
 import { ActivatedRoute } from '@angular/router';
@@ -25,7 +25,7 @@ export class Product {
 
   category:    {id: number, name: string} = {id: 0, name: ""};
   subcategory: {id: number, name: string} = {id: 0, name: ""};
-  product:     {id: number, name: string, description: string, price: string, active: boolean, score: number, total_comments: number} = {id: 0, name: "", description: "", price: "", active: true, score: 0, total_comments: 0};
+  product:     {id: number, name: string, description: string, price: number, discount: number, active: boolean, score: number, total_comments: number; storage: number} = {id: 0, name: "", description: "", price: 0, discount: 0, active: true, score: 0, total_comments: 0, storage: 0};
   quantity:    number = 1;
 
   textColorErro: boolean = false;
@@ -64,12 +64,94 @@ export class Product {
           seqList: number
         }[] = [];
 
+
+  // Quantity effect
+  paddingValue:        number = 17;
+  widthGlitch:         number = 0;
+  speedGlitch:         number = 0;
+  speedGlitchHover:    number = 0;
+  backgroundAddButton: string = "var(--color-primary, #292617)";
+
+  @HostBinding('style.--speed-glitch-hover')
+  get speedGlitchHoverCss(): string {
+    return `${this.speedGlitchHover}s`;
+  }
+
+  @HostBinding('style.--glitch-width')
+  get windthGlitchCss(): string {
+    return `${this.widthGlitch}px`;
+  }
+
+  @HostBinding('style.--speed-glitch')
+  get speedGlitchCss(): string {
+    return `${this.speedGlitch}s`;
+  }
+
+  @HostBinding('style.--background-add-button')
+  get glitchBackgroundCss(): string {
+    return `${this.backgroundAddButton}`;
+  }
+
+  @HostBinding('style.--padding-add-button')
+  get paddingCss(): string {
+    return `${this.paddingValue}px`;
+  }
+
   changeOpenMoreOptions(){
     this.openMoreOptions = !this.openMoreOptions;
   }
 
-  changeQuantity(event: any) {
-    this.quantity = event.target.value;
+  oneMoreQuantity(plus: boolean) {
+    if (plus) {
+      if (this.quantity + 1 > this.product.storage) return;
+      this.quantity++;
+    } else {
+      if (this.quantity <= 1) return;
+      this.quantity--;
+    }
+
+    const MIN_PADDING = 17; // px
+    const MAX_PADDING = 22; // px
+
+    const progress = this.quantity / this.product.storage;
+    const easedProgress = Math.pow(progress, 1.8);
+
+    this.setEffectAddButton(progress);
+
+    this.paddingValue =
+      MIN_PADDING + (MAX_PADDING - MIN_PADDING) * easedProgress;
+  }
+
+  setEffectAddButton(progress: number){
+    if(progress == 1) {
+      this.backgroundAddButton = "#d10000";
+      this.speedGlitch         = 1.4;
+      this.widthGlitch         = 2;
+      this.speedGlitchHover    = 1;
+    }else if(progress > 0.9) {
+      this.backgroundAddButton = "#a50000";
+      this.speedGlitch         = 1.3;
+      this.widthGlitch         = 2;
+      this.speedGlitchHover    = 1;
+    }else if(progress > 0.7) {
+      this.backgroundAddButton = "#6f0000";
+      this.speedGlitch         = 2;
+      this.widthGlitch         = 1;
+    }else {
+      this.backgroundAddButton = "var(--color-primary, #292617)";
+      this.speedGlitch         = 0;
+      this.widthGlitch         = 0;
+      this.speedGlitchHover    = 0;
+    }
+  }
+
+  getNetPrice(){
+    const result = this.product.price - this.product.discount;
+    return result.toFixed(2);
+  }
+
+  productHasDiscount(){
+    return this.product.discount != 0 && this.product.discount != null;
   }
 
   selectEspecificationSize(event: any) {
@@ -123,13 +205,15 @@ export class Product {
         var prod: { product_id:      number;
                     name:            string;
                     description:     string;
-                    price:           string;
+                    price:           number;
+                    discount:        number;
                     srcimage:        string;
                     active:          boolean;
                     category_id:     number;
                     subcategory_seq: number;
                     avarage_rating:  number;
                     total_comments:  number;
+                    storage:         number;
                    }[] = [];
 
         prod = response;
@@ -140,9 +224,11 @@ export class Product {
                             name:           prod[0].name,
                             description:    prod[0].description,
                             price:          prod[0].price,
+                            discount:       prod[0].discount,
                             active:         prod[0].active,
                             score:          Math.floor(prod[0].avarage_rating),
-                            total_comments: prod[0].total_comments
+                            total_comments: prod[0].total_comments,
+                            storage:        10
                           };
 
         this.category.id    = prod[0].category_id;

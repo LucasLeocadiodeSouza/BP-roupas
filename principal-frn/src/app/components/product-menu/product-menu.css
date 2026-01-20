@@ -1,7 +1,7 @@
 .container-list {display: flex; flex-direction: column;}
 
 .container-itens {padding: 30px 10px; gap: 23px; display: flex; flex-direction: column;}
-.container-itenslist {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 10px;}
+.container-itenslist {display: flex; flex-wrap: wrap; gap: 10px;}
 
 .description span{font-family: "Inter", sans-serif; font-size: 20px;}
 .description .title {font-weight: 700;}

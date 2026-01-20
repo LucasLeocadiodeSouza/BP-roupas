@@ -155,8 +155,8 @@
 }
 
 .btn-warning {
-    background: #ffcc00;
-    color: var(--btnfontcolor);
+    background: var(--color-primary, #292617);
+    color: #FFF;
     fill: #FFF;
     border: none;
     text-decoration: none;
@@ -165,20 +165,20 @@
     border-radius: 100px;
 }
 .btn-warning:hover {
-    background: #ffc116;
+    background: var(--color-primary, #292617);
     color: #FFF;
     /* box-shadow: -1px 6px 13px rgba(255, 150, 43, 0.35); */
 }
 .btn-check:focus + .btn-warning, .btn-warning:focus {
-    background: #ffc116;
+    background: var(--color-primary, #292617);
     color: #FFF;
     /* box-shadow: -1px 6px 13px rgba(255, 150, 43, 0.35); */
 }
 .btn-warning:active:focus {
-    box-shadow: 0 0 0 0.25rem rgb(241, 195, 46);
+    box-shadow: 0 0 0 0.25rem var(--color-primary, #292617);
 }
 .btn-warning:active {
-    background: #ffc116;
+    background: var(--color-primary, #292617);
     color: #FFF;
     /* box-shadow: -1px 6px 13px rgba(255, 150, 43, 0.35); */
 }
@@ -191,7 +191,7 @@
 
 .bg-success {
     font-size: 1rem;
-    background-color: var(--color-primary) !important;
+    background-color: var(--color-primary, #292617) !important;
     color: var(--color-label-inv, #eaeaea)!important;
 }
 .bg-danger {

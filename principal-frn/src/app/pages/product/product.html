@@ -34,108 +34,129 @@
             </div>
 
             <div class="product">
-                <div class="title">
-                    <label>{{product.name}}</label>
+              <div class="title">
+                  <label>{{product.name}}</label>
+              </div>
+
+
+
+              <div class="score">
+                <div class="desc-sales">
+                    <label>{{ sales }} Vendidos</label>
                 </div>
 
-                <div class="score">
-                    <div class="desc-sales">
-                        <label>{{ sales }} Vendidos</label>
-                    </div>
-
-                    <div class="row prelative">
-                        <div class="stars-rating" (click)="rollForTheComments()">
-                            <app-star-rating [enable]="false" [starHeight]="'13px'" [rating]="product.score" [name]="'product-rating'"></app-star-rating>
-                        </div>
-                        <div class="desc-score">
-                            <span>{{ product.score }} </span>
-                            <span> &#40;{{ product.total_comments }}&#41;</span>
-                        </div>
-
-                        <div class="more-option-button" (click)="changeOpenMoreOptions()" [ngClass]="{'more-option-color-active': openMoreOptions}">
-                          <img src="assets/images/more-options.png" alt="loading..." width="15px" height="22px" title="Mais Opções">
-                        </div>
-
-                        <div [ngClass]="{'hiddenContainerOption': !openMoreOptions, 'showContainerOption': openMoreOptions}" class="container-more-option">
-                          <ol>
-                            <li class="link" (click)="openContainerLists()">Adicionar item a lista</li>
-                          </ol>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="description">
-                    <label>{{product.description}}</label>
-                </div>
-
-                <div class="quantity">
-                    <label>Quantidade: </label>
-
-                    <input type="number" id="inpquant" name="inpquant" value="1" [disabled]="!product.active" (input)="changeQuantity($event)">
-                </div>
-
-                <div class="row">
-                    <label>Preço: </label>
-
-                    <div class="container-price">
-                        <div class="currency"> {{ currency }}</div>
-                        <div class="price">{{ product.price }}</div>
-                    </div>
-                </div>
-
-                <div class="disprow jc-center">
-                    <div class="divisior"></div>
-                </div>
-
-                <div class="especifications">
-                    <div class="title">
-                        <label>Especificações (*):</label>
-                    </div>
-
-                    <div id="tamroupa" class="especification">
-                        <label>Tamanho:</label>
-
-                        <div class="control-buttons" [ngClass]="{'inactive': !product.active}">
-                            <div class="control-button" (click)="selectEspecificationSize($event)" *ngFor="let size of specificationSize;" [id]="size.id">
-                                <span>{{ size.size }}</span>
-                            </div>
-                        </div>
-
-                        <div class="alert" [ngClass]="{'alert-active': textSizeErro}">
-                            <span>(*) É preciso informar o tamanho para concluir a compra</span>
-                        </div>
-                    </div>
-
-                    <div id="corroupa" class="especification">
-                        <label>Cor:</label>
-
-                        <div class="control-buttons" [ngClass]="{'inactive': !product.active}" #buttcolor>
-                            <div class="control-button" (click)="selectEspecificationColor($event)" *ngFor="let color of specificationColor;" [id]="color.id" [class]="color.extclass">
-                                <span>{{ color.color }}</span>
-                            </div>
-                        </div>
-
-                        <div class="alert" [ngClass]="{'alert-active': textColorErro}">
-                            <span>(*) É preciso informar uma Cor para concluir a compra</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="finish-buttons">
-                  <div class="control-button buy-now" [ngClass]="{'inactive': !product.active}" (click)="buyNow()">
-                      <span>Comprar agora</span>
+                <div class="row prelative">
+                  <div class="stars-rating" (click)="rollForTheComments()">
+                      <app-star-rating [enable]="false" [starHeight]="'13px'" [rating]="product.score" [name]="'product-rating'"></app-star-rating>
+                  </div>
+                  <div class="desc-score">
+                      <span>{{ product.score }} </span>
+                      <span> &#40;{{ product.total_comments }}&#41;</span>
                   </div>
 
-                  <div class="control-button" [ngClass]="{'inactive': !product.active}" (click)="addToCart()">
-                      <span>Adicionar ao Carrinho</span>
+                  <div class="more-option-button" (click)="changeOpenMoreOptions()" [ngClass]="{'more-option-color-active': openMoreOptions}">
+                    <img src="assets/images/more-options.png" alt="loading..." width="15px" height="22px" title="Mais Opções">
                   </div>
 
-                  <!-- <div class="container-list">
-                    <div class="container-resume">
-                      <img src="assets/images/include-in-list-icon.png" alt="loading...">
+                  <div [ngClass]="{'hiddenContainerOption': !openMoreOptions, 'showContainerOption': openMoreOptions}" class="container-more-option">
+                    <ol>
+                      <li class="link" (click)="openContainerLists()">Adicionar item a lista</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+
+              <div class="description">
+                  <label>{{product.description}}</label>
+              </div>
+
+              <div class="quantity">
+                <div id="container-toDecrease" (click)="oneMoreQuantity(false)">
+                  <span id="toDecrease"></span>
+                </div>
+
+                <div class="quantity-desc">
+                  <label>{{ quantity }}</label>
+                </div>
+
+                <div id="container-add" class="glitch" (click)="oneMoreQuantity(true)">
+                  <span id="add"></span>
+                </div>
+              </div>
+
+              <div class="row">
+                  <label>Preço: </label>
+
+                  <div class="container-price prelative">
+                      <div class="currency"> {{ currency }}</div>
+                      <div class="price">{{ getNetPrice() }}</div>
+
+                      <div id="effect-discount-1" [class.dnone]="!productHasDiscount()">
+                        <i class="loader loader--1"></i>
+                      </div>
+                  </div>
+
+                  <div class="container-price">
+                    <div class="price discount" [class.dnone]="!productHasDiscount()">
+                      {{ currency }} {{ product.price }}
                     </div>
-                    <div class="container-complete">Adicionar item na Lista</div>
-                  </div> -->
+                  </div>
+              </div>
+
+              <div class="disprow jc-center">
+                  <div class="divisior"></div>
+              </div>
+
+              <div class="especifications">
+                  <div class="title-espec">
+                      <label>Especificações (*):</label>
+                  </div>
+
+                  <div id="tamroupa" class="especification">
+                      <label>Tamanho:</label>
+
+                      <div class="control-buttons" [ngClass]="{'inactive': !product.active}">
+                          <div class="control-button" (click)="selectEspecificationSize($event)" *ngFor="let size of specificationSize;" [id]="size.id">
+                              <span>{{ size.size }}</span>
+                          </div>
+                      </div>
+
+                      <div class="alert" [ngClass]="{'alert-active': textSizeErro}">
+                          <span>(*) É preciso informar o tamanho para concluir a compra</span>
+                      </div>
+                  </div>
+
+                  <div id="corroupa" class="especification">
+                      <label>Cor:</label>
+
+                      <div class="control-buttons" [ngClass]="{'inactive': !product.active}" #buttcolor>
+                          <div class="control-button" (click)="selectEspecificationColor($event)" *ngFor="let color of specificationColor;" [id]="color.id" [class]="color.extclass">
+                              <span>{{ color.color }}</span>
+                          </div>
+                      </div>
+
+                      <div class="alert" [ngClass]="{'alert-active': textColorErro}">
+                          <span>(*) É preciso informar uma Cor para concluir a compra</span>
+                      </div>
+                  </div>
+              </div>
+
+                <div>
+                  <div class="finish-buttons-reto float-right">
+                    <div class="liquid control-button-reto bl-0" [ngClass]="{'inactive': !product.active}" (click)="buyNow()">
+                        <span>Comprar agora</span>
+                    </div>
+
+                    <div class="liquid control-button-reto br-0" [ngClass]="{'inactive': !product.active}" (click)="addToCart()">
+                        <span>Adicionar ao Carrinho</span>
+                    </div>
+                  </div>
+
+                  <div class="row-reverse ai-c">
+                    <div id="b-add-list" class="control-button-reto br-0 bl-0" title="Adicione o produto a uma de suas Listas!" (click)="openContainerLists()">
+                      <img [src]="addedInTheList?'assets/images/like-h-full.png':'assets/images/like-h.png' " alt="AddInList..." width="21px" height="21px">
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>
@@ -186,7 +207,7 @@
             <div class="icon-ok">
               <img src="assets/images/icon ok purchases.png">
             </div>
-            <div class="title">
+            <div class="title-list">
               <label>Item adicionado com sucesso a sua Lista!</label>
             </div>
           </div>
@@ -198,7 +219,7 @@
         </div>
       </div>
 
-      <div class="title">
+      <div class="title-list">
         <label>Selecione a lista que você deseja adicionar o produto</label>
       </div>
       <div class="itenslist">
@@ -206,7 +227,7 @@
         <div class="item" (click)="openContainerCreateLists()">
           <div class="container-item">
             <div class="about-item">
-              <div class="title">Criar Lista</div>
+              <div class="title-list">Criar Lista</div>
             </div>
             <div class="view-item">
                 <img src="assets/images/plus-icon.png" width="70" height="70">
@@ -217,7 +238,7 @@
         <div *ngFor="let item of itens; let i = index" class="item" (click)="createListProduct(item.seqList)">
           <div class="container-item">
             <div class="about-item">
-              <div class="title">
+              <div class="title-list">
                   {{ item.title }}
               </div>
             </div>
@@ -235,7 +256,7 @@
           <img src="assets/images/close-icon.png" alt="loading..." width="15px" height="15px">
         </div>
       </div>
-      <div class="title">
+      <div class="title-list">
         <label>Digite um nome para a sua nova lista</label>
       </div>
       <div class="container-input">
