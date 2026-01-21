@@ -170,6 +170,11 @@ public class genController {
         return categservice.getSpecificationSize(category_id);
     }
 
+    @GetMapping("/adapterGetSpecificationSize")
+    public List<specificationDTO> adapterGetSpecificationSize(@RequestParam(value = "category_id", required = false) Integer category_id, @RequestParam(value = "product_id", required = false) Integer product_id){
+        return categservice.adapterGetSpecificationSize(category_id, product_id);
+    }
+
     @GetMapping("/getProductInformation")
     public List<productCardDTO> getProductInformation(@RequestParam(value = "id", required = true) Integer product_id){
         return prodService.getProductInformation(product_id);

@@ -11,6 +11,9 @@ public interface specification_prodRepo extends JpaRepository<specification_prod
     @Query("SELECT spec FROM specification_prod spec WHERE spec.id.product_id = :product_id")
     List<specification_prod> findAllByProductId(@Param("product_id") Integer product_id);
 
+    @Query("SELECT spec FROM specification_prod spec WHERE spec.id.product_id = :product_id AND spec.id.size_id = :size_id")
+    List<specification_prod> findAllByProductIdAndSize(@Param("product_id") Integer product_id, @Param("size_id") Integer size_id);
+
     @Query("SELECT spec FROM specification_prod spec WHERE spec.id.product_id = :product_id AND spec.id.size_id = :size_id AND spec.id.color_id = :color_id")
     specification_prod findSpecProdById(Integer product_id, Integer size_id, Integer color_id);
 }

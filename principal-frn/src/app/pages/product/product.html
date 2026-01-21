@@ -70,8 +70,12 @@
                   <label>{{product.description}}</label>
               </div>
 
+              <div class="alert alert-active" [ngClass]="{'dnone': !getEnableModifyQuantity()}">
+                  <span>Selecione as especificações do produto para alterar a quantidade</span>
+              </div>
+
               <div class="quantity">
-                <div id="container-toDecrease" (click)="oneMoreQuantity(false)">
+                <div id="container-toDecrease" (click)="oneMoreQuantity(false)" [ngClass]="{'inactive-button': getEnableModifyQuantity()}">
                   <span id="toDecrease"></span>
                 </div>
 
@@ -79,7 +83,7 @@
                   <label>{{ quantity }}</label>
                 </div>
 
-                <div id="container-add" class="glitch" (click)="oneMoreQuantity(true)">
+                <div id="container-add" class="glitch" (click)="oneMoreQuantity(true)" [ngClass]="{'inactive-button': getEnableModifyQuantity()}">
                   <span id="add"></span>
                 </div>
               </div>
@@ -116,7 +120,7 @@
                       <label>Tamanho:</label>
 
                       <div class="control-buttons" [ngClass]="{'inactive': !product.active}">
-                          <div class="control-button" (click)="selectEspecificationSize($event)" *ngFor="let size of specificationSize;" [id]="size.id">
+                          <div class="control-button" *ngFor="let size of specificationSize" (click)="selectEspecificationSize(size.id)" [ngClass]="{ 'selected': specificationSizeSelected === size.id }">
                               <span>{{ size.size }}</span>
                           </div>
                       </div>
@@ -130,7 +134,7 @@
                       <label>Cor:</label>
 
                       <div class="control-buttons" [ngClass]="{'inactive': !product.active}" #buttcolor>
-                          <div class="control-button" (click)="selectEspecificationColor($event)" *ngFor="let color of specificationColor;" [id]="color.id" [class]="color.extclass">
+                          <div class="control-button" *ngFor="let color of specificationColor" (click)="selectEspecificationColor(color.id)" [ngClass]="{ 'selected': specificationColorSelected === color.id, 'inactive': !isColorActive(color.id) }">
                               <span>{{ color.color }}</span>
                           </div>
                       </div>

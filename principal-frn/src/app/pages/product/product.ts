@@ -20,7 +20,6 @@ export class Product {
 
   constructor(private cdRef: ChangeDetectorRef, private route: ActivatedRoute, private cartForm: CartForm) {}
 
-  @ViewChild('buttcolor', { read: ViewContainerRef }) buttcolor!: ViewContainerRef;
   @ViewChild('divcomments', { read: ViewContainerRef }) divcomments!: ViewContainerRef;
 
   category:    {id: number, name: string} = {id: 0, name: ""};
@@ -34,11 +33,11 @@ export class Product {
   currency: string    = "";
   sales:    string    = "";
 
-  specificationSize:  { id: number; size: string}[] = [];
+  specificationSize:  { id: number; size: string; colorActives: {color_id: number; storage: number }[] }[] = [];
   specificationColor: { id: number; color: string; extclass: string}[] = [];
 
-  specificationSizeSelected: string  = "";
-  specificationColorSelected: string = "";
+  specificationSizeSelected: number  = 0;
+  specificationColorSelected: number = 0;
 
   productCardList: { src:      string;
                      title:    string;
@@ -101,7 +100,13 @@ export class Product {
     this.openMoreOptions = !this.openMoreOptions;
   }
 
+  getEnableModifyQuantity(){
+    return (this.specificationSizeSelected == 0 || this.specificationColorSelected == 0)
+  }
+
   oneMoreQuantity(plus: boolean) {
+    if(this.getEnableModifyQuantity()) return;
+
     if (plus) {
       if (this.quantity + 1 > this.product.storage) return;
       this.quantity++;
@@ -145,6 +150,14 @@ export class Product {
     }
   }
 
+  resetEffectAddButton(){
+    this.backgroundAddButton = "var(--color-primary, #292617)";
+    this.speedGlitch         = 0;
+    this.widthGlitch         = 0;
+    this.speedGlitchHover    = 0;
+    this.paddingValue        = 17;
+  }
+
   getNetPrice(){
     const result = this.product.price - this.product.discount;
     return result.toFixed(2);
@@ -154,40 +167,37 @@ export class Product {
     return this.product.discount != 0 && this.product.discount != null;
   }
 
-  selectEspecificationSize(event: any) {
+  selectEspecificationSize(sizeId: number) {
     if(!this.product.active) return;
 
-    const element = event.target.closest('.control-button');
-
-    const selects = element.parentNode.querySelectorAll('.selected');
-    selects.forEach((sel: any) => {
-      sel.classList.remove("selected");
-    });
-
-    element.classList.add("selected");
-    this.specificationSizeSelected  = element.id;
-    this.specificationColorSelected = "";
+    this.specificationSizeSelected  = sizeId;
+    this.specificationColorSelected = 0;
     this.textSizeErro               = false;
+    this.quantity                   = 1;
 
-    this.getSpecificationColorByProduct();
+    this.resetEffectAddButton();
   }
 
-  selectEspecificationColor(event: any) {
+  selectEspecificationColor(colorId: number) {
     if(!this.product.active) return;
+    if (!this.specificationSizeSelected) return;
+    if (!this.isColorActive(colorId)) return;
 
-    const element = event.target.closest('.control-button');
+    this.specificationColorSelected = colorId;
+    this.quantity                   = 1;
+    this.textColorErro              = false;
 
-    if(element.classList.contains("inactive")) return;
+    const size = this.specificationSize.find(
+      s => s.id === this.specificationSizeSelected
+    );
 
-    const selects = element.parentNode.querySelectorAll('.selected');
-    selects.forEach((sel: any) => {
-      sel.classList.remove("selected");
-    });
+    if (!size) return;
 
-    element.classList.add("selected");
-    this.specificationColorSelected = element.id;
+    const color = size.colorActives.find(
+      ca => ca.color_id === colorId
+    );
 
-    this.textColorErro = false;
+    this.product.storage = color?.storage ?? 0;
   }
 
   rollForTheComments(){
@@ -213,7 +223,6 @@ export class Product {
                     subcategory_seq: number;
                     avarage_rating:  number;
                     total_comments:  number;
-                    storage:         number;
                    }[] = [];
 
         prod = response;
@@ -228,7 +237,7 @@ export class Product {
                             active:         prod[0].active,
                             score:          Math.floor(prod[0].avarage_rating),
                             total_comments: prod[0].total_comments,
-                            storage:        10
+                            storage:        0
                           };
 
         this.category.id    = prod[0].category_id;
@@ -309,19 +318,29 @@ export class Product {
   }
 
   getSizesSpecification(){
-    this.request.executeRequestGET('api/getSpecificationSize', {category_id: this.category.id}).subscribe({
+    this.request.executeRequestGET('api/adapterGetSpecificationSize', {category_id: this.category.id, product_id: this.product.id}).subscribe({
       next: (response) => {
-        var sizes: { id: number; size: string;}[] = [];
+        var sizes: {
+          size_id:      number,
+          size:         string,
+          colorActives: {
+            color_id: number,
+            storage: number
+          }[],
+        }[] = [];
 
         sizes = response;
 
         const sizesFormat = sizes.map(size => ({
-            size:      size.size,
-            id:        size.id,
-            extclass:  ""
+            size:         size.size,
+            id:           size.size_id,
+            extclass:     "",
+            colorActives: size.colorActives
         }));
 
         this.specificationSize = [...this.specificationSize, ...sizesFormat];
+
+        this.getColorsSpecification();
 
         this.cdRef.detectChanges();
       },
@@ -346,6 +365,15 @@ export class Product {
 
         this.specificationColor = [...this.specificationColor, ...colorsFormat];
 
+        if(this.specificationSize){
+          this.specificationSize.forEach((spec: any, index: number) => {
+            if(spec.colorActives.length > 0){
+              this.selectEspecificationSize(this.specificationSize[index].id);
+              this.selectEspecificationColor(this.specificationSize[index].colorActives[0].color_id);
+            }
+          });
+        }
+
         this.cdRef.detectChanges();
       },
       error: (error) => {
@@ -354,41 +382,16 @@ export class Product {
     });
   }
 
-  getSpecificationColorByProduct(){
-    this.request.executeRequestGET('api/getSpecificationColorByProduct', {id: this.product.id, size_id: this.specificationSizeSelected}).subscribe({
-      next: (response) => {
-        var colors: { prod_id:  number;
-                      size_id:  number;
-                      size:     string;
-                      color_id: number;
-                      color:    string;
-                      storage:  number;
-                    }[] = [];
+  isColorActive(colorId: number): boolean {
+    if (!this.specificationSizeSelected) return false;
 
-        colors = response;
+    const size = this.specificationSize.find(
+      s => s.id === this.specificationSizeSelected
+    );
 
-        this.specificationColor.forEach(speccolor => { speccolor.extclass = "inactive"; });
+    if (!size) return false;
 
-        const buttcolorElement = this.buttcolor.element.nativeElement;
-
-        buttcolorElement.childNodes.forEach((child: any) => {
-          if (child.nodeType === Node.COMMENT_NODE) return;
-
-          child.classList.remove("selected");
-        });
-
-        this.specificationColor.forEach(speccolor => {
-          colors.forEach(color => {
-            if(color.color_id == speccolor.id) speccolor.extclass = "active";
-          });
-        });
-
-        this.cdRef.detectChanges();
-      },
-      error: (error) => {
-        console.error('Erro:', error);
-      }
-    });
+    return size.colorActives.some(c => c.color_id === colorId);
   }
 
   registerUserHistory(){
@@ -403,19 +406,19 @@ export class Product {
   }
 
   addToCart() {
-    if(Number(this.specificationSizeSelected) == 0) {
+    if(this.specificationSizeSelected == 0) {
       this.textSizeErro  = true;
       return;
     }
 
-    if(Number(this.specificationColorSelected) == 0) {
+    if(this.specificationColorSelected == 0) {
       this.textColorErro = true;
       return;
     }
 
     const item = { product_id: this.product.id,
-                   size_id:    Number(this.specificationSizeSelected),
-                   color_id:   Number(this.specificationColorSelected),
+                   size_id:    this.specificationSizeSelected,
+                   color_id:   this.specificationColorSelected,
                    quantity:   this.quantity};
 
     this.cartForm.registerProductFromCart(item);
@@ -555,7 +558,6 @@ export class Product {
 
   ngOnInit() {
     this.loadProductsInformation();
-    this.getColorsSpecification();
     this.loadProductsList();
   }
 }

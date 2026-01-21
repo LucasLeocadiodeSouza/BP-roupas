@@ -10,6 +10,8 @@ import com.bphost.principal.exception.SubCategoryException;
 import com.bphost.principal.model.category;
 import com.bphost.principal.model.categoryCardDTO;
 import com.bphost.principal.model.product;
+import com.bphost.principal.model.specificationDTO;
+import com.bphost.principal.model.specificationDTO2;
 import com.bphost.principal.model.specification_color;
 import com.bphost.principal.model.specification_prod;
 import com.bphost.principal.model.specification_prodId;
@@ -20,6 +22,7 @@ import com.bphost.principal.model.subcategory;
 import com.bphost.principal.repository.categoryCardDTORepo;
 import com.bphost.principal.repository.categoryRepo;
 import com.bphost.principal.repository.productRepo;
+import com.bphost.principal.repository.specificationDTORepo;
 import com.bphost.principal.repository.specification_colorRepo;
 import com.bphost.principal.repository.specification_prodRepo;
 import com.bphost.principal.repository.specification_sizeRepo;
@@ -53,6 +56,8 @@ public class categoryService {
     @Autowired
     private categoryCardDTORepo categoryDTORepo;
 
+    @Autowired
+    private specificationDTORepo specificationDTORepo;
 
     public List<specification_color> getColorsOption(){
         List<specification_color> colors = speccolorRepo.findAll();
@@ -64,6 +69,17 @@ public class categoryService {
         return sizes;
     }
     
+    public List<specificationDTO> adapterGetSpecificationSize(Integer categ_id, Integer product_id){
+        List<specificationDTO> sizes = specificationDTORepo.findAllSpecificationSizeByCategory(categ_id);
+
+        for (specificationDTO size : sizes) {
+            List<specificationDTO2> sp = specificationDTORepo.findAllByProductIdAndSize(product_id, size.getSize_id());
+            size.setColorActives(sp);
+        }
+
+        return sizes;
+    }
+
     public List<category> findAllCategoriesActives(){
         List<category> categories = categRepo.findAllCategActives();
         if(categories == null || categories.isEmpty()) {
