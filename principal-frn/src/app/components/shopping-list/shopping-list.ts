@@ -29,6 +29,11 @@ export class ShoppingList implements OnInit {
     if(containerProduct.childNodes.length <= 1) containerProduct.remove();
   }
 
+  getCalcPrice(realPrice: number, discount: number, quantity: number){
+    const priceXdiscount = (realPrice - discount).toFixed(2);
+    return Number(priceXdiscount) * quantity;
+  }
+
   getPriceSum(){
     return this.cartForm.ItemsSum();
   }

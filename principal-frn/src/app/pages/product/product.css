@@ -18,6 +18,31 @@ a  {text-decoration: none;}
 .row {display: flex; flex-direction: row; gap: 5px;}
 .row-reverse {display: flex; flex-direction: row-reverse; padding-inline: 15px; height: 100%;}
 
+.column {display: flex; flex-direction: column;}
+.column {display: flex; flex-direction: column;}
+
+.container-frete {float: right; gap: 5px; margin-top: 10px;}
+.frete {display: flex; align-items: center; color: #2b9b06;}
+.frete label {}
+
+.phone-input {
+    width: 70px;
+    padding: 8px 10px;
+
+    appearance: none;
+    background-color: transparent;
+    outline: none;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    font-size: 14px;
+}
+
+.phone-input:focus {
+    border-color: #475569; /* focus:border-slate-600 */
+}
+
 .dnone {display: none !important;}
 
 .path {margin-left: 10px; display: flex; gap: 5px;}

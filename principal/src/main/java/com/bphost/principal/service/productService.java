@@ -29,6 +29,7 @@ import com.bphost.principal.model.productCardDTO;
 import com.bphost.principal.model.product_img;
 import com.bphost.principal.model.product_imgId;
 import com.bphost.principal.model.specificationDTO;
+import com.bphost.principal.model.user_cart;
 import com.bphost.principal.repository.commentsDTORepo;
 import com.bphost.principal.repository.commentsProdRepo;
 import com.bphost.principal.repository.commentsRepo;
@@ -261,7 +262,32 @@ public class productService {
         List<commentsDTO> comments = commentDTORepo.findCommentsByProduct(product_id, rating, page);
         return comments;
     }
+    
+    public static BigDecimal getFretePrice(String cep, Integer quantity){
+        if(cep.startsWith("0")) return getTaxByQuantity(quantity);
+        if(cep.startsWith("1")) return getTaxByQuantity(quantity);
+        if(cep.startsWith("2")) return BigDecimal.valueOf(3).add(getTaxByQuantity(quantity));
+        if(cep.startsWith("3")) return BigDecimal.valueOf(5).add(getTaxByQuantity(quantity));
+        if(cep.startsWith("4")) return BigDecimal.valueOf(7).add(getTaxByQuantity(quantity));
+        if(cep.startsWith("5")) return BigDecimal.TEN.add(getTaxByQuantity(quantity));
+        if(cep.startsWith("6")) return BigDecimal.valueOf(15).add(getTaxByQuantity(quantity));
+        if(cep.startsWith("7")) return BigDecimal.TEN.add(getTaxByQuantity(quantity));
+        if(cep.startsWith("8")){
+            if(cep.substring(1) == "7" || cep.substring(1) == "6") return getTaxByQuantity(quantity);
+            return BigDecimal.TEN;
+        }
+        if(cep.startsWith("9")) return BigDecimal.valueOf(2).add(getTaxByQuantity(quantity));
 
+        return BigDecimal.ZERO;
+    }
+
+    public static BigDecimal getTaxByQuantity(Integer quantity){
+        if(quantity > 5 && quantity <= 8)   return BigDecimal.valueOf(2.0);
+        if(quantity > 8 && quantity <= 13)  return BigDecimal.valueOf(3.0);
+        if(quantity > 13) return BigDecimal.valueOf(4.0);
+
+        return BigDecimal.ZERO;
+    }
 
     // ########### DASHBOARD METHODS ###########
 

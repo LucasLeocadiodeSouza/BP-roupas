@@ -1,6 +1,7 @@
 package com.bphost.principal.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -196,5 +197,10 @@ public class accountController {
             "status", "success",
             "message", "Added product in the list successfully"
         ));
+    }
+
+    @GetMapping("/getFinalFrete")
+    public BigDecimal getFinalFrete(@AuthenticationPrincipal UserDetails userAccount){
+        return user.getFinalFrete(user.getUserAccountId(userAccount.getUsername()));
     }
 }

@@ -1,5 +1,6 @@
 package com.bphost.principal.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -639,6 +640,23 @@ public class userService {
     }
 
     // ########### USEFULL METHODS ###########
+
+    public BigDecimal getFinalFrete(Integer userId){
+        user_account user = userAccountRepo.findAccountById(userId);
+        if(user == null) throw new UserNotFoundException("Usuário não encontrado com o id '" + userId + "'");
+
+        user_address address = userAddressRepo.findAddressActiveByUser(userId);
+
+        Integer quantity = 0;
+
+        List<user_cart> itensInCart = userCartRepo.findAllByUserAccount(user.getId());
+        for(user_cart cart : itensInCart){
+            quantity += cart.getQuantity();
+        }
+
+        return productService.getFretePrice(address.getCEP(), quantity);
+    }
+
 
     public static boolean isValidPhoneNumber(String telefone) {
         if (telefone == null || telefone.trim().isEmpty()) return false;

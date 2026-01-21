@@ -15,6 +15,7 @@ public class userCartDTO {
     private Integer    product_id;
     private String     name;
     private BigDecimal price;
+    private BigDecimal discount;
     private Integer    size_id;
     private String     size;
     private Integer    color_id;
@@ -46,10 +47,12 @@ public class userCartDTO {
     }
 
 
+    //Used For the ref user_cart And userPurchases
     public userCartDTO(Integer    useraccount_id, 
                        Integer    product_id, 
                        String     name, 
                        BigDecimal price, 
+                       BigDecimal discount,
                        Integer    size_id,
                        String     size, 
                        Integer    color_id, 
@@ -61,6 +64,7 @@ public class userCartDTO {
         this.product_id     = product_id;
         this.name           = name;
         this.price          = price;
+        this.discount       = discount;
         this.size_id        = size_id;
         this.size           = size;
         this.color_id       = color_id;
@@ -148,4 +152,6 @@ public class userCartDTO {
         this.nameList       = nameList;
         this.seqList        = seqList;
     }
+
+
 }

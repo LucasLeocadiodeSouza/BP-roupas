@@ -107,6 +107,21 @@
                   </div>
               </div>
 
+              <div class="column container-frete">
+                <label>📦 Frete</label>
+                <label>Calcule o prazo e valor para sua região: </label>
+
+                <div class="row">
+                  <input type="text" placeholder="00000-000" class="phone-input" (input)="changeCEPFrete($event)">
+
+                  <div class="frete">
+                    <div class="currency"> {{ currency }}</div>
+                    <div class="price">{{ fretePrice }}</div>
+                  </div>
+                </div>
+
+              </div>
+
               <div class="disprow jc-center">
                   <div class="divisior"></div>
               </div>

@@ -1,5 +1,6 @@
 package com.bphost.principal.repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 import com.bphost.principal.model.userCartDTO;
@@ -20,6 +21,7 @@ public class userCartDTORepo {
                        "prod.id, " +
                        "prod.name, " +
                        "prod.price, " +
+                       "prod.discount, " +
                        "c.id.spec_size_id, " +
                        "specsize.size, " +
                        "c.id.spec_color_id, " +
@@ -46,6 +48,7 @@ public class userCartDTORepo {
                        "prod.id, " +
                        "prod.name, " +
                        "prod.price, " +
+                       "purchase.discount, " +
                        "purchase.id.spec_size_id, " +
                        "specsize.size, " +
                        "purchase.id.spec_color_id, " +

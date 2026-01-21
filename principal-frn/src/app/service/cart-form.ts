@@ -29,6 +29,7 @@ export class CartForm {
                      product_id:     number,
                      name:           string,
                      price:          number,
+                     discount:       number,
                      size_id:        number,
                      size:           string,
                      color_id:       number,
@@ -43,6 +44,7 @@ export class CartForm {
           src:        "http://localhost:8080/api/product/product_" + cart.product_id + "_1" + cart.image.substring(cart.image.lastIndexOf(".")),
           title:      cart.name,
           price:      cart.price,
+          discount:   cart.discount,
           currency:   "R$",
           extclass:   "minicard-cartform",
           href:       "http://localhost:4200/product?id=" + cart.product_id,
@@ -90,6 +92,6 @@ export class CartForm {
   }
 
   ItemsSum(){
-    return this.cartItemsSubject.value.reduce((total, item) => total + item.price, 0).toFixed(2);
+    return this.cartItemsSubject.value.reduce((total, item) => total + ((item.price - item.discount) * item.quantity), 0).toFixed(2);
   }
 }

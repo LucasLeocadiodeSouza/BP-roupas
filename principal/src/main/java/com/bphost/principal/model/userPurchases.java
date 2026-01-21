@@ -1,5 +1,6 @@
 package com.bphost.principal.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.persistence.EmbeddedId;
@@ -43,8 +44,9 @@ public class userPurchases {
     @JoinColumn(name = "spec_color_id")
     private specification_color spec_color;
 
-    private Integer   status;
-    private Integer   quantity;
-    private LocalDate create_at;
-    private LocalDate delivered_at;
+    private Integer    status;
+    private Integer    quantity;
+    private BigDecimal discount;
+    private LocalDate  create_at;
+    private LocalDate  delivered_at;
 }

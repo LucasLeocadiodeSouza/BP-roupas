@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderItem } from '../../components/order-item/order-item';
 import { CartForm } from '../../service/cart-form';
-import { Observable, EMPTY, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { RequestForm } from '../../service/request-form';
 
 @Component({
@@ -24,23 +24,37 @@ export class OrderCheckout {
   purchaseCompleted: boolean = false;
   initAnimation: boolean = false;
   address: {street: string, neighborhood: string, number: string, cep: string, city: string, state: string } = {street: "", neighborhood: "", number: "", cep: "", city: "", state: ""};
+  fretePrice: number = 0;
 
   getPriceSum(){
     return this.cartForm.ItemsSum();
   }
 
   getPriceDelivery(){
-    return this.cartForm.ItemsSum();
+    this.request.executeRequestGET('account/getFinalFrete').subscribe({
+      next: (response) => {
+        this.fretePrice = response;
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
   }
 
   getPriceSumPlusDelivery(){
-    return this.cartForm.ItemsSum();
+    const value = Number(this.cartForm.ItemsSum()) + this.fretePrice;
+
+    return value.toFixed(2);
   }
 
   registerUserCartPurchases(){
     if(this.initAnimation) return;
 
     this.initAnimation = true;
+
+    this.addPurchaseImage();
 
     setTimeout(() => {
       this.request.executeRequestPOST('account/registerUserCartPurchases', null).subscribe({
@@ -104,7 +118,7 @@ export class OrderCheckout {
     this.cartItems$   = this.cartForm.cartItems$;
     this.isEmptyCart$ = this.cartItems$.pipe( map(cart => cart.length === 0) );
     this.cartForm.loadCart();
-    this.addPurchaseImage();
     this.getUserAddress();
+    this.getPriceDelivery();
   }
 }

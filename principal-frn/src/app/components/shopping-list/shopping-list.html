@@ -40,7 +40,12 @@
                   <span>{{ miniCard.quantity }}</span>
               </div>
 
-             <app-mini-card [title]="miniCard.title" [srcImages]="miniCard.src" [price]="miniCard.price" [extclass]="miniCard.extclass" [href]="miniCard.href"  [currency]="miniCard.currency"></app-mini-card>
+             <app-mini-card [title]="miniCard.title"
+                            [srcImages]="miniCard.src"
+                            [price]="getCalcPrice(miniCard.price, miniCard.discount, miniCard.quantity)"
+                            [extclass]="miniCard.extclass"
+                            [href]="miniCard.href"
+                            [currency]="miniCard.currency"></app-mini-card>
           </div>
 
         </div>

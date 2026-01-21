@@ -30,6 +30,9 @@ export class Product {
   textColorErro: boolean = false;
   textSizeErro:  boolean = false;
 
+  cepFrete: string = "";
+  fretePrice: number = 0.0;
+
   currency: string    = "";
   sales:    string    = "";
 
@@ -104,15 +107,21 @@ export class Product {
     return (this.specificationSizeSelected == 0 || this.specificationColorSelected == 0)
   }
 
+  changeQuantity(quantity: number){
+    this.quantity = quantity;
+
+    if(this.cepFrete.length > 7) this.getFretePrice();
+  }
+
   oneMoreQuantity(plus: boolean) {
     if(this.getEnableModifyQuantity()) return;
 
     if (plus) {
       if (this.quantity + 1 > this.product.storage) return;
-      this.quantity++;
+      this.changeQuantity(this.quantity + 1);
     } else {
       if (this.quantity <= 1) return;
-      this.quantity--;
+      this.changeQuantity(this.quantity - 1);
     }
 
     const MIN_PADDING = 17; // px
@@ -173,7 +182,7 @@ export class Product {
     this.specificationSizeSelected  = sizeId;
     this.specificationColorSelected = 0;
     this.textSizeErro               = false;
-    this.quantity                   = 1;
+    this.changeQuantity(1);
 
     this.resetEffectAddButton();
   }
@@ -184,8 +193,8 @@ export class Product {
     if (!this.isColorActive(colorId)) return;
 
     this.specificationColorSelected = colorId;
-    this.quantity                   = 1;
     this.textColorErro              = false;
+    this.changeQuantity(1);
 
     const size = this.specificationSize.find(
       s => s.id === this.specificationSizeSelected
@@ -255,6 +264,40 @@ export class Product {
 
         this.registerUserHistory();
         this.getSubcategoryName();
+
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro:', error);
+      }
+    });
+  }
+
+  changeCEPFrete(event: any) {
+    const element = event.target;
+
+    element.value = element.value.replace('-', '');
+
+    if(element.value.length > 8){
+       element.value = element.value.slice(0, -1);
+       if(element.value.length > 8) element.value = element.value.slice(0, 5) + "-" + element.value.slice(5)
+       return;
+    }
+
+    this.cepFrete = element.value;
+
+    if(element.value.length == 8) {
+      element.value = element.value.slice(0, 5) + "-" + element.value.slice(5);
+      this.getFretePrice();
+    }
+  }
+
+  getFretePrice(){
+    this.request.executeRequestGET('api/getFretePrice', {cep: this.cepFrete, quantity: this.quantity}).subscribe({
+      next: (response) => {
+        response;
+
+        this.fretePrice = response;
 
         this.cdRef.detectChanges();
       },

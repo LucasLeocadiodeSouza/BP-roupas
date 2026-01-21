@@ -68,6 +68,7 @@
                                  [quantity]="orderproduct.quantity"
                                  [currency]="orderproduct.currency"
                                  [price]="orderproduct.price"
+                                 [discount]="orderproduct.discount"
                                  [size]="orderproduct.size"
                                  [color]="orderproduct.color"
                                  [removeItem]="true"
@@ -109,7 +110,7 @@
 
                     <div class="price">
                         <span>R$</span>
-                        <span>{{ getPriceDelivery() }}</span>
+                        <span>{{ fretePrice }}</span>
                     </div>
                   </div>
 

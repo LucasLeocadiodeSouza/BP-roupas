@@ -91,6 +91,12 @@ public class genController {
         ));
     }
 
+    @GetMapping("/getFretePrice")
+    public BigDecimal getFretePrice(@RequestParam(value = "cep", required = true) String cep,
+                                    @RequestParam(value = "quantity", required = false) Integer quantity){
+        return productService.getFretePrice(cep, quantity);
+    }
+
     // ######### Endpoints for Images Management #########
 
     @GetMapping("/product/{filename}")
